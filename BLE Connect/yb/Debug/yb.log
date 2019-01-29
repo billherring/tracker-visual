@@ -1,0 +1,27 @@
+﻿Build started 29/01/2019 11:57:04.
+     1>Project "C:\Users\Bill\Development\Visual\tracker-visual\BLE Connect\yb\yb.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\yb.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       GenerateTargetFrameworkMonikerAttribute:
+       Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       CoreResGen:
+         No resources are out of date with respect to their source files. Skipping resource generation.
+       ResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         yb.vcxproj -> C:\Users\Bill\Development\Visual\tracker-visual\BLE Connect\Debug\yb.exe
+       MetaGen:
+       Skipping target "MetaGen" because all output files are up-to-date with respect to the input files.
+       FinalizeBuildStatus:
+         Deleting file "Debug\yb.unsuccessfulbuild".
+         Touching "Debug\yb.lastbuildstate".
+     1>Done Building Project "C:\Users\Bill\Development\Visual\tracker-visual\BLE Connect\yb\yb.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.00

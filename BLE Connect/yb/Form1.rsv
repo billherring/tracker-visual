@@ -1,0 +1,1656 @@
+#pragma once
+
+#include "ybmessage.h"
+#include "ble.h"
+
+namespace yb {
+
+	using namespace System;
+    using namespace System::Collections;
+	using namespace System::ComponentModel;
+	using namespace System::IO::Ports;
+	using namespace System::Windows::Forms;
+	using namespace System::Data;
+	using namespace System::Drawing;
+
+        enum
+        {
+            TRACKER_STATE_IDLE,
+            TRACKER_STATE_SENT,
+            TRACKER_STATE_RECEIVE,
+        };
+        
+
+	/// <summary>
+	/// Summary for Form1
+	/// </summary>
+	public ref class Form1 : public System::Windows::Forms::Form
+	{
+	public:
+		Form1(void)
+		{
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+            _rxMsg = gcnew YbMessage();
+            _trackerState = TRACKER_STATE_IDLE;
+            trackerConnected = BG::DISCONNECTED;
+            
+            setView( false );
+            _serialComms = gcnew Ble( commsLog);
+            
+            serialTimer->Interval = BG::TICK_INTERVAL;
+            serialTimer->Enabled = true;
+            serialTimer->Start();
+		
+            _incoming = gcnew YbMessage();
+            _sentMessages = gcnew ArrayList();
+            _sentIds = gcnew ArrayList();
+            _sentStatus = gcnew ArrayList();
+            stopTiming();
+            _id = 1;
+            _inboxActive = false;
+        }
+
+	protected:
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		~Form1()
+		{
+			if (components)
+			{
+				delete components;
+			}
+		}
+
+
+	protected: 
+
+	protected: 
+
+	private: System::Windows::Forms::TextBox^  outMsg;
+	private: System::Windows::Forms::Button^  sendButton;
+	private: System::ComponentModel::IContainer^  components;
+
+
+
+
+
+
+
+
+
+	private: System::Windows::Forms::TextBox^  inMsg;
+
+
+
+
+	private:
+		/// <summary>
+		/// Required designer variable.
+        unsigned short _id;
+        YbMessage ^_rxMsg;
+        int trackerConnected;
+        Ble ^_serialComms;
+        unsigned long _timerStart;
+        unsigned long _timerNow;
+        YbMessage ^_incoming;
+        ArrayList ^_sentMessages;
+        ArrayList ^_sentIds;
+        ArrayList ^_sentStatus;
+        DateTime ^_timingStart;
+        bool _timing;
+        bool _inboxActive;
+        
+        
+
+
+	private: System::Windows::Forms::Label^  sendStatus;
+
+
+
+	private: System::Windows::Forms::Timer^  serialTimer;
+	private: System::Windows::Forms::TextBox^  commsLog;
+	private: System::Windows::Forms::Button^  resetLogButton;
+
+	private: System::Windows::Forms::TextBox^  portNumber;
+	private: System::Windows::Forms::TextBox^  macText;
+	private: System::Windows::Forms::Label^  connectStatus;
+	private: System::Windows::Forms::Button^  connectButton;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Button^  logButton;
+
+
+
+
+
+	private: System::Windows::Forms::ComboBox^  trkStatusComboBox;
+	private: System::Windows::Forms::ComboBox^  trkPeriodComboBox;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label4;
+
+	private: System::Windows::Forms::TextBox^  composeMsg;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::Label^  label6;
+	private: System::Windows::Forms::Label^  label7;
+private: System::Windows::Forms::TextBox^  inboxCount;
+
+private: System::Windows::Forms::Button^  getButton;
+private: System::Windows::Forms::TextBox^  locationBox;
+
+private: System::Windows::Forms::Label^  gpsLabel;
+private: System::Windows::Forms::Label^  iridiumLabel;
+private: System::Windows::Forms::Label^  pinLockLabel;
+private: System::Windows::Forms::TextBox^  unlockPinBox;
+private: System::Windows::Forms::TextBox^  newPinBox;
+private: System::Windows::Forms::Label^  label8;
+private: System::Windows::Forms::Label^  label9;
+private: System::Windows::Forms::Button^  logInButton;
+private: System::Windows::Forms::Button^  submitButton;
+private: System::Windows::Forms::TextBox^  batteryBox;
+
+private: System::Windows::Forms::Label^  label10;
+private: System::Windows::Forms::TextBox^  versionBox;
+private: System::Windows::Forms::Label^  label11;
+private: System::Windows::Forms::GroupBox^  groupBox1;
+private: System::Windows::Forms::GroupBox^  groupBox2;
+private: System::Windows::Forms::GroupBox^  groupBox3;
+private: System::Windows::Forms::TableLayoutPanel^  settingsTable;
+private: System::Windows::Forms::ComboBox^  commandComboBox;
+private: System::Windows::Forms::Label^  label12;
+private: System::Windows::Forms::TextBox^  imeiBox;
+private: System::Windows::Forms::Label^  Imei;
+private: System::Windows::Forms::TextBox^  productNameBox;
+private: System::Windows::Forms::Label^  label13;
+private: System::Windows::Forms::Label^  label14;
+private: System::Windows::Forms::ComboBox^  externalTypeCombo;
+
+private: System::Windows::Forms::ComboBox^  externalBaudCombo;
+private: System::Windows::Forms::ComboBox^  externalSamplesCombo;
+
+private: System::Windows::Forms::Label^  label15;
+private: System::Windows::Forms::Label^  label16;
+private: System::Windows::Forms::TextBox^  shippingStatus;
+private: System::Windows::Forms::CheckBox^  noSentCheck;
+private: System::Windows::Forms::TextBox^  serialText;
+private: System::Windows::Forms::Label^  label17;
+private: System::Windows::Forms::TextBox^  modelText;
+private: System::Windows::Forms::Button^  factorySetButton;
+
+
+private: System::Windows::Forms::GroupBox^  groupBox4;
+private: System::Windows::Forms::Label^  label18;
+
+
+
+
+
+
+
+			 int _trackerState;
+        
+		/// </summary>
+
+
+#pragma region Windows Form Designer generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		void InitializeComponent(void)
+		{
+			this->components = (gcnew System::ComponentModel::Container());
+			this->outMsg = (gcnew System::Windows::Forms::TextBox());
+			this->sendButton = (gcnew System::Windows::Forms::Button());
+			this->sendStatus = (gcnew System::Windows::Forms::Label());
+			this->inMsg = (gcnew System::Windows::Forms::TextBox());
+			this->serialTimer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->commsLog = (gcnew System::Windows::Forms::TextBox());
+			this->resetLogButton = (gcnew System::Windows::Forms::Button());
+			this->portNumber = (gcnew System::Windows::Forms::TextBox());
+			this->macText = (gcnew System::Windows::Forms::TextBox());
+			this->connectStatus = (gcnew System::Windows::Forms::Label());
+			this->connectButton = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->logButton = (gcnew System::Windows::Forms::Button());
+			this->trkStatusComboBox = (gcnew System::Windows::Forms::ComboBox());
+			this->trkPeriodComboBox = (gcnew System::Windows::Forms::ComboBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->composeMsg = (gcnew System::Windows::Forms::TextBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->inboxCount = (gcnew System::Windows::Forms::TextBox());
+			this->getButton = (gcnew System::Windows::Forms::Button());
+			this->locationBox = (gcnew System::Windows::Forms::TextBox());
+			this->gpsLabel = (gcnew System::Windows::Forms::Label());
+			this->iridiumLabel = (gcnew System::Windows::Forms::Label());
+			this->pinLockLabel = (gcnew System::Windows::Forms::Label());
+			this->unlockPinBox = (gcnew System::Windows::Forms::TextBox());
+			this->newPinBox = (gcnew System::Windows::Forms::TextBox());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->logInButton = (gcnew System::Windows::Forms::Button());
+			this->submitButton = (gcnew System::Windows::Forms::Button());
+			this->batteryBox = (gcnew System::Windows::Forms::TextBox());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->versionBox = (gcnew System::Windows::Forms::TextBox());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->noSentCheck = (gcnew System::Windows::Forms::CheckBox());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->settingsTable = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->label14 = (gcnew System::Windows::Forms::Label());
+			this->externalTypeCombo = (gcnew System::Windows::Forms::ComboBox());
+			this->externalBaudCombo = (gcnew System::Windows::Forms::ComboBox());
+			this->externalSamplesCombo = (gcnew System::Windows::Forms::ComboBox());
+			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->commandComboBox = (gcnew System::Windows::Forms::ComboBox());
+			this->label12 = (gcnew System::Windows::Forms::Label());
+			this->imeiBox = (gcnew System::Windows::Forms::TextBox());
+			this->Imei = (gcnew System::Windows::Forms::Label());
+			this->productNameBox = (gcnew System::Windows::Forms::TextBox());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->shippingStatus = (gcnew System::Windows::Forms::TextBox());
+			this->serialText = (gcnew System::Windows::Forms::TextBox());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->modelText = (gcnew System::Windows::Forms::TextBox());
+			this->factorySetButton = (gcnew System::Windows::Forms::Button());
+			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->groupBox1->SuspendLayout();
+			this->groupBox2->SuspendLayout();
+			this->groupBox3->SuspendLayout();
+			this->settingsTable->SuspendLayout();
+			this->groupBox4->SuspendLayout();
+			this->SuspendLayout();
+			// 
+			// outMsg
+			// 
+			this->outMsg->BackColor = System::Drawing::SystemColors::ButtonFace;
+			this->outMsg->Location = System::Drawing::Point(11, 169);
+			this->outMsg->Multiline = true;
+			this->outMsg->Name = L"outMsg";
+			this->outMsg->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->outMsg->Size = System::Drawing::Size(160, 100);
+			this->outMsg->TabIndex = 0;
+			// 
+			// sendButton
+			// 
+			this->sendButton->Location = System::Drawing::Point(176, 48);
+			this->sendButton->Name = L"sendButton";
+			this->sendButton->Size = System::Drawing::Size(59, 25);
+			this->sendButton->TabIndex = 1;
+			this->sendButton->Text = L"Send";
+			this->sendButton->UseVisualStyleBackColor = true;
+			this->sendButton->Click += gcnew System::EventHandler(this, &Form1::sendButton_Click);
+			// 
+			// sendStatus
+			// 
+			this->sendStatus->AutoSize = true;
+			this->sendStatus->Location = System::Drawing::Point(8, 442);
+			this->sendStatus->Name = L"sendStatus";
+			this->sendStatus->Size = System::Drawing::Size(24, 13);
+			this->sendStatus->TabIndex = 2;
+			this->sendStatus->Text = L"Idle";
+			// 
+			// inMsg
+			// 
+			this->inMsg->BackColor = System::Drawing::SystemColors::ButtonFace;
+			this->inMsg->Enabled = false;
+			this->inMsg->Location = System::Drawing::Point(10, 322);
+			this->inMsg->Multiline = true;
+			this->inMsg->Name = L"inMsg";
+			this->inMsg->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->inMsg->Size = System::Drawing::Size(160, 100);
+			this->inMsg->TabIndex = 0;
+			// 
+			// serialTimer
+			// 
+			this->serialTimer->Tick += gcnew System::EventHandler(this, &Form1::serialTimer_Tick);
+			// 
+			// commsLog
+			// 
+			this->commsLog->Location = System::Drawing::Point(920, 358);
+			this->commsLog->Multiline = true;
+			this->commsLog->Name = L"commsLog";
+			this->commsLog->ScrollBars = System::Windows::Forms::ScrollBars::Both;
+			this->commsLog->Size = System::Drawing::Size(127, 109);
+			this->commsLog->TabIndex = 9;
+			this->commsLog->Visible = false;
+			// 
+			// resetLogButton
+			// 
+			this->resetLogButton->Location = System::Drawing::Point(1053, 358);
+			this->resetLogButton->Name = L"resetLogButton";
+			this->resetLogButton->Size = System::Drawing::Size(64, 23);
+			this->resetLogButton->TabIndex = 10;
+			this->resetLogButton->Text = L"Clear";
+			this->resetLogButton->UseVisualStyleBackColor = true;
+			this->resetLogButton->Visible = false;
+			this->resetLogButton->Click += gcnew System::EventHandler(this, &Form1::resetLogButton_Click);
+			// 
+			// portNumber
+			// 
+			this->portNumber->Location = System::Drawing::Point(17, 105);
+			this->portNumber->Name = L"portNumber";
+			this->portNumber->Size = System::Drawing::Size(24, 20);
+			this->portNumber->TabIndex = 5;
+			// 
+			// macText
+			// 
+			this->macText->Location = System::Drawing::Point(17, 37);
+			this->macText->Name = L"macText";
+			this->macText->Size = System::Drawing::Size(98, 20);
+			this->macText->TabIndex = 2;
+			// 
+			// connectStatus
+			// 
+			this->connectStatus->AutoSize = true;
+			this->connectStatus->BackColor = System::Drawing::SystemColors::Control;
+			this->connectStatus->Location = System::Drawing::Point(55, 134);
+			this->connectStatus->Name = L"connectStatus";
+			this->connectStatus->Size = System::Drawing::Size(76, 13);
+			this->connectStatus->TabIndex = 4;
+			this->connectStatus->Text = L" Disconnected";
+			// 
+			// connectButton
+			// 
+			this->connectButton->Location = System::Drawing::Point(58, 105);
+			this->connectButton->Name = L"connectButton";
+			this->connectButton->Size = System::Drawing::Size(57, 26);
+			this->connectButton->TabIndex = 3;
+			this->connectButton->Text = L"Connect";
+			this->connectButton->UseVisualStyleBackColor = true;
+			this->connectButton->Click += gcnew System::EventHandler(this, &Form1::connectButton_Click);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(14, 21);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(31, 13);
+			this->label1->TabIndex = 6;
+			this->label1->Text = L"Mac:";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(14, 87);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(29, 13);
+			this->label2->TabIndex = 7;
+			this->label2->Text = L"Port:";
+			// 
+			// logButton
+			// 
+			this->logButton->Location = System::Drawing::Point(1053, 443);
+			this->logButton->Name = L"logButton";
+			this->logButton->Size = System::Drawing::Size(64, 24);
+			this->logButton->TabIndex = 11;
+			this->logButton->Text = L"Show Log";
+			this->logButton->UseVisualStyleBackColor = true;
+			this->logButton->Click += gcnew System::EventHandler(this, &Form1::logButton_Click);
+			// 
+			// trkStatusComboBox
+			// 
+			this->trkStatusComboBox->AllowDrop = true;
+			this->trkStatusComboBox->FormattingEnabled = true;
+			this->trkStatusComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->trkStatusComboBox->Location = System::Drawing::Point(3, 3);
+			this->trkStatusComboBox->Name = L"trkStatusComboBox";
+			this->trkStatusComboBox->Size = System::Drawing::Size(94, 21);
+			this->trkStatusComboBox->TabIndex = 15;
+			this->trkStatusComboBox->SelectionChangeCommitted += gcnew System::EventHandler(this, &Form1::trkStatusComboBox_SelectionChangeCommitted);
+			// 
+			// trkPeriodComboBox
+			// 
+			this->trkPeriodComboBox->FormattingEnabled = true;
+			this->trkPeriodComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(15) {L"Continuous", L"5 min", L"10 min", L"15 min", 
+				L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst"});
+			this->trkPeriodComboBox->Location = System::Drawing::Point(3, 32);
+			this->trkPeriodComboBox->Name = L"trkPeriodComboBox";
+			this->trkPeriodComboBox->Size = System::Drawing::Size(94, 21);
+			this->trkPeriodComboBox->TabIndex = 16;
+			this->trkPeriodComboBox->SelectionChangeCommitted += gcnew System::EventHandler(this, &Form1::trkPeriodComboBox_SelectionChangeCommitted);
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(103, 0);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(82, 13);
+			this->label3->TabIndex = 17;
+			this->label3->Text = L"Tracking Status";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(103, 29);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(82, 13);
+			this->label4->TabIndex = 18;
+			this->label4->Text = L"Tracking Period";
+			// 
+			// composeMsg
+			// 
+			this->composeMsg->Location = System::Drawing::Point(6, 47);
+			this->composeMsg->Multiline = true;
+			this->composeMsg->Name = L"composeMsg";
+			this->composeMsg->Size = System::Drawing::Size(164, 61);
+			this->composeMsg->TabIndex = 20;
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(8, 149);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(32, 13);
+			this->label5->TabIndex = 21;
+			this->label5->Text = L"Sent:";
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(7, 302);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(56, 13);
+			this->label6->TabIndex = 22;
+			this->label6->Text = L"Received:";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(7, 31);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(54, 13);
+			this->label7->TabIndex = 23;
+			this->label7->Text = L"Compose:";
+			// 
+			// inboxCount
+			// 
+			this->inboxCount->Location = System::Drawing::Point(176, 361);
+			this->inboxCount->Name = L"inboxCount";
+			this->inboxCount->Size = System::Drawing::Size(58, 20);
+			this->inboxCount->TabIndex = 24;
+			// 
+			// getButton
+			// 
+			this->getButton->Location = System::Drawing::Point(176, 322);
+			this->getButton->Name = L"getButton";
+			this->getButton->Size = System::Drawing::Size(58, 23);
+			this->getButton->TabIndex = 26;
+			this->getButton->Text = L"Get";
+			this->getButton->UseVisualStyleBackColor = true;
+			this->getButton->Click += gcnew System::EventHandler(this, &Form1::getButton_Click_1);
+			// 
+			// locationBox
+			// 
+			this->locationBox->Location = System::Drawing::Point(604, 364);
+			this->locationBox->Multiline = true;
+			this->locationBox->Name = L"locationBox";
+			this->locationBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->locationBox->Size = System::Drawing::Size(126, 90);
+			this->locationBox->TabIndex = 27;
+			// 
+			// gpsLabel
+			// 
+			this->gpsLabel->AutoSize = true;
+			this->gpsLabel->Location = System::Drawing::Point(601, 464);
+			this->gpsLabel->Name = L"gpsLabel";
+			this->gpsLabel->Size = System::Drawing::Size(49, 13);
+			this->gpsLabel->TabIndex = 29;
+			this->gpsLabel->Text = L"GPS Idle";
+			// 
+			// iridiumLabel
+			// 
+			this->iridiumLabel->AutoSize = true;
+			this->iridiumLabel->Location = System::Drawing::Point(601, 477);
+			this->iridiumLabel->Name = L"iridiumLabel";
+			this->iridiumLabel->Size = System::Drawing::Size(57, 13);
+			this->iridiumLabel->TabIndex = 30;
+			this->iridiumLabel->Text = L"Iridium Idle";
+			// 
+			// pinLockLabel
+			// 
+			this->pinLockLabel->AutoSize = true;
+			this->pinLockLabel->Location = System::Drawing::Point(123, 150);
+			this->pinLockLabel->Name = L"pinLockLabel";
+			this->pinLockLabel->Size = System::Drawing::Size(43, 13);
+			this->pinLockLabel->TabIndex = 31;
+			this->pinLockLabel->Text = L"Locked";
+			// 
+			// unlockPinBox
+			// 
+			this->unlockPinBox->Location = System::Drawing::Point(9, 43);
+			this->unlockPinBox->Name = L"unlockPinBox";
+			this->unlockPinBox->Size = System::Drawing::Size(81, 20);
+			this->unlockPinBox->TabIndex = 32;
+			// 
+			// newPinBox
+			// 
+			this->newPinBox->Location = System::Drawing::Point(9, 102);
+			this->newPinBox->Name = L"newPinBox";
+			this->newPinBox->Size = System::Drawing::Size(80, 20);
+			this->newPinBox->TabIndex = 33;
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(6, 27);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(53, 13);
+			this->label8->TabIndex = 34;
+			this->label8->Text = L"Enter Pin:";
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(6, 86);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(50, 13);
+			this->label9->TabIndex = 35;
+			this->label9->Text = L"New Pin:";
+			// 
+			// logInButton
+			// 
+			this->logInButton->Location = System::Drawing::Point(9, 139);
+			this->logInButton->Name = L"logInButton";
+			this->logInButton->Size = System::Drawing::Size(60, 24);
+			this->logInButton->TabIndex = 36;
+			this->logInButton->Text = L"Log In";
+			this->logInButton->UseVisualStyleBackColor = true;
+			this->logInButton->Click += gcnew System::EventHandler(this, &Form1::logInButton_Click);
+			// 
+			// submitButton
+			// 
+			this->submitButton->Location = System::Drawing::Point(106, 43);
+			this->submitButton->Name = L"submitButton";
+			this->submitButton->Size = System::Drawing::Size(60, 22);
+			this->submitButton->TabIndex = 37;
+			this->submitButton->Text = L"Submit";
+			this->submitButton->UseVisualStyleBackColor = true;
+			this->submitButton->Click += gcnew System::EventHandler(this, &Form1::submitButton_Click);
+			// 
+			// batteryBox
+			// 
+			this->batteryBox->Location = System::Drawing::Point(604, 75);
+			this->batteryBox->Name = L"batteryBox";
+			this->batteryBox->Size = System::Drawing::Size(136, 20);
+			this->batteryBox->TabIndex = 38;
+			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Location = System::Drawing::Point(747, 82);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(47, 13);
+			this->label10->TabIndex = 39;
+			this->label10->Text = L"battery%";
+			// 
+			// versionBox
+			// 
+			this->versionBox->Location = System::Drawing::Point(604, 52);
+			this->versionBox->Name = L"versionBox";
+			this->versionBox->Size = System::Drawing::Size(136, 20);
+			this->versionBox->TabIndex = 40;
+			// 
+			// label11
+			// 
+			this->label11->AutoSize = true;
+			this->label11->Location = System::Drawing::Point(747, 59);
+			this->label11->Name = L"label11";
+			this->label11->Size = System::Drawing::Size(42, 13);
+			this->label11->TabIndex = 41;
+			this->label11->Text = L"Version";
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->noSentCheck);
+			this->groupBox1->Controls->Add(this->inMsg);
+			this->groupBox1->Controls->Add(this->sendButton);
+			this->groupBox1->Controls->Add(this->sendStatus);
+			this->groupBox1->Controls->Add(this->outMsg);
+			this->groupBox1->Controls->Add(this->composeMsg);
+			this->groupBox1->Controls->Add(this->label5);
+			this->groupBox1->Controls->Add(this->label6);
+			this->groupBox1->Controls->Add(this->label7);
+			this->groupBox1->Controls->Add(this->inboxCount);
+			this->groupBox1->Controls->Add(this->getButton);
+			this->groupBox1->Location = System::Drawing::Point(294, 18);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(263, 478);
+			this->groupBox1->TabIndex = 42;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Messaging";
+			// 
+			// noSentCheck
+			// 
+			this->noSentCheck->AutoSize = true;
+			this->noSentCheck->Location = System::Drawing::Point(66, 149);
+			this->noSentCheck->Name = L"noSentCheck";
+			this->noSentCheck->Size = System::Drawing::Size(104, 17);
+			this->noSentCheck->TabIndex = 27;
+			this->noSentCheck->Text = L"Suppress Delete";
+			this->noSentCheck->UseVisualStyleBackColor = true;
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->macText);
+			this->groupBox2->Controls->Add(this->portNumber);
+			this->groupBox2->Controls->Add(this->connectStatus);
+			this->groupBox2->Controls->Add(this->connectButton);
+			this->groupBox2->Controls->Add(this->label1);
+			this->groupBox2->Controls->Add(this->label2);
+			this->groupBox2->Location = System::Drawing::Point(16, 18);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(142, 163);
+			this->groupBox2->TabIndex = 43;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"Connection";
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->newPinBox);
+			this->groupBox3->Controls->Add(this->pinLockLabel);
+			this->groupBox3->Controls->Add(this->unlockPinBox);
+			this->groupBox3->Controls->Add(this->label8);
+			this->groupBox3->Controls->Add(this->label9);
+			this->groupBox3->Controls->Add(this->logInButton);
+			this->groupBox3->Controls->Add(this->submitButton);
+			this->groupBox3->Location = System::Drawing::Point(16, 238);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(189, 183);
+			this->groupBox3->TabIndex = 44;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Pin";
+			// 
+			// settingsTable
+			// 
+			this->settingsTable->ColumnCount = 2;
+			this->settingsTable->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 
+				50.35714F)));
+			this->settingsTable->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 
+				49.64286F)));
+			this->settingsTable->Controls->Add(this->trkPeriodComboBox, 0, 1);
+			this->settingsTable->Controls->Add(this->label3, 1, 0);
+			this->settingsTable->Controls->Add(this->label4, 1, 1);
+			this->settingsTable->Controls->Add(this->trkStatusComboBox, 0, 0);
+			this->settingsTable->Controls->Add(this->label14, 1, 2);
+			this->settingsTable->Controls->Add(this->externalTypeCombo, 0, 2);
+			this->settingsTable->Controls->Add(this->externalBaudCombo, 0, 3);
+			this->settingsTable->Controls->Add(this->externalSamplesCombo, 0, 4);
+			this->settingsTable->Controls->Add(this->label15, 1, 3);
+			this->settingsTable->Controls->Add(this->label16, 1, 4);
+			this->settingsTable->Location = System::Drawing::Point(604, 206);
+			this->settingsTable->Name = L"settingsTable";
+			this->settingsTable->RowCount = 5;
+			this->settingsTable->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 56.06061F)));
+			this->settingsTable->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 43.93939F)));
+			this->settingsTable->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
+			this->settingsTable->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 30)));
+			this->settingsTable->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 27)));
+			this->settingsTable->Size = System::Drawing::Size(199, 135);
+			this->settingsTable->TabIndex = 45;
+			// 
+			// label14
+			// 
+			this->label14->AutoSize = true;
+			this->label14->Location = System::Drawing::Point(103, 52);
+			this->label14->Name = L"label14";
+			this->label14->Size = System::Drawing::Size(45, 13);
+			this->label14->TabIndex = 20;
+			this->label14->Text = L"External";
+			// 
+			// externalTypeCombo
+			// 
+			this->externalTypeCombo->FormattingEnabled = true;
+			this->externalTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) {L"Off", L"Nmea", L"Hydrosphere", L"Equivital"});
+			this->externalTypeCombo->Location = System::Drawing::Point(3, 55);
+			this->externalTypeCombo->Name = L"externalTypeCombo";
+			this->externalTypeCombo->Size = System::Drawing::Size(94, 21);
+			this->externalTypeCombo->TabIndex = 21;
+			this->externalTypeCombo->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::externalTypeCombo_SelectedIndexChanged);
+			// 
+			// externalBaudCombo
+			// 
+			this->externalBaudCombo->FormattingEnabled = true;
+			this->externalBaudCombo->Items->AddRange(gcnew cli::array< System::Object^  >(6) {L"4800", L"9600", L"19200", L"38400", L"57600", 
+				L"115200"});
+			this->externalBaudCombo->Location = System::Drawing::Point(3, 80);
+			this->externalBaudCombo->Name = L"externalBaudCombo";
+			this->externalBaudCombo->Size = System::Drawing::Size(94, 21);
+			this->externalBaudCombo->TabIndex = 22;
+			this->externalBaudCombo->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::externalBaudCombo_SelectedIndexChanged);
+			// 
+			// externalSamplesCombo
+			// 
+			this->externalSamplesCombo->FormattingEnabled = true;
+			this->externalSamplesCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"5 secs", L"10 secs", L"20 secs", L"40 secs", 
+				L"60 secs"});
+			this->externalSamplesCombo->Location = System::Drawing::Point(3, 110);
+			this->externalSamplesCombo->Name = L"externalSamplesCombo";
+			this->externalSamplesCombo->Size = System::Drawing::Size(94, 21);
+			this->externalSamplesCombo->TabIndex = 23;
+			this->externalSamplesCombo->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::externalSamplesCombo_SelectedIndexChanged);
+			// 
+			// label15
+			// 
+			this->label15->AutoSize = true;
+			this->label15->Location = System::Drawing::Point(103, 77);
+			this->label15->Name = L"label15";
+			this->label15->Size = System::Drawing::Size(73, 13);
+			this->label15->TabIndex = 24;
+			this->label15->Text = L"External Baud";
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Location = System::Drawing::Point(103, 107);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(88, 13);
+			this->label16->TabIndex = 25;
+			this->label16->Text = L"External Samples";
+			// 
+			// commandComboBox
+			// 
+			this->commandComboBox->FormattingEnabled = true;
+			this->commandComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(12) {L"Send Alert", L"Send Manual", L"Install Updates", 
+				L"Check Mail", L"Update Sent", L"Get LKP", L"Refresh Location", L"Get Battery", L"Deactivate", L"Activate", L"Buzz", L"None"});
+			this->commandComboBox->Location = System::Drawing::Point(879, 25);
+			this->commandComboBox->Name = L"commandComboBox";
+			this->commandComboBox->Size = System::Drawing::Size(92, 21);
+			this->commandComboBox->TabIndex = 46;
+			this->commandComboBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::commandComboBox_SelectedIndexChanged);
+			// 
+			// label12
+			// 
+			this->label12->AutoSize = true;
+			this->label12->Location = System::Drawing::Point(988, 25);
+			this->label12->Name = L"label12";
+			this->label12->Size = System::Drawing::Size(54, 13);
+			this->label12->TabIndex = 47;
+			this->label12->Text = L"Command";
+			// 
+			// imeiBox
+			// 
+			this->imeiBox->Location = System::Drawing::Point(604, 101);
+			this->imeiBox->Name = L"imeiBox";
+			this->imeiBox->Size = System::Drawing::Size(136, 20);
+			this->imeiBox->TabIndex = 48;
+			// 
+			// Imei
+			// 
+			this->Imei->AutoSize = true;
+			this->Imei->Location = System::Drawing::Point(747, 108);
+			this->Imei->Name = L"Imei";
+			this->Imei->Size = System::Drawing::Size(26, 13);
+			this->Imei->TabIndex = 49;
+			this->Imei->Text = L"Imei";
+			// 
+			// productNameBox
+			// 
+			this->productNameBox->Location = System::Drawing::Point(604, 26);
+			this->productNameBox->Name = L"productNameBox";
+			this->productNameBox->Size = System::Drawing::Size(136, 20);
+			this->productNameBox->TabIndex = 50;
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Location = System::Drawing::Point(747, 33);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(75, 13);
+			this->label13->TabIndex = 51;
+			this->label13->Text = L"Product Name";
+			// 
+			// shippingStatus
+			// 
+			this->shippingStatus->Location = System::Drawing::Point(605, 134);
+			this->shippingStatus->Name = L"shippingStatus";
+			this->shippingStatus->Size = System::Drawing::Size(134, 20);
+			this->shippingStatus->TabIndex = 52;
+			// 
+			// serialText
+			// 
+			this->serialText->Location = System::Drawing::Point(6, 19);
+			this->serialText->Name = L"serialText";
+			this->serialText->Size = System::Drawing::Size(92, 20);
+			this->serialText->TabIndex = 53;
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Location = System::Drawing::Point(104, 20);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(33, 13);
+			this->label17->TabIndex = 54;
+			this->label17->Text = L"Serial";
+			// 
+			// modelText
+			// 
+			this->modelText->Location = System::Drawing::Point(6, 56);
+			this->modelText->Name = L"modelText";
+			this->modelText->Size = System::Drawing::Size(92, 20);
+			this->modelText->TabIndex = 55;
+			// 
+			// factorySetButton
+			// 
+			this->factorySetButton->Location = System::Drawing::Point(6, 87);
+			this->factorySetButton->Name = L"factorySetButton";
+			this->factorySetButton->Size = System::Drawing::Size(53, 21);
+			this->factorySetButton->TabIndex = 57;
+			this->factorySetButton->Text = L"Set";
+			this->factorySetButton->UseVisualStyleBackColor = true;
+			this->factorySetButton->Click += gcnew System::EventHandler(this, &Form1::factorySetButton_Click);
+			// 
+			// groupBox4
+			// 
+			this->groupBox4->Controls->Add(this->label18);
+			this->groupBox4->Controls->Add(this->serialText);
+			this->groupBox4->Controls->Add(this->factorySetButton);
+			this->groupBox4->Controls->Add(this->label17);
+			this->groupBox4->Controls->Add(this->modelText);
+			this->groupBox4->Location = System::Drawing::Point(879, 75);
+			this->groupBox4->Name = L"groupBox4";
+			this->groupBox4->Size = System::Drawing::Size(164, 137);
+			this->groupBox4->TabIndex = 58;
+			this->groupBox4->TabStop = false;
+			this->groupBox4->Text = L"Factory";
+			// 
+			// label18
+			// 
+			this->label18->AutoSize = true;
+			this->label18->Location = System::Drawing::Point(104, 56);
+			this->label18->Name = L"label18";
+			this->label18->Size = System::Drawing::Size(36, 13);
+			this->label18->TabIndex = 58;
+			this->label18->Text = L"Model";
+			// 
+			// Form1
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->ClientSize = System::Drawing::Size(1146, 525);
+			this->Controls->Add(this->groupBox4);
+			this->Controls->Add(this->shippingStatus);
+			this->Controls->Add(this->label13);
+			this->Controls->Add(this->productNameBox);
+			this->Controls->Add(this->Imei);
+			this->Controls->Add(this->imeiBox);
+			this->Controls->Add(this->label12);
+			this->Controls->Add(this->commandComboBox);
+			this->Controls->Add(this->settingsTable);
+			this->Controls->Add(this->groupBox3);
+			this->Controls->Add(this->groupBox2);
+			this->Controls->Add(this->groupBox1);
+			this->Controls->Add(this->label11);
+			this->Controls->Add(this->versionBox);
+			this->Controls->Add(this->label10);
+			this->Controls->Add(this->batteryBox);
+			this->Controls->Add(this->iridiumLabel);
+			this->Controls->Add(this->gpsLabel);
+			this->Controls->Add(this->locationBox);
+			this->Controls->Add(this->logButton);
+			this->Controls->Add(this->resetLogButton);
+			this->Controls->Add(this->commsLog);
+			this->Name = L"Form1";
+			this->Text = L"Form1";
+			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
+			this->settingsTable->ResumeLayout(false);
+			this->settingsTable->PerformLayout();
+			this->groupBox4->ResumeLayout(false);
+			this->groupBox4->PerformLayout();
+			this->ResumeLayout(false);
+			this->PerformLayout();
+
+		}
+#pragma endregion
+
+
+	private: System::Void sendButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        sendMessage( false );
+	}
+
+	
+    private: System::Void sendUrgentButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        sendMessage( true );
+	}
+    
+    
+    private: System::Void connectButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+ 
+        if ((portNumber->Text != "") && (macText->Text != ""))
+        {
+            if (trackerConnected == BG::DISCONNECTED)
+            {
+                connectStatus->Text = _serialComms->attach( portNumber->Text );
+            }
+            else if (trackerConnected == BG::SCANNING)
+            {
+                _serialComms->stopAttach();
+            }
+            else
+            {
+                _serialComms->detach();
+            }
+        }
+        else
+        {
+            connectStatus->Text = "Need port number and MAC";
+        }
+
+	}
+
+
+    private: static void DataReceivedHandler( System::Object^ sender, System::IO::Ports::SerialDataReceivedEventArgs^ e)
+    {
+        SerialPort^ sp = (SerialPort^)sender;
+    }
+
+    private: System::Void getButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        getMessages();
+	}
+    
+
+    private: System::Void getButton_Click_1(System::Object^  sender, System::EventArgs^  e)
+    {
+        getMessages();
+	}
+    
+
+    private: System::Void getMessages( void )
+    {
+        YbMessage ^msg = gcnew YbMessage( macText->Text, YbMessage::REQUEST_TYPE_VALUE );
+
+        int length = msg->frameLength();
+        array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+        for (int i = 0; i < length; ++i)
+        {
+            buffer[i] = msg->getByte(i);
+        }
+        
+        _serialComms->write( buffer, length );
+
+        startTiming();
+        sendStatus->Text = "WAIT . . .";
+
+//        _incoming->reset();
+        _trackerState = TRACKER_STATE_RECEIVE;
+	}
+    
+
+
+    private: System::Void serialTimer_Tick(System::Object^  sender, System::EventArgs^  e)
+    {
+        incomingFsm();
+
+        String ^result = _serialComms->outFsm();
+        
+        if (result != "")
+        {
+            connectStatus->Text = result;
+        }
+        
+        if (_serialComms->inFsm() == true)
+        {
+            int setting = (int)_serialComms->newSetting( 0 );
+            switch (_serialComms->newHandle())
+            {
+                case BG::GATT_HANDLE_TRACKING_ONOFF:
+                    if (setting != 0xff)
+                    {
+                        trkStatusComboBox->SelectedIndex = setting;
+                    }
+                    break;
+
+                case BG::GATT_HANDLE_TRACKING_PERIOD:
+                    if (setting != 0xff)
+                    {
+                        trkPeriodComboBox->SelectedIndex = setting;
+                    }
+                    break;
+                    
+                    case BG::GATT_HANDLE_MESSAGE_COUNT:
+                    inboxCount->Text = String::Format( "{0}", (int)_serialComms->newSetting( 0 ) );
+                    if ((setting != 0) && (setting != 0xff))
+                    {
+                        getMessages();
+                    }
+                    break;
+                    
+
+                    case BG::GATT_HANDLE_OUTBOX_STATUS:
+                    {
+                        ArrayList ^id = gcnew ArrayList();
+                        for (int i = 0; i < 9; ++i)
+                        {
+                            id->Add( (unsigned char)_serialComms->newSetting( i ) );
+                        }
+                    
+                        if (noSentCheck->Checked == false)
+                        {
+                            ackSentMessages( id );
+                        }
+                    }
+                    break;
+                    
+
+                    case BG::GATT_HANDLE_GPS_STATUS:
+                    gpsLabel->Text = (setting == 0) ? "GPS Idle" : "GPS Running";
+                    break;
+
+                    case BG::GATT_HANDLE_IRIDIUM_STATUS:
+                    iridiumLabel->Text = (setting == 0) ? "Iridium Idle" : "Iridium Running";
+                    break;
+
+                    case BG::GATT_HANDLE_TRACKING_REPORT:
+                    {
+                    ArrayList ^location = gcnew ArrayList();
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        location->Add( (unsigned char)_serialComms->newSetting( i ) );
+                    }
+                    showLocation( location );
+                    }
+                    break;
+                    
+                    case BG::GATT_HANDLE_SERIAL_NO:
+                    break;
+                    
+                    case BG::GATT_HANDLE_SW_VERSION:
+                    {
+                            char version[17];
+                            int i = 0;
+                            for (; i < 16; ++i)
+                            {
+                                version[i] = (unsigned char)_serialComms->newSetting( i );
+                                if (version[i] == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            version[i] = 0;
+                            String ^temp = gcnew String( version );
+                            versionBox->Text = temp;
+                    }
+                    break;
+                    
+                    case BG::GATT_HANDLE_BATTERY:
+                    {
+                        batteryBox->Text = String::Format( "{0}", (int)_serialComms->newSetting( 0 ) );
+                    }
+
+                    case BG::GATT_HANDLE_PIN_LOCK:
+                    pinLockLabel->Text = (setting == 0) ? "UNLOCKED" : "LOCKED";
+                    break;
+                    
+                    case BG::GATT_HANDLE_IMEI:
+                    {
+                        char imei[17];
+                        for (int i = 0; i < 17; ++i)
+                        {
+                            imei[i] = (unsigned char)_serialComms->newSetting( i );
+                        }
+                        imei[17] = 0;
+                        String ^temp = gcnew String( imei );
+                        imeiBox->Text = temp;
+                    }
+                    break;
+
+                    case BG::GATT_HANDLE_NAME:
+                    {
+                        char name[16];
+                        int i = 0;
+                        for (; i < 16; ++i)
+                        {
+                            name[i] = (unsigned char)_serialComms->newSetting( i );
+                            if (name[i] == 0)
+                            {
+                                break;
+                            }
+                        }
+                        name[i] = 0;
+                        String ^temp = gcnew String( name );
+                        productNameBox->Text = temp;
+                    }
+                    break;
+
+                case BG::GATT_HANDLE_EXT_TYPE:
+                    if (setting != 0xff)
+                    {
+                        externalTypeCombo->SelectedIndex = setting;
+                    }
+                    break;
+                    
+                case BG::GATT_HANDLE_EXT_BAUD:
+                    if (setting != 0xff)
+                    {
+                        externalBaudCombo->SelectedIndex = setting;
+                    }
+                    break;
+                    
+                case BG::GATT_HANDLE_EXT_SAMPLES:
+                    if (setting != 0xff)
+                    {
+                        externalSamplesCombo->SelectedIndex = setting;
+                    }
+                    break;
+
+                case BG::GATT_HANDLE_SHIPPING:
+                    if (setting != 0xff)
+                    {
+                        shippingStatus->Text = (setting == 0) ? "DEACTIVATED" : "ACTIVATED";
+                    }
+                    break;
+            }            
+        }
+        
+        if (!_serialComms->isAttached())
+        {
+            _trackerState = TRACKER_STATE_IDLE;
+        }
+
+        if (trackerConnected != _serialComms->isConnected())
+        {
+            trackerConnected = _serialComms->isConnected();
+            
+            setView( trackerConnected != BG::CONNECTED ? false : true );
+        }
+	}
+    
+    private: System::Void resetLogButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        commsLog->Clear();
+    }
+
+
+    void setView( bool onOff )
+    {
+        switch (trackerConnected)
+        {
+            case BG::DISCONNECTED:
+                connectButton->Text = "Connect";
+                connectStatus->Text = "";
+                break;
+            case BG::SCANNING:
+                connectButton->Text = "Stop Scan";
+                connectStatus->Text = "Scanning";
+                break;
+            case BG::CONNECTED:
+                connectButton->Text = "Disconnect";
+                connectStatus->Text = "Ready";
+                break;
+        }
+        
+        composeMsg->Enabled = onOff;
+        outMsg->Enabled = onOff;
+        logInButton->Enabled = onOff;
+        sendButton->Enabled = onOff;
+        getButton->Enabled = onOff;
+        inMsg->Enabled = onOff;
+        trkPeriodComboBox->Enabled = onOff;
+        trkStatusComboBox->Enabled = onOff;
+        unlockPinBox->Enabled = onOff;
+        newPinBox->Enabled = onOff;
+
+        unlockPinBox->Text = "";
+        newPinBox->Text = "";
+        versionBox->Text = "";
+        batteryBox->Text = "";
+        imeiBox->Text = "";
+        unlockPinBox->Enabled = false;
+        newPinBox->Enabled = false;
+        submitButton->Enabled = false;
+        submitButton->Enabled = false;
+        pinLockLabel->Text = "LOCKED";
+    }
+    
+
+    void incomingFsm( void )
+    {
+        int length = _serialComms->bytesWaiting();
+        
+        
+        if (isTiming())
+        {
+            if (elapsedTiming() < 3)
+            {
+                if (length != 0)
+                {
+                    array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+//                    _serialComms->read( buffer, length );
+
+                    for (int i = 0; i < length; ++i)
+                    {
+                        if (_incoming->addByte( _serialComms->readByte() ))
+                        {
+//                            _timerStart = _timerNow = 0;
+                            switch (_incoming->getType())
+                            {
+                                case YbMessage::CONFIRM_TYPE_VALUE:
+                                    sendStatus->Text = "SENT DONE";
+                                    break;
+
+                                case YbMessage::IN_TYPE_VALUE:
+                                    if (_incoming->getId() == 0)
+                                    {
+                                        sendStatus->Text = "NO MESSAGE";
+                                    }
+                                    else
+                                    {
+                                        inMsg->Text = String::Concat( inMsg->Text, _incoming->getText() );
+                            
+                                        /* Request another */
+                                        YbMessage ^msg = gcnew YbMessage( macText->Text, _incoming->getId(), YbMessage::DELETE_TYPE_VALUE );
+                            
+                                        int length = msg->frameLength();
+                                        array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+                                        for (int i = 0; i < length; ++i)
+                                        {
+                                            buffer[i] = msg->getByte(i);
+                                        }
+                                        _serialComms->write( buffer, length );
+                            
+                                        startTiming();
+                                        sendStatus->Text = "DELETING";
+                                    }
+                                    break;
+
+                                case YbMessage::ACK_SENT_TYPE_VALUE:
+                                    {
+                                        unsigned short id = _incoming->getId();
+                                        int i = 0;
+                                        while (i < _sentIds->Count)
+                                        {
+                                            unsigned short oldId = (unsigned short)_sentIds[i];
+                                            if (id == oldId)
+                                            {
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                ++i;
+                                            }
+                                        }
+                                    
+                                        if (i < _sentIds->Count)
+                                        {
+                                            _sentStatus[i] = (unsigned char)1U;
+                                            showAllSent();
+                                        }
+                                    }
+                                    break;
+
+                                case YbMessage::DELETE_TYPE_VALUE:
+                                    sendStatus->Text = "DELETE DONE";
+                                    break;
+
+                                case YbMessage::PIN_TYPE_VALUE:
+                                    sendStatus->Text = "PIN DONE";
+                                    break;
+
+                                case YbMessage::ACTION_TYPE_VALUE:
+                                    sendStatus->Text = "COMMAND DONE";
+                                    break;
+
+                                default:
+                                    sendStatus->Text = "INVALID";
+                                    break;
+                            }
+                            _incoming->reset();
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                _incoming->reset();
+                sendStatus->Text = "FINISHED";
+                stopTiming();
+            }
+        }
+    }
+
+
+    private: System::Void logButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        resetLogButton->Visible = !resetLogButton->Visible;
+        commsLog->Visible = !commsLog->Visible;
+        logButton->Text = resetLogButton->Visible == false ? "Show Log" : "Hide Log";
+	}
+
+
+
+    private: System::Void trkStatusComboBox_SelectionChangeCommitted(System::Object^  sender, System::EventArgs^  e)
+    {
+        int trkStatus = trkStatusComboBox->SelectedIndex;
+        _serialComms->writeSetting( BG::HANDLE_TRACKING_ONOFF, trkStatus );
+	}
+    
+    private: System::Void trkPeriodComboBox_SelectionChangeCommitted(System::Object^  sender, System::EventArgs^  e)
+    {
+        int trkPeriod = trkPeriodComboBox->SelectedIndex;
+        _serialComms->writeSetting( BG::HANDLE_TRACKING_PERIOD, trkPeriod );
+	}
+    
+    
+    private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
+    {
+    }
+    private: System::Void externalTypeCombo_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
+    {
+        int extType = externalTypeCombo->SelectedIndex;
+        _serialComms->writeSetting( BG::HANDLE_EXT_TYPE, extType );
+    }
+    private: System::Void externalBaudCombo_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
+    {
+        int extBaud = externalBaudCombo->SelectedIndex;
+        _serialComms->writeSetting( BG::HANDLE_EXT_BAUD, extBaud );
+    }
+    private: System::Void externalSamplesCombo_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
+    {
+        int extSamples = externalSamplesCombo->SelectedIndex;
+        _serialComms->writeSetting( BG::HANDLE_EXT_SAMPLES, extSamples );
+    }
+    
+    
+    void showAllSent( void )
+    {
+        int i = _sentMessages->Count;
+        String ^newline = gcnew String( "\x0d\x0a" );
+        
+        outMsg->Text = "";
+        
+        for (int i = 0; i < _sentMessages->Count; ++i)
+        {
+            outMsg->AppendText( String::Format( "{0}", _sentIds[i] ) );
+            outMsg->AppendText( String::Format( " {0} ", _sentStatus[i] ) );
+            outMsg->AppendText( (String ^)_sentMessages[i] );
+            outMsg->AppendText( newline );
+        }
+    }
+
+
+    void showLocation( ArrayList ^location )
+    {
+        #if 1
+        String ^newline = gcnew String( "\x0d\x0a" );
+
+        locationBox->Text = "";
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 0, 25 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 25, 26 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 51, 17 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 68, 7 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 75, 9 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 84, 10 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 94, 14 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 108, 11 ) ) );
+        locationBox->AppendText( newline );
+        locationBox->AppendText( String::Format( "{0}", extractLocationBits( location, 119, 9 ) ) );
+        locationBox->AppendText( newline );
+        #endif
+    }
+    
+    
+    unsigned int extractLocationBits( ArrayList ^location, int startBit, int bits )
+    {
+        unsigned int result = 0U;
+        int i = startBit / 8;
+        unsigned char mask = ((unsigned char)1U) << (7 - (startBit % 8));
+        
+        while (bits != 0)
+        {
+            if (mask == 0)
+            {
+                ++i;
+                mask = 0x80U;
+            }
+
+            result <<= 1;
+            if (((unsigned char)location[i] & mask) != 0)
+            {
+                result |= 1U;
+            }
+
+            mask >>= 1;
+            --bits;
+        }
+
+        return(result);
+    }    
+
+
+    
+    void ackSentMessages( ArrayList ^id )
+    {
+        YbMessage ^msg = gcnew YbMessage( id, 8, YbMessage::ACK_SENT_TYPE_VALUE );
+
+        int length = msg->frameLength();
+        array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+        for (int i = 0; i < length; ++i)
+        {
+            buffer[i] = msg->getByte(i);
+        }
+        
+        _serialComms->write( buffer, length );
+
+        startTiming();
+        sendStatus->Text = "WAIT . . .";
+
+//        _incoming->reset();
+        _trackerState = TRACKER_STATE_RECEIVE;
+	}
+    
+
+    void rsuMessage( void )
+    {
+	}
+
+    void sendMessage( bool urgency )
+    {
+        _sentMessages->Add( composeMsg->Text );
+        _sentIds->Add( _id );
+        _sentStatus->Add( (unsigned char)0U );
+        showAllSent();
+        
+        YbMessage ^msg = gcnew YbMessage( macText->Text, composeMsg->Text, _id, urgency );
+        composeMsg->Text = "";
+
+        int length = msg->frameLength();
+        array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+        for (int i = 0; i < length; ++i)
+        {
+            buffer[i] = msg->getByte(i);
+        }
+        
+        _serialComms->write( buffer, length );
+        ++_id;
+
+
+
+        startTiming();
+        
+        sendStatus->Text = "WAIT . . .";
+
+//        _incoming->reset();
+        _trackerState = TRACKER_STATE_SENT;
+    }
+    
+
+    private: System::Void submitButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        if (textIsValidInt( unlockPinBox->Text, 4 ) && textIsValidInt( newPinBox->Text, 4 ))
+        {
+            YbMessage ^msg = gcnew YbMessage( macText->Text, textToInt( unlockPinBox->Text ), textToInt( newPinBox->Text ), YbMessage::PIN_TYPE_VALUE );
+
+            int length = msg->frameLength();
+            array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+            for (int i = 0; i < length; ++i)
+            {
+                buffer[i] = msg->getByte(i);
+            }
+        
+            _serialComms->write( buffer, length );
+
+            startTiming();
+            sendStatus->Text = "WAIT . . .";
+
+            _trackerState = TRACKER_STATE_RECEIVE;
+        }
+        else
+        {
+            sendStatus->Text = "INVALID PIN";
+        }
+
+        unlockPinBox->Enabled = false;
+        newPinBox->Enabled = false;
+        submitButton->Enabled = false;
+	}
+    
+    
+
+
+    private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        unlockPinBox->Text = "";
+        newPinBox->Text = "";
+        unlockPinBox->Enabled = true;
+        newPinBox->Enabled = true;
+        submitButton->Enabled = true;
+	}
+
+
+    int textToInt( String ^text )
+    {
+        int result = 0;
+        
+        for (int i = 0; i < text->Length; ++i)
+        {
+            char byte = (char)text[i];
+            byte = ((byte >= '0') && (byte <= '9')) ? byte - '0' : 0;
+            result *= 10;
+            result += byte;
+        }
+        
+        return(result);
+    }
+
+
+    bool textIsValidInt( String ^text, int maxLength )
+    {
+        int i = 0;
+        int length = text->Length;
+        
+        if (length <= maxLength)
+        {
+            for (; i < length; ++i)
+            {
+                char byte = (char)text[i];
+                if ((byte < '0') && (byte > '9'))
+                {
+                    break;
+                }
+            }
+        }
+        
+        
+        bool result = (i == length);
+        return(result);
+    }
+
+
+    void startTiming( void )
+    {
+        _timing = true;
+        _timingStart = DateTime::Now;
+    }
+    
+    void stopTiming( void )
+    {
+        _timing = false;
+    }
+    
+    int elapsedTiming( void )
+    {
+        DateTime ^timeNow = DateTime::Now;
+        int secondsNow = timeNow->Second;
+        int secondsStart = _timingStart->Second;
+        
+        return((60 + secondsNow - secondsStart) % 60);
+    }
+    
+    bool isTiming( void )
+    {
+        return(_timing);
+    }
+
+    private: System::Void commandComboBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
+    {
+        YbMessage ^msg = gcnew YbMessage( macText->Text, (unsigned char)commandComboBox->SelectedIndex, YbMessage::ACTION_TYPE_VALUE );
+
+        int length = msg->frameLength();
+        array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+        for (int i = 0; i < length; ++i)
+        {
+            buffer[i] = msg->getByte(i);
+        }
+        
+        _serialComms->write( buffer, length );
+
+        startTiming();
+        sendStatus->Text = "WAIT . . .";
+
+        _trackerState = TRACKER_STATE_RECEIVE;
+	}
+
+    private: System::Void factorySetButton_Click(System::Object^  sender, System::EventArgs^  e)
+    {
+        YbMessage ^msg = gcnew YbMessage( macText->Text, 26, YbMessage::FACTORY_TYPE_VALUE );
+        msg->addByte( 0U );/* raw iridium */
+        msg->insertString( serialText->Text, 6);/* serial */
+        msg->insertString( modelText->Text, 10);/* model */
+        msg->addChecksum();
+
+        int length = msg->frameLength();
+        array<unsigned char>^ buffer = gcnew array<unsigned char>( length );
+        for (int i = 0; i < length; ++i)
+        {
+            buffer[i] = msg->getByte(i);
+        }
+        
+        _serialComms->write( buffer, length );
+
+        startTiming();
+        sendStatus->Text = "WAIT . . .";
+
+        _trackerState = TRACKER_STATE_RECEIVE;
+    }
+    
+};
+}
