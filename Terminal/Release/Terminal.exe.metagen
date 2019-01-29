@@ -1,0 +1,63 @@
+  Terminal.Form1.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly Terminal, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly Microsoft.VisualC, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Class Fifo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    Enqueue(UInt32): PrivateScope, Public, HideBySig
+    Dequeue(): PrivateScope, Public, HideBySig
+    Count(): PrivateScope, Public, HideBySig
+    Clear(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class Ble: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.Windows.Forms.TextBox): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    attach(String): PrivateScope, Public, HideBySig
+    detach(): PrivateScope, Public, HideBySig
+    stopAttach(): PrivateScope, Public, HideBySig
+    isOpen(): PrivateScope, Public, HideBySig
+    isConnected(): PrivateScope, Public, HideBySig
+    isAttached(): PrivateScope, Public, HideBySig
+    bytesWaiting(): PrivateScope, Public, HideBySig
+    read(Byte[], Int32): PrivateScope, Public, HideBySig
+    write(Byte[], Int32): PrivateScope, Public, HideBySig
+    terminalWaiting(): PrivateScope, Public, HideBySig
+    readTerminal(SByte[], Int32): PrivateScope, Public, HideBySig
+    writeTerminal(SByte[], Int32): PrivateScope, Public, HideBySig
+    writeSetting(Int32, Byte): PrivateScope, Public, HideBySig
+    sendTest(): PrivateScope, Public, HideBySig
+    stopTest(): PrivateScope, Public, HideBySig
+    isTest(): PrivateScope, Public, HideBySig
+    outFsm(): PrivateScope, Public, HideBySig
+    inFsm(): PrivateScope, Public, HideBySig
+    gattGetTrackingOnOff(): PrivateScope, Public, HideBySig
+    gattSetTrackingOnOff(Int32): PrivateScope, Public, HideBySig
+    gattGetTrackingPeriod(): PrivateScope, Public, HideBySig
+    gattSetTrackingPeriod(Int32): PrivateScope, Public, HideBySig
+    newHandle(): PrivateScope, Public, HideBySig
+    newSetting(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class Terminal.Form1: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

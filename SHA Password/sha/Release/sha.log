@@ -1,0 +1,27 @@
+﻿Build started 13/02/2018 13:31:00.
+     1>Project "C:\Users\Bill\Development\Visual\sha\sha\sha.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Release\sha.unsuccessfulbuild".
+       GenerateTargetFrameworkMonikerAttribute:
+       Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       CoreResGen:
+         No resources are out of date with respect to their source files. Skipping resource generation.
+       ResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         sha.vcxproj -> C:\Users\Bill\Development\Visual\sha\Release\sha.exe
+       MetaGen:
+       Skipping target "MetaGen" because all output files are up-to-date with respect to the input files.
+       FinalizeBuildStatus:
+         Deleting file "Release\sha.unsuccessfulbuild".
+         Touching "Release\sha.lastbuildstate".
+     1>Done Building Project "C:\Users\Bill\Development\Visual\sha\sha\sha.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.10

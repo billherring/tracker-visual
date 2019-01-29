@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Terminal", "Terminal\Terminal.vcxproj", "{448F83B3-22FC-40DE-9CDD-A05CBC2FA055}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{448F83B3-22FC-40DE-9CDD-A05CBC2FA055}.Debug|Win32.ActiveCfg = Debug|Win32
+		{448F83B3-22FC-40DE-9CDD-A05CBC2FA055}.Debug|Win32.Build.0 = Debug|Win32
+		{448F83B3-22FC-40DE-9CDD-A05CBC2FA055}.Release|Win32.ActiveCfg = Release|Win32
+		{448F83B3-22FC-40DE-9CDD-A05CBC2FA055}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,27 @@
+﻿Build started 10/10/2018 15:24:04.
+     1>Project "C:\Users\Bill\Development\Visual\Nmea\Nmea\Nmea.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\Nmea.unsuccessfulbuild".
+       GenerateTargetFrameworkMonikerAttribute:
+       Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       CoreResGen:
+         No resources are out of date with respect to their source files. Skipping resource generation.
+       ResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         Nmea.vcxproj -> C:\Users\Bill\Development\Visual\Nmea\Debug\Nmea.exe
+       MetaGen:
+       Skipping target "MetaGen" because all output files are up-to-date with respect to the input files.
+       FinalizeBuildStatus:
+         Deleting file "Debug\Nmea.unsuccessfulbuild".
+         Touching "Debug\Nmea.lastbuildstate".
+     1>Done Building Project "C:\Users\Bill\Development\Visual\Nmea\Nmea\Nmea.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.22

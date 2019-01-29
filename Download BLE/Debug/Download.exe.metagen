@@ -1,0 +1,129 @@
+  Download.Form1.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly Download, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly Microsoft.VisualC, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Class YbMessage: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.String, Byte, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32, Int32, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Collections.ArrayList, Int32, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Byte, Byte*, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, UInt16, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, System.String, UInt16, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Fields:
+    Int32 SOH_SZ IsConst : Public, Static, HasDefault
+    Int32 CSUM_SZ IsConst : Public, Static, HasDefault
+    Int32 LEN_SZ IsConst : Public, Static, HasDefault
+    Int32 FRAME_MIN_DATA_LEN IsConst : Public, Static, HasDefault
+    Int32 FRAME_MIN_SZ IsConst : Public, Static
+    Int32 GET_CMD_PAYLOAD_SZ IsConst : Public, Static, HasDefault
+    Int32 ACK_SENT_PAYLOAD_SZ IsConst : Public, Static, HasDefault
+    Int32 SEND_CMD_PRE_TEXT_SZ IsConst : Public, Static, HasDefault
+    Int32 PIN_CMD_PAYLOAD_SZ IsConst : Public, Static, HasDefault
+    Int32 FACTORY_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Int32 ACTION_CMD_PAYLOAD_SZ IsConst : Public, Static, HasDefault
+    Int32 GET_RESPONSE_PRE_TEXT_SZ IsConst : Public, Static, HasDefault
+    Byte SOT_VALUE IsConst : Public, Static, HasDefault
+    Byte EOT_VALUE IsConst : Public, Static, HasDefault
+    Byte OUT_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte REQUEST_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte ACK_SENT_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte DELETE_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte PIN_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte ACTION_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte GENERIC_ALERT_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte NMEA_GRAB_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte GPRS_SET_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte GPRS_REQUEST_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte STATUS_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte CONFIGURE_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte CONFIGURE_GET_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte CONFIRM_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Byte IN_TYPE_VALUE IsConst : Public, Static, HasDefault
+    Int32 SOT_POSN IsConst : Public, Static, HasDefault
+    Int32 LENGTH_HIGH_POSN IsConst : Public, Static, HasDefault
+    Int32 LENGTH_LOW_POSN IsConst : Public, Static, HasDefault
+    Int32 TYPE_POSN IsConst : Public, Static, HasDefault
+    Int32 MAC_POSN IsConst : Public, Static, HasDefault
+    Int32 PAYLOAD_POSN IsConst : Public, Static, HasDefault
+    Int32 SEND_RESPONSE_ID IsConst : Public, Static
+    Int32 GET_RESPONSE_TEXT IsConst : Public, Static
+    Int32 GET_RESPONSE_ID IsConst : Public, Static
+    Int32 GET_RESPONSE_MSG_COUNT IsConst : Public, Static
+  Methods:
+    addChecksum(): PrivateScope, Public, HideBySig
+    getText(Int32): PrivateScope, Public, HideBySig
+    getId(): PrivateScope, Public, HideBySig
+    getType(): PrivateScope, Public, HideBySig
+    setLength(Int32): PrivateScope, Public, HideBySig
+    frameLength(): PrivateScope, Public, HideBySig
+    payloadLength(): PrivateScope, Public, HideBySig
+    addByte(Byte): PrivateScope, Public, HideBySig
+    getByte(Int32): PrivateScope, Public, HideBySig
+    getPayloadByte(Int32): PrivateScope, Public, HideBySig
+    reset(): PrivateScope, Public, HideBySig
+    insertString(String, Int32): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class Fifo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    Enqueue(UInt32): PrivateScope, Public, HideBySig
+    Dequeue(): PrivateScope, Public, HideBySig
+    Count(): PrivateScope, Public, HideBySig
+    Clear(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class Ble: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.Windows.Forms.TextBox, System.Windows.Forms.ListBox): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    attach(String): PrivateScope, Public, HideBySig
+    detach(): PrivateScope, Public, HideBySig
+    stopAttach(): PrivateScope, Public, HideBySig
+    isOpen(): PrivateScope, Public, HideBySig
+    isConnected(): PrivateScope, Public, HideBySig
+    connectToSelected(): PrivateScope, Public, HideBySig
+    isAttached(): PrivateScope, Public, HideBySig
+    bytesWaiting(): PrivateScope, Public, HideBySig
+    read(Byte[], Int32): PrivateScope, Public, HideBySig
+    readByte(): PrivateScope, Public, HideBySig
+    write(Byte[], Int32): PrivateScope, Public, HideBySig
+    writeSetting(Int32, Byte): PrivateScope, Public, HideBySig
+    sendTest(): PrivateScope, Public, HideBySig
+    stopTest(): PrivateScope, Public, HideBySig
+    timeReference(): PrivateScope, Public, HideBySig
+    timeElapsedSince(Int32): PrivateScope, Public, HideBySig
+    outFsm(): PrivateScope, Public, HideBySig
+    inFsm(): PrivateScope, Public, HideBySig
+    newHandle(): PrivateScope, Public, HideBySig
+    newSetting(Int32): PrivateScope, Public, HideBySig
+    test(): PrivateScope, Public, HideBySig
+    log(String): PrivateScope, Public, HideBySig
+    isFrameSent(): PrivateScope, Public, HideBySig
+    android(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class Download.Form1: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
