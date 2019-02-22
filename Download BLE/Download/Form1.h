@@ -12,7 +12,7 @@
 
 namespace Download {
 
-    using namespace std;
+//    using namespace std;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -565,7 +565,7 @@ private: System::Void openFile_FileOk(System::Object^  sender, System::Component
 private: void sendFileSegment( void )
 {
 	char longName[MAX_NAME_SIZE];/* to buffer file names */
-    fstream _fileIn;/* file handle */
+    std::fstream _fileIn;/* file handle */
 
     unsigned char serialBuffer[FILE_SEGMENT_SIZE + FILE_SEGMENT_NAME_SZ + FILE_SEGMENT_ADDRESS_SZ + FILE_SEGMENT_SIZE_SZ];/* serial out buffer */
     unsigned char *ptr = serialBuffer;
@@ -595,12 +595,12 @@ private: void sendFileSegment( void )
         if (strlen( shortName ) <= MAX_SHORT_NAME_SIZE)
         {
             /* Now open the file and send one segment at a time */
-            _fileIn.open( longName, fstream::in | fstream::binary);
+            _fileIn.open( longName, std::fstream::in | std::fstream::binary);
             if (_fileIn.fail() != true)
             {
-                _fileIn.seekg( 0, ios_base::end ); 
+                _fileIn.seekg( 0, std::ios_base::end ); 
                 _fileEnd = (int)_fileIn.tellg();
-                _fileIn.seekg( _filePosition, ios_base::beg );
+                _fileIn.seekg( _filePosition, std::ios_base::beg );
                 
                 if (_filePosition == 0)
                 {
@@ -816,7 +816,7 @@ private: void receiveResponse( void )
                                     unsigned char serialBuffer[FILE_SEGMENT_SIZE];/* serial out buffer */
                                     unsigned char *ptr = serialBuffer;
                                     
-                                    fstream _file;/* file handle */
+                                    std::fstream _file;/* file handle */
                             
                                     int uploadSize = (_incoming->getByte( 26 ) << 24)
                                                      | (_incoming->getByte( 27 ) << 16)
@@ -848,7 +848,7 @@ private: void receiveResponse( void )
                                         }
                                         
                                         /* Write it to file */
-                                        _file.open( longName, fstream::out | fstream::binary | fstream::app );
+                                        _file.open( longName, std::fstream::out | std::fstream::binary | std::fstream::app );
                                         if (_file.fail() != true)
                                         {
                                             if ((_filePosition + uploadSize) > _fileEnd)
@@ -859,7 +859,7 @@ private: void receiveResponse( void )
                                             
                                             if (_filePosition < (int)_file.tellg())
                                             {
-                                                _file.seekg( 0, ios_base::beg );
+                                                _file.seekg( 0, std::ios_base::beg );
                                             }
                                             
                                             _file.write( (char *)serialBuffer, uploadSize );
