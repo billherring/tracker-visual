@@ -790,7 +790,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// 
 			this->trkStatusComboBox->AllowDrop = true;
 			this->trkStatusComboBox->FormattingEnabled = true;
-			this->trkStatusComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->trkStatusComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
 			this->trkStatusComboBox->Location = System::Drawing::Point(3, 3);
 			this->trkStatusComboBox->Name = L"trkStatusComboBox";
 			this->trkStatusComboBox->Size = System::Drawing::Size(86, 21);
@@ -800,9 +800,11 @@ private: System::Windows::Forms::Button^  testButton;
 			// trkPeriodComboBox
 			// 
 			this->trkPeriodComboBox->FormattingEnabled = true;
-			this->trkPeriodComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(25) {L"Continuous", L"5 min", L"10 min", L"15 min", 
-				L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min", 
-				L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec"});
+			this->trkPeriodComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(25) {
+				L"Continuous", L"5 min", L"10 min", L"15 min",
+					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
+					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec"
+			});
 			this->trkPeriodComboBox->Location = System::Drawing::Point(3, 21);
 			this->trkPeriodComboBox->Name = L"trkPeriodComboBox";
 			this->trkPeriodComboBox->Size = System::Drawing::Size(86, 21);
@@ -1063,9 +1065,9 @@ private: System::Windows::Forms::Button^  testButton;
 			// 
 			this->settingsTable->BackColor = System::Drawing::SystemColors::ControlDark;
 			this->settingsTable->ColumnCount = 2;
-			this->settingsTable->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 
+			this->settingsTable->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				43.01994F)));
-			this->settingsTable->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 
+			this->settingsTable->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				56.98006F)));
 			this->settingsTable->Controls->Add(this->label3, 1, 0);
 			this->settingsTable->Controls->Add(this->label15, 1, 3);
@@ -1185,7 +1187,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// externalMOBCombo
 			// 
 			this->externalMOBCombo->FormattingEnabled = true;
-			this->externalMOBCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->externalMOBCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
 			this->externalMOBCombo->Location = System::Drawing::Point(3, 93);
 			this->externalMOBCombo->Name = L"externalMOBCombo";
 			this->externalMOBCombo->Size = System::Drawing::Size(86, 21);
@@ -1205,8 +1207,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// burstFixCombo
 			// 
 			this->burstFixCombo->FormattingEnabled = true;
-			this->burstFixCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {L"5 secs", L"10 secs", L"15 secs", L"20 secs", 
-				L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min"});
+			this->burstFixCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {
+				L"5 secs", L"10 secs", L"15 secs", L"20 secs",
+					L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min"
+			});
 			this->burstFixCombo->Location = System::Drawing::Point(3, 111);
 			this->burstFixCombo->Name = L"burstFixCombo";
 			this->burstFixCombo->Size = System::Drawing::Size(86, 21);
@@ -1216,8 +1220,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// burstTransmitCombo
 			// 
 			this->burstTransmitCombo->FormattingEnabled = true;
-			this->burstTransmitCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {L"1 min", L"2 min", L"5 min", L"10 min", 
-				L"15 min", L"30 min", L"60 min"});
+			this->burstTransmitCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min"
+			});
 			this->burstTransmitCombo->Location = System::Drawing::Point(3, 129);
 			this->burstTransmitCombo->Name = L"burstTransmitCombo";
 			this->burstTransmitCombo->Size = System::Drawing::Size(86, 21);
@@ -1247,7 +1253,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// gpsHotCombo
 			// 
 			this->gpsHotCombo->FormattingEnabled = true;
-			this->gpsHotCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->gpsHotCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
 			this->gpsHotCombo->Location = System::Drawing::Point(3, 147);
 			this->gpsHotCombo->Name = L"gpsHotCombo";
 			this->gpsHotCombo->Size = System::Drawing::Size(86, 21);
@@ -1267,7 +1273,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// activityStatusCombo
 			// 
 			this->activityStatusCombo->FormattingEnabled = true;
-			this->activityStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"Off", L"Power", L"Bump", L"SOG", L"Bump+SOG"});
+			this->activityStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"Off", L"Power", L"Bump", L"SOG", L"Bump+SOG" });
 			this->activityStatusCombo->Location = System::Drawing::Point(3, 165);
 			this->activityStatusCombo->Name = L"activityStatusCombo";
 			this->activityStatusCombo->Size = System::Drawing::Size(86, 21);
@@ -1277,7 +1283,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// trkCarrierCombo
 			// 
 			this->trkCarrierCombo->FormattingEnabled = true;
-			this->trkCarrierCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) {L"Iridium Only", L"Gprs Only", L"Prefer Gprs"});
+			this->trkCarrierCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Iridium Only", L"Gprs Only", L"Prefer Gprs" });
 			this->trkCarrierCombo->Location = System::Drawing::Point(3, 183);
 			this->trkCarrierCombo->Name = L"trkCarrierCombo";
 			this->trkCarrierCombo->Size = System::Drawing::Size(86, 21);
@@ -1287,9 +1293,11 @@ private: System::Windows::Forms::Button^  testButton;
 			// activityLowCombo
 			// 
 			this->activityLowCombo->FormattingEnabled = true;
-			this->activityLowCombo->Items->AddRange(gcnew cli::array< System::Object^  >(37) {L"18", L"19", L"20", L"21", L"22", L"23", 
-				L"24", L"25", L"26", L"27", L"28", L"29", L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41", 
-				L"42", L"43", L"44", L"45", L"46", L"47", L"48", L"49", L"50", L"51", L"52", L"53", L"54"});
+			this->activityLowCombo->Items->AddRange(gcnew cli::array< System::Object^  >(37) {
+				L"18", L"19", L"20", L"21", L"22", L"23",
+					L"24", L"25", L"26", L"27", L"28", L"29", L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41",
+					L"42", L"43", L"44", L"45", L"46", L"47", L"48", L"49", L"50", L"51", L"52", L"53", L"54"
+			});
 			this->activityLowCombo->Location = System::Drawing::Point(3, 201);
 			this->activityLowCombo->Name = L"activityLowCombo";
 			this->activityLowCombo->Size = System::Drawing::Size(86, 21);
@@ -1329,7 +1337,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// geofStatusCombo
 			// 
 			this->geofStatusCombo->FormattingEnabled = true;
-			this->geofStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) {L"Off", L"Monofence", L"Polyfence"});
+			this->geofStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Off", L"Monofence", L"Polyfence" });
 			this->geofStatusCombo->Location = System::Drawing::Point(3, 219);
 			this->geofStatusCombo->Name = L"geofStatusCombo";
 			this->geofStatusCombo->Size = System::Drawing::Size(86, 21);
@@ -1339,8 +1347,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// geofPeriodCombo
 			// 
 			this->geofPeriodCombo->FormattingEnabled = true;
-			this->geofPeriodCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {L"1 min", L"2 min", L"3 min", L"5 min", L"10 min", 
-				L"15 min", L"30 min"});
+			this->geofPeriodCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"1 min", L"2 min", L"3 min", L"5 min", L"10 min",
+					L"15 min", L"30 min"
+			});
 			this->geofPeriodCombo->Location = System::Drawing::Point(3, 237);
 			this->geofPeriodCombo->Name = L"geofPeriodCombo";
 			this->geofPeriodCombo->Size = System::Drawing::Size(86, 21);
@@ -1350,8 +1360,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// geofDistanceCombo
 			// 
 			this->geofDistanceCombo->FormattingEnabled = true;
-			this->geofDistanceCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {L"25m", L"50m", L"100m", L"250m", L"1000m", 
-				L"2000m", L"3000m"});
+			this->geofDistanceCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"25m", L"50m", L"100m", L"250m", L"1000m",
+					L"2000m", L"3000m"
+			});
 			this->geofDistanceCombo->Location = System::Drawing::Point(3, 255);
 			this->geofDistanceCombo->Name = L"geofDistanceCombo";
 			this->geofDistanceCombo->Size = System::Drawing::Size(86, 21);
@@ -1391,7 +1403,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// powerLimitCombo
 			// 
 			this->powerLimitCombo->FormattingEnabled = true;
-			this->powerLimitCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) {L"Unlimited", L"Limited", L"Unlimited - power control"});
+			this->powerLimitCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Unlimited", L"Limited", L"Unlimited - power control" });
 			this->powerLimitCombo->Location = System::Drawing::Point(3, 273);
 			this->powerLimitCombo->Name = L"powerLimitCombo";
 			this->powerLimitCombo->Size = System::Drawing::Size(86, 21);
@@ -1411,7 +1423,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// notificationsCombo
 			// 
 			this->notificationsCombo->FormattingEnabled = true;
-			this->notificationsCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) {L"Off", L"Audible", L"Visual", L"Both"});
+			this->notificationsCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"Off", L"Audible", L"Visual", L"Both" });
 			this->notificationsCombo->Location = System::Drawing::Point(3, 291);
 			this->notificationsCombo->Name = L"notificationsCombo";
 			this->notificationsCombo->Size = System::Drawing::Size(86, 21);
@@ -1431,8 +1443,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// externalBaudCombo
 			// 
 			this->externalBaudCombo->FormattingEnabled = true;
-			this->externalBaudCombo->Items->AddRange(gcnew cli::array< System::Object^  >(6) {L"4800", L"9600", L"19200", L"38400", L"57600", 
-				L"115200"});
+			this->externalBaudCombo->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"4800", L"9600", L"19200", L"38400", L"57600",
+					L"115200"
+			});
 			this->externalBaudCombo->Location = System::Drawing::Point(3, 57);
 			this->externalBaudCombo->Name = L"externalBaudCombo";
 			this->externalBaudCombo->Size = System::Drawing::Size(86, 21);
@@ -1442,8 +1456,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// externalSamplesCombo
 			// 
 			this->externalSamplesCombo->FormattingEnabled = true;
-			this->externalSamplesCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"5 secs", L"10 secs", L"20 secs", L"40 secs", 
-				L"60 secs"});
+			this->externalSamplesCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+				L"5 secs", L"10 secs", L"20 secs", L"40 secs",
+					L"60 secs"
+			});
 			this->externalSamplesCombo->Location = System::Drawing::Point(3, 75);
 			this->externalSamplesCombo->Name = L"externalSamplesCombo";
 			this->externalSamplesCombo->Size = System::Drawing::Size(86, 21);
@@ -1453,8 +1469,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// externalTypeCombo
 			// 
 			this->externalTypeCombo->FormattingEnabled = true;
-			this->externalTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(9) {L"Off", L"Nmea", L"Hydrosphere", L"API", 
-				L"Maximet", L"Fugro", L"Wave", L"Fastout", L"Dalia"});
+			this->externalTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(9) {
+				L"Off", L"Nmea", L"Hydrosphere", L"API",
+					L"Maximet", L"Fugro", L"Wave", L"Fastout", L"Dalia"
+			});
 			this->externalTypeCombo->Location = System::Drawing::Point(3, 39);
 			this->externalTypeCombo->Name = L"externalTypeCombo";
 			this->externalTypeCombo->Size = System::Drawing::Size(86, 21);
@@ -1474,7 +1492,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// extSensitivityCombo
 			// 
 			this->extSensitivityCombo->FormattingEnabled = true;
-			this->extSensitivityCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"FFFF", L"FFFS", L"FFSS", L"FSSS", L"SSSS"});
+			this->extSensitivityCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"FFFF", L"FFFS", L"FFSS", L"FSSS", L"SSSS" });
 			this->extSensitivityCombo->Location = System::Drawing::Point(3, 309);
 			this->extSensitivityCombo->Name = L"extSensitivityCombo";
 			this->extSensitivityCombo->Size = System::Drawing::Size(86, 21);
@@ -1554,9 +1572,11 @@ private: System::Windows::Forms::Button^  testButton;
 			// autoTxCellCombo
 			// 
 			this->autoTxCellCombo->FormattingEnabled = true;
-			this->autoTxCellCombo->Items->AddRange(gcnew cli::array< System::Object^  >(25) {L"Continuous", L"5 min", L"10 min", L"15 min", 
-				L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min", 
-				L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec"});
+			this->autoTxCellCombo->Items->AddRange(gcnew cli::array< System::Object^  >(25) {
+				L"Continuous", L"5 min", L"10 min", L"15 min",
+					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
+					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec"
+			});
 			this->autoTxCellCombo->Location = System::Drawing::Point(3, 327);
 			this->autoTxCellCombo->Name = L"autoTxCellCombo";
 			this->autoTxCellCombo->Size = System::Drawing::Size(86, 21);
@@ -1566,8 +1586,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// burstTxCellCombo
 			// 
 			this->burstTxCellCombo->FormattingEnabled = true;
-			this->burstTxCellCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {L"1 min", L"2 min", L"5 min", L"10 min", 
-				L"15 min", L"30 min", L"60 min"});
+			this->burstTxCellCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min"
+			});
 			this->burstTxCellCombo->Location = System::Drawing::Point(3, 345);
 			this->burstTxCellCombo->Name = L"burstTxCellCombo";
 			this->burstTxCellCombo->Size = System::Drawing::Size(86, 21);
@@ -1577,8 +1599,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// burstFixCellCombo
 			// 
 			this->burstFixCellCombo->FormattingEnabled = true;
-			this->burstFixCellCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {L"5 secs", L"10 secs", L"15 secs", L"20 secs", 
-				L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min"});
+			this->burstFixCellCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {
+				L"5 secs", L"10 secs", L"15 secs", L"20 secs",
+					L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min"
+			});
 			this->burstFixCellCombo->Location = System::Drawing::Point(3, 363);
 			this->burstFixCellCombo->Name = L"burstFixCellCombo";
 			this->burstFixCellCombo->Size = System::Drawing::Size(86, 21);
@@ -1588,9 +1612,11 @@ private: System::Windows::Forms::Button^  testButton;
 			// autoTxDistressCombo
 			// 
 			this->autoTxDistressCombo->FormattingEnabled = true;
-			this->autoTxDistressCombo->Items->AddRange(gcnew cli::array< System::Object^  >(25) {L"Continuous", L"5 min", L"10 min", L"15 min", 
-				L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min", 
-				L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec"});
+			this->autoTxDistressCombo->Items->AddRange(gcnew cli::array< System::Object^  >(25) {
+				L"Continuous", L"5 min", L"10 min", L"15 min",
+					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
+					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec"
+			});
 			this->autoTxDistressCombo->Location = System::Drawing::Point(3, 381);
 			this->autoTxDistressCombo->Name = L"autoTxDistressCombo";
 			this->autoTxDistressCombo->Size = System::Drawing::Size(86, 21);
@@ -1600,8 +1626,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// burstTxDistressCombo
 			// 
 			this->burstTxDistressCombo->FormattingEnabled = true;
-			this->burstTxDistressCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {L"1 min", L"2 min", L"5 min", L"10 min", 
-				L"15 min", L"30 min", L"60 min"});
+			this->burstTxDistressCombo->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min"
+			});
 			this->burstTxDistressCombo->Location = System::Drawing::Point(3, 399);
 			this->burstTxDistressCombo->Name = L"burstTxDistressCombo";
 			this->burstTxDistressCombo->Size = System::Drawing::Size(86, 21);
@@ -1611,8 +1639,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// burstFixDistressCombo
 			// 
 			this->burstFixDistressCombo->FormattingEnabled = true;
-			this->burstFixDistressCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {L"5 secs", L"10 secs", L"15 secs", 
-				L"20 secs", L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min"});
+			this->burstFixDistressCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {
+				L"5 secs", L"10 secs", L"15 secs",
+					L"20 secs", L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min"
+			});
 			this->burstFixDistressCombo->Location = System::Drawing::Point(3, 417);
 			this->burstFixDistressCombo->Name = L"burstFixDistressCombo";
 			this->burstFixDistressCombo->Size = System::Drawing::Size(86, 21);
@@ -1622,7 +1652,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// positionBlockCombo
 			// 
 			this->positionBlockCombo->FormattingEnabled = true;
-			this->positionBlockCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Standard", L"10 Byte Compact"});
+			this->positionBlockCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Standard", L"10 Byte Compact" });
 			this->positionBlockCombo->Location = System::Drawing::Point(3, 435);
 			this->positionBlockCombo->Name = L"positionBlockCombo";
 			this->positionBlockCombo->Size = System::Drawing::Size(86, 21);
@@ -1642,7 +1672,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// gpxStatusCombo
 			// 
 			this->gpxStatusCombo->FormattingEnabled = true;
-			this->gpxStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->gpxStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
 			this->gpxStatusCombo->Location = System::Drawing::Point(3, 453);
 			this->gpxStatusCombo->Name = L"gpxStatusCombo";
 			this->gpxStatusCombo->Size = System::Drawing::Size(86, 21);
@@ -1662,8 +1692,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// gpxPeriodCombo
 			// 
 			this->gpxPeriodCombo->FormattingEnabled = true;
-			this->gpxPeriodCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {L"1 sec", L"5 sec", L"10 sec", L"30 sec", 
-				L"1 min", L"5 min", L"10 min", L"15 min", L"20 min", L"30 min", L"60 min"});
+			this->gpxPeriodCombo->Items->AddRange(gcnew cli::array< System::Object^  >(11) {
+				L"1 sec", L"5 sec", L"10 sec", L"30 sec",
+					L"1 min", L"5 min", L"10 min", L"15 min", L"20 min", L"30 min", L"60 min"
+			});
 			this->gpxPeriodCombo->Location = System::Drawing::Point(3, 471);
 			this->gpxPeriodCombo->Name = L"gpxPeriodCombo";
 			this->gpxPeriodCombo->Size = System::Drawing::Size(86, 21);
@@ -1683,7 +1715,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// mailCheckStatusCombo
 			// 
 			this->mailCheckStatusCombo->FormattingEnabled = true;
-			this->mailCheckStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->mailCheckStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
 			this->mailCheckStatusCombo->Location = System::Drawing::Point(3, 489);
 			this->mailCheckStatusCombo->Name = L"mailCheckStatusCombo";
 			this->mailCheckStatusCombo->Size = System::Drawing::Size(86, 21);
@@ -1694,8 +1726,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// 
 			this->mailCheckPeriodCombo->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->mailCheckPeriodCombo->FormattingEnabled = true;
-			this->mailCheckPeriodCombo->Items->AddRange(gcnew cli::array< System::Object^  >(13) {L"5 min", L"10 min", L"15 min", L"20 min", 
-				L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour"});
+			this->mailCheckPeriodCombo->Items->AddRange(gcnew cli::array< System::Object^  >(13) {
+				L"5 min", L"10 min", L"15 min", L"20 min",
+					L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour"
+			});
 			this->mailCheckPeriodCombo->Location = System::Drawing::Point(3, 507);
 			this->mailCheckPeriodCombo->Name = L"mailCheckPeriodCombo";
 			this->mailCheckPeriodCombo->Size = System::Drawing::Size(86, 21);
@@ -1725,7 +1759,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// gpsPlatformCombo
 			// 
 			this->gpsPlatformCombo->FormattingEnabled = true;
-			this->gpsPlatformCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) {L"Portable", L"Automotive", L"Marine", L"Air"});
+			this->gpsPlatformCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"Portable", L"Automotive", L"Marine", L"Air" });
 			this->gpsPlatformCombo->Location = System::Drawing::Point(3, 57);
 			this->gpsPlatformCombo->Name = L"gpsPlatformCombo";
 			this->gpsPlatformCombo->Size = System::Drawing::Size(87, 21);
@@ -1755,7 +1789,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// airAlertStatus
 			// 
 			this->airAlertStatus->FormattingEnabled = true;
-			this->airAlertStatus->Items->AddRange(gcnew cli::array< System::Object^  >(4) {L"Off", L"Descent Only", L"Ascent Only", L"Both"});
+			this->airAlertStatus->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"Off", L"Descent Only", L"Ascent Only", L"Both" });
 			this->airAlertStatus->Location = System::Drawing::Point(3, 75);
 			this->airAlertStatus->Name = L"airAlertStatus";
 			this->airAlertStatus->Size = System::Drawing::Size(87, 21);
@@ -1775,8 +1809,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// airAlertDescentSpeed
 			// 
 			this->airAlertDescentSpeed->FormattingEnabled = true;
-			this->airAlertDescentSpeed->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"1000fpm", L"1500fpm", L"2000fpm", 
-				L"2500fpm", L"3000fpm"});
+			this->airAlertDescentSpeed->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+				L"1000fpm", L"1500fpm", L"2000fpm",
+					L"2500fpm", L"3000fpm"
+			});
 			this->airAlertDescentSpeed->Location = System::Drawing::Point(3, 93);
 			this->airAlertDescentSpeed->Name = L"airAlertDescentSpeed";
 			this->airAlertDescentSpeed->Size = System::Drawing::Size(87, 21);
@@ -1786,8 +1822,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// airAlertDescentTime
 			// 
 			this->airAlertDescentTime->FormattingEnabled = true;
-			this->airAlertDescentTime->Items->AddRange(gcnew cli::array< System::Object^  >(6) {L"5 secs", L"10 secs", L"15 secs", L"20 secs", 
-				L"25 secs", L"30 secs"});
+			this->airAlertDescentTime->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"5 secs", L"10 secs", L"15 secs", L"20 secs",
+					L"25 secs", L"30 secs"
+			});
 			this->airAlertDescentTime->Location = System::Drawing::Point(3, 111);
 			this->airAlertDescentTime->Name = L"airAlertDescentTime";
 			this->airAlertDescentTime->Size = System::Drawing::Size(87, 21);
@@ -1807,8 +1845,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// airAlertAscentSpeed
 			// 
 			this->airAlertAscentSpeed->FormattingEnabled = true;
-			this->airAlertAscentSpeed->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"1000fpm", L"1500fpm", L"2000fpm", L"2500fpm", 
-				L"3000fpm"});
+			this->airAlertAscentSpeed->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+				L"1000fpm", L"1500fpm", L"2000fpm", L"2500fpm",
+					L"3000fpm"
+			});
 			this->airAlertAscentSpeed->Location = System::Drawing::Point(3, 129);
 			this->airAlertAscentSpeed->Name = L"airAlertAscentSpeed";
 			this->airAlertAscentSpeed->Size = System::Drawing::Size(87, 21);
@@ -1818,8 +1858,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// airAlertAscentTime
 			// 
 			this->airAlertAscentTime->FormattingEnabled = true;
-			this->airAlertAscentTime->Items->AddRange(gcnew cli::array< System::Object^  >(6) {L"5 secs", L"10 secs", L"15 secs", L"20 secs", 
-				L"25 secs", L"30 secs"});
+			this->airAlertAscentTime->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"5 secs", L"10 secs", L"15 secs", L"20 secs",
+					L"25 secs", L"30 secs"
+			});
 			this->airAlertAscentTime->Location = System::Drawing::Point(3, 147);
 			this->airAlertAscentTime->Name = L"airAlertAscentTime";
 			this->airAlertAscentTime->Size = System::Drawing::Size(87, 21);
@@ -1849,9 +1891,11 @@ private: System::Windows::Forms::Button^  testButton;
 			// commandComboBox
 			// 
 			this->commandComboBox->FormattingEnabled = true;
-			this->commandComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(17) {L"Send Alert", L"Send Manual", L"Install Updates", 
-				L"Check Mail", L"Update Sent", L"Get LKP", L"Refresh Location", L"Get Battery", L"Deactivate", L"Activate", L"Buzz", L"Factory Reset", 
-				L"Geofence Center", L"GPRS Refresh", L"Alert Cancel", L"Self Test Reset", L"Griffen Watch Toggle"});
+			this->commandComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
+				L"Send Alert", L"Send Manual", L"Install Updates",
+					L"Check Mail", L"Update Sent", L"Get LKP", L"Refresh Location", L"Get Battery", L"Deactivate", L"Activate", L"Buzz", L"Factory Reset",
+					L"Geofence Center", L"GPRS Refresh", L"Alert Cancel", L"Self Test Reset", L"Griffen Watch Toggle"
+			});
 			this->commandComboBox->Location = System::Drawing::Point(15, 36);
 			this->commandComboBox->Name = L"commandComboBox";
 			this->commandComboBox->Size = System::Drawing::Size(92, 21);
@@ -1940,7 +1984,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// rawCombo
 			// 
 			this->rawCombo->FormattingEnabled = true;
-			this->rawCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) {L"Disable", L"Enable", L"Don\'t Set"});
+			this->rawCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Disable", L"Enable", L"Don\'t Set" });
 			this->rawCombo->Location = System::Drawing::Point(6, 58);
 			this->rawCombo->Name = L"rawCombo";
 			this->rawCombo->Size = System::Drawing::Size(92, 21);
@@ -1958,8 +2002,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// logoComboBox
 			// 
 			this->logoComboBox->FormattingEnabled = true;
-			this->logoComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(7) {L"Factory Yellowbrick", L"Yellowbrick", L"Xmarx", 
-				L"Rockstar", L"Rental", L"Iridium360", L"Don\'t Set"});
+			this->logoComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"Factory Yellowbrick", L"Yellowbrick", L"Xmarx",
+					L"Rockstar", L"Rental", L"Iridium360", L"Don\'t Set"
+			});
 			this->logoComboBox->Location = System::Drawing::Point(6, 79);
 			this->logoComboBox->Name = L"logoComboBox";
 			this->logoComboBox->Size = System::Drawing::Size(92, 21);
@@ -1977,8 +2023,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// alertEnum
 			// 
 			this->alertEnum->FormattingEnabled = true;
-			this->alertEnum->Items->AddRange(gcnew cli::array< System::Object^  >(16) {L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7", 
-				L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15"});
+			this->alertEnum->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7",
+					L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15"
+			});
 			this->alertEnum->Location = System::Drawing::Point(8, 26);
 			this->alertEnum->Name = L"alertEnum";
 			this->alertEnum->Size = System::Drawing::Size(91, 21);
@@ -2452,7 +2500,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// getStatusCombo
 			// 
 			this->getStatusCombo->FormattingEnabled = true;
-			this->getStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Logo", L"Spare"});
+			this->getStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Logo", L"Spare" });
 			this->getStatusCombo->Location = System::Drawing::Point(6, 23);
 			this->getStatusCombo->Name = L"getStatusCombo";
 			this->getStatusCombo->Size = System::Drawing::Size(96, 21);
@@ -2502,8 +2550,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// gprsSettings
 			// 
 			this->gprsSettings->FormattingEnabled = true;
-			this->gprsSettings->Items->AddRange(gcnew cli::array< System::Object^  >(8) {L"Remote Host 1", L"Remote Host 2", L"Remote Host 3", 
-				L"Host Port 1", L"Host Port 2", L"Host Port 3", L"Username", L"Password"});
+			this->gprsSettings->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+				L"Remote Host 1", L"Remote Host 2", L"Remote Host 3",
+					L"Host Port 1", L"Host Port 2", L"Host Port 3", L"Username", L"Password"
+			});
 			this->gprsSettings->Location = System::Drawing::Point(6, 19);
 			this->gprsSettings->Name = L"gprsSettings";
 			this->gprsSettings->Size = System::Drawing::Size(116, 21);
@@ -2532,18 +2582,20 @@ private: System::Windows::Forms::Button^  testButton;
 			// configureName
 			// 
 			this->configureName->FormattingEnabled = true;
-			this->configureName->Items->AddRange(gcnew cli::array< System::Object^  >(81) {L"Name", L"Appearance", L"Serial number", L"Sw version", 
-				L"Gps status", L"Iridium status", L"Tracking period", L"Gps early wakeup time", L"Burst tx period cell", L"Tracking onoff", L"Pin lock", 
-				L"Burst fix", L"Serial cts", L"Burst transmit", L"Serial rts", L"Gps hot", L"Mail check period", L"Mail check status", L"Gps fix quality", 
-				L"Gps sequential fixes", L"Activity status", L"Gprs strategy", L"Activity low", L"Tracking report", L"Imei", L"Serial rx", L"Serial tx", 
-				L"Message count", L"Outbox status", L"Battery", L"Temperature alert status", L"Temperature alert high threshold", L"Temperature alert low threshold", 
-				L"Temperature alert check period", L"Burst tx period distress", L"Power loss alert status", L"Power limit", L"Geof status", L"Geof distance", 
-				L"Geof period", L"Notifications", L"Collision status", L"Collision threshold", L"Collision duration", L"Ext type", L"Ext samples", 
-				L"Ext baud", L"Gpx period", L"Gpx status", L"Burst fix period cell", L"Android", L"Raw", L"Mob", L"Power", L"Burst fix period distress", 
-				L"D boards", L"Ble version", L"Gprs signal", L"Gprs status", L"Gprs msisdn", L"Gprs sim", L"Gprs location", L"Ext sense", L"Tracking period cell", 
-				L"Tracking period distress", L"Position block format", L"Self test", L"Spare 1", L"Air alert status", L"Air alert ascent speed", 
-				L"Air alert descent speed", L"Air alert ascent time", L"Air alert descent time", L"Gps platform", L"Logging", L"Auto Resume Status", 
-				L"Auto Resume Distance", L"Flight Alert Status", L"Flight Vr", L"Flight Vs", L"Battery Model"});
+			this->configureName->Items->AddRange(gcnew cli::array< System::Object^  >(81) {
+				L"Name", L"Appearance", L"Serial number", L"Sw version",
+					L"Gps status", L"Iridium status", L"Tracking period", L"Gps early wakeup time", L"Burst tx period cell", L"Tracking onoff", L"Pin lock",
+					L"Burst fix", L"Serial cts", L"Burst transmit", L"Serial rts", L"Gps hot", L"Mail check period", L"Mail check status", L"Gps fix quality",
+					L"Gps sequential fixes", L"Activity status", L"Gprs strategy", L"Activity low", L"Tracking report", L"Imei", L"Serial rx", L"Serial tx",
+					L"Message count", L"Outbox status", L"Battery", L"Temperature alert status", L"Temperature alert high threshold", L"Temperature alert low threshold",
+					L"Temperature alert check period", L"Burst tx period distress", L"Power loss alert status", L"Power limit", L"Geof status", L"Geof distance",
+					L"Geof period", L"Notifications", L"Collision status", L"Collision threshold", L"Collision duration", L"Ext type", L"Ext samples",
+					L"Ext baud", L"Gpx period", L"Gpx status", L"Burst fix period cell", L"Android", L"Raw", L"Mob", L"Power", L"Burst fix period distress",
+					L"D boards", L"Ble version", L"Gprs signal", L"Gprs status", L"Gprs msisdn", L"Gprs sim", L"Gprs location", L"Ext sense", L"Tracking period cell",
+					L"Tracking period distress", L"Position block format", L"Self test", L"Spare 1", L"Air alert status", L"Air alert ascent speed",
+					L"Air alert descent speed", L"Air alert ascent time", L"Air alert descent time", L"Gps platform", L"Logging", L"Auto Resume Status",
+					L"Auto Resume Distance", L"Flight Alert Status", L"Flight Vr", L"Flight Vs", L"Battery Model"
+			});
 			this->configureName->Location = System::Drawing::Point(10, 19);
 			this->configureName->Name = L"configureName";
 			this->configureName->Size = System::Drawing::Size(133, 21);
@@ -2552,9 +2604,11 @@ private: System::Windows::Forms::Button^  testButton;
 			// configureValue
 			// 
 			this->configureValue->FormattingEnabled = true;
-			this->configureValue->Items->AddRange(gcnew cli::array< System::Object^  >(30) {L"0", L"1", L"2", L"3", L"4", L"5", L"6", 
-				L"7", L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"23", L"24", L"25", L"26", 
-				L"27", L"28", L"29", L"30"});
+			this->configureValue->Items->AddRange(gcnew cli::array< System::Object^  >(30) {
+				L"0", L"1", L"2", L"3", L"4", L"5", L"6",
+					L"7", L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"23", L"24", L"25", L"26",
+					L"27", L"28", L"29", L"30"
+			});
 			this->configureValue->Location = System::Drawing::Point(10, 46);
 			this->configureValue->Name = L"configureValue";
 			this->configureValue->Size = System::Drawing::Size(50, 21);
@@ -2598,9 +2652,9 @@ private: System::Windows::Forms::Button^  testButton;
 			// 
 			this->settingsTableExtended->BackColor = System::Drawing::SystemColors::ControlDark;
 			this->settingsTableExtended->ColumnCount = 2;
-			this->settingsTableExtended->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 
+			this->settingsTableExtended->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				44.44444F)));
-			this->settingsTableExtended->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent, 
+			this->settingsTableExtended->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				55.55556F)));
 			this->settingsTableExtended->Controls->Add(this->flightMode, 0, 0);
 			this->settingsTableExtended->Controls->Add(this->flightVr, 0, 1);
@@ -2625,25 +2679,25 @@ private: System::Windows::Forms::Button^  testButton;
 			this->settingsTableExtended->Location = System::Drawing::Point(1066, 13);
 			this->settingsTableExtended->Name = L"settingsTableExtended";
 			this->settingsTableExtended->RowCount = 10;
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
-			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 
+			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
 			this->settingsTableExtended->Size = System::Drawing::Size(216, 210);
 			this->settingsTableExtended->TabIndex = 82;
@@ -2651,7 +2705,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// flightMode
 			// 
 			this->flightMode->FormattingEnabled = true;
-			this->flightMode->Items->AddRange(gcnew cli::array< System::Object^  >(3) {L"Off", L"Hover", L"Fixed Wing"});
+			this->flightMode->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Off", L"Hover", L"Fixed Wing" });
 			this->flightMode->Location = System::Drawing::Point(3, 3);
 			this->flightMode->Name = L"flightMode";
 			this->flightMode->Size = System::Drawing::Size(86, 21);
@@ -2661,14 +2715,16 @@ private: System::Windows::Forms::Button^  testButton;
 			// flightVr
 			// 
 			this->flightVr->FormattingEnabled = true;
-			this->flightVr->Items->AddRange(gcnew cli::array< System::Object^  >(128) {L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7", 
-				L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"22", L"23", L"24", L"25", L"26", 
-				L"27", L"28", L"29", L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41", L"42", L"43", L"44", 
-				L"45", L"46", L"47", L"48", L"49", L"50", L"51", L"52", L"53", L"54", L"55", L"56", L"57", L"58", L"59", L"60", L"61", L"62", 
-				L"63", L"64", L"65", L"66", L"67", L"68", L"69", L"70", L"71", L"72", L"73", L"74", L"75", L"76", L"77", L"78", L"79", L"80", 
-				L"81", L"82", L"83", L"84", L"85", L"86", L"87", L"88", L"89", L"90", L"91", L"92", L"93", L"94", L"95", L"96", L"97", L"98", 
-				L"99", L"100", L"101", L"102", L"103", L"104", L"105", L"106", L"107", L"108", L"109", L"110", L"111", L"112", L"113", L"114", 
-				L"115", L"116", L"117", L"118", L"119", L"120", L"121", L"122", L"123", L"124", L"125", L"126", L"127"});
+			this->flightVr->Items->AddRange(gcnew cli::array< System::Object^  >(128) {
+				L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7",
+					L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"22", L"23", L"24", L"25", L"26",
+					L"27", L"28", L"29", L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41", L"42", L"43", L"44",
+					L"45", L"46", L"47", L"48", L"49", L"50", L"51", L"52", L"53", L"54", L"55", L"56", L"57", L"58", L"59", L"60", L"61", L"62",
+					L"63", L"64", L"65", L"66", L"67", L"68", L"69", L"70", L"71", L"72", L"73", L"74", L"75", L"76", L"77", L"78", L"79", L"80",
+					L"81", L"82", L"83", L"84", L"85", L"86", L"87", L"88", L"89", L"90", L"91", L"92", L"93", L"94", L"95", L"96", L"97", L"98",
+					L"99", L"100", L"101", L"102", L"103", L"104", L"105", L"106", L"107", L"108", L"109", L"110", L"111", L"112", L"113", L"114",
+					L"115", L"116", L"117", L"118", L"119", L"120", L"121", L"122", L"123", L"124", L"125", L"126", L"127"
+			});
 			this->flightVr->Location = System::Drawing::Point(3, 21);
 			this->flightVr->Name = L"flightVr";
 			this->flightVr->Size = System::Drawing::Size(86, 21);
@@ -2678,11 +2734,13 @@ private: System::Windows::Forms::Button^  testButton;
 			// flightVs
 			// 
 			this->flightVs->FormattingEnabled = true;
-			this->flightVs->Items->AddRange(gcnew cli::array< System::Object^  >(64) {L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7", 
-				L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"22", L"23", L"24", L"25", L"26", 
-				L"27", L"28", L"29", L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41", L"42", L"43", L"44", 
-				L"45", L"46", L"47", L"48", L"49", L"50", L"51", L"52", L"53", L"54", L"55", L"56", L"57", L"58", L"59", L"60", L"61", L"62", 
-				L"63"});
+			this->flightVs->Items->AddRange(gcnew cli::array< System::Object^  >(64) {
+				L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7",
+					L"8", L"9", L"10", L"11", L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"22", L"23", L"24", L"25", L"26",
+					L"27", L"28", L"29", L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41", L"42", L"43", L"44",
+					L"45", L"46", L"47", L"48", L"49", L"50", L"51", L"52", L"53", L"54", L"55", L"56", L"57", L"58", L"59", L"60", L"61", L"62",
+					L"63"
+			});
 			this->flightVs->Location = System::Drawing::Point(3, 39);
 			this->flightVs->Name = L"flightVs";
 			this->flightVs->Size = System::Drawing::Size(86, 21);
@@ -2722,7 +2780,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// extButtons
 			// 
 			this->extButtons->FormattingEnabled = true;
-			this->extButtons->Items->AddRange(gcnew cli::array< System::Object^  >(2) {L"Off", L"On"});
+			this->extButtons->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
 			this->extButtons->Location = System::Drawing::Point(3, 165);
 			this->extButtons->Name = L"extButtons";
 			this->extButtons->Size = System::Drawing::Size(89, 21);
