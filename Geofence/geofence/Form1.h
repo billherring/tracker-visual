@@ -13,6 +13,9 @@ const int MAX_ENTRY_SZ = 30;
 
 const int LAT_DATUM = (90U * 100000U * 10U);/* x10 to match google position resolution */
 const int LONG_DATUM = (180U * 100000U * 10U);
+const int BYTES_4 = 4;
+const int BYTES_2 = 2;
+const int BYTES_1 = 1;
 
 bool Vertex::orderByLatitude = true;
 
@@ -20,7 +23,7 @@ bool Vertex::orderByLatitude = true;
 
 namespace geofence {
 
-    using namespace std;
+//    using namespace std;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -206,8 +209,8 @@ namespace geofence {
     private: System::Void convertButton_Click(System::Object^  sender, System::EventArgs^  e)
     {
 	        char longName[100];/* to buffer file names */
-            fstream fileIn;/* file handle */
-            fstream fileOut;/* file handle */
+            std::fstream fileIn;/* file handle */
+            std::fstream fileOut;/* file handle */
 
             if (_isFileSelected == true)
             {
@@ -224,21 +227,21 @@ namespace geofence {
                     ++ptr;
                     if (strcmp( ptr, "csv" ) == 0)
                     {
-                        fileIn.open( longName, fstream::in | fstream::binary);
+                        fileIn.open( longName, std::fstream::in | std::fstream::binary);
                         if (fileIn.fail() != true)
                         {
         
 		                    int csvTextSize = 0;
 		                    int csvTextIndex = 0;
-                            int totalFences = 0;
+                            int fenceCount = 0;
 
                             char csvBuffer[1000];
                             unsigned char binBuffer[1000];
                             
-                            fileIn.seekp( 0, ios_base::end );
+                            fileIn.seekp( 0, std::ios_base::end );
                             csvTextSize = (int)fileIn.tellp();
             
-		                    fileIn.seekp( 0, ios_base::beg );
+		                    fileIn.seekp( 0, std::ios_base::beg );
 		                    fileIn.read( csvBuffer, csvTextSize );
                             fileIn.close();
 
@@ -248,19 +251,17 @@ namespace geofence {
                                 //csvBuffer is a buffer holding all the text read from the csv file.
                                 //csvTextSize has the size in characters
                                 //csvTextIndex will maintain the position in the buffer as conversion progresses
-                                //totalFences counts fences discovered in file as conversion progresses
+                                //fenceCount counts fences discovered in file as conversion progresses
 
 
                                 _packer->initialise( binBuffer );
 
-                                fileOut.open( "fence.tmp", fstream::out | fstream::binary | fstream::trunc);
+                                fileOut.open( "fence.pol", std::fstream::out | std::fstream::binary | std::fstream::trunc);
                                 
-                                list<Band> latitudeBands;
-                                list<Band> longitudeBands;
+                                std::list<BoxBoundary> NSBoundaries;
+                                std::list<BoxBoundary> EWBoundaries;
+                                std::list<int> fenceOffsets;
                                 
-                                fenceData->Text = "";
-
-                                int fileOutSizeNow = 0;
                                 while (csvTextIndex < csvTextSize)
                                 {
                                     /* Get a single fence */
@@ -268,6 +269,15 @@ namespace geofence {
                                     //outputting binary) and a second to actually output binary.
                                     Fence fenceMap;
                                     
+		                            fenceMap.transmitMode = 0;
+		                            fenceMap.altitudeFloor = 0;
+		                            fenceMap.altitudeCeiling = 0;
+		                            fenceMap.startDate = 0;
+		                            fenceMap.stopDate = 0;
+		                            fenceMap.minSpeed = 0;
+		                            fenceMap.slowTransmit = 0;
+		                            fenceMap.normalTransmit = 0;
+
                                     int vertices = 0;
     
                                     (void)parse( csvBuffer, csvTextSize, csvTextIndex, &vertices, &fenceMap );//1st (gets vertices)
@@ -280,10 +290,11 @@ namespace geofence {
                                     std::list<Vertex>::iterator it2;
                                     std::list<Vertex>::iterator it3;
                                     
-                                    /* Establish vertex links - assumes they are
+                                    fenceData->Clear();
+                                    /* Establish vertex pairs (edges) - assumes they are
                                        listed in circular order so each will pair
-                                       with its pre link and with its post link.
-                                       The preKey and postKey then represent an
+                                       with its predecessor and with its post link.
+                                       The westIndex and eastIndex then represent an
                                        edge which is then ordered west to east */
                                     it1 = fenceMap.vertices.begin();
                                     it2 = fenceMap.vertices.end();
@@ -294,13 +305,13 @@ namespace geofence {
                                     {
                                         if ((*it2).longitude <= (*it3).longitude)
                                         {
-                                            (*it1).preKey = (*it2).key;
-                                            (*it1).postKey = (*it3).key;
+                                            (*it1).westIndex = (*it2).index;
+                                            (*it1).eastIndex = (*it3).index;
                                         }
                                         else
                                         {
-                                            (*it1).preKey = (*it3).key;
-                                            (*it1).postKey = (*it2).key;
+                                            (*it1).westIndex = (*it3).index;
+                                            (*it1).eastIndex = (*it2).index;
                                         }
                                         ++it1;
                                         ++it2;
@@ -316,82 +327,77 @@ namespace geofence {
                                     }
                                     
                                     
-                                    Band boundary;
+                                    BoxBoundary temporaryBoundary;
 
-                                    /* Sort by longitude from west to east in order
-                                       to determine boundary box east & west */
+                                    // Establish the boundary box WE
+                                    // Sort by longitude from west to east in order
+                                    // to determine boundary box east & west */
                                     Vertex::orderByLatitude = false;
                                     fenceMap.vertices.sort();
 
                                     it1 = fenceMap.vertices.begin();
-                                    int boxWest = (*it1).longitude;
-                                    boundary.value = (*it1).longitude;
-                                    boundary.type = 0;
-                                    boundary.id = fileOutSizeNow;
-                                    longitudeBands.push_back( boundary );
+                                    temporaryBoundary.position = (*it1).longitude;
+                                    temporaryBoundary.index = (fenceCount * 2);
+                                    EWBoundaries.push_back( temporaryBoundary );
 
                                     it1 = fenceMap.vertices.end();
                                     --it1;
-                                    int boxEast = (*it1).longitude;
-                                    boundary.value = (*it1).longitude;
-                                    boundary.type = 1;
-                                    boundary.id = fileOutSizeNow;
-                                    longitudeBands.push_back( boundary );
+                                    temporaryBoundary.position = (*it1).longitude;
+                                    temporaryBoundary.index = (fenceCount * 2) + 1;
+                                    EWBoundaries.push_back( temporaryBoundary );
                                     
                                     
-                                    /* Sort by latitude from south to north in order
-                                       to determine boundary box north & south.
-                                       This order is then retained */
+                                    // Establish the boundary box SN
+                                    // Sort by latitude from south to north in order
+                                    // to determine boundary box north & south.
+                                    //   This order is then retained
                                     Vertex::orderByLatitude = true;
                                     fenceMap.vertices.sort();
                                     
                                     it1 = fenceMap.vertices.begin();
-                                    int boxSouth = (*it1).latitude;
-                                    boundary.value = (*it1).latitude;
-                                    boundary.type = 0;
-                                    boundary.id = fileOutSizeNow;
-                                    latitudeBands.push_back( boundary );
+                                    temporaryBoundary.position = (*it1).latitude;
+                                    temporaryBoundary.index = (fenceCount * 2);
+                                    NSBoundaries.push_back( temporaryBoundary );
                                     
                                     it1 = fenceMap.vertices.end();
                                     --it1;
-                                    int boxNorth = (*it1).latitude;
-                                    boundary.value = (*it1).latitude;
-                                    boundary.type = 1;
-                                    boundary.id = fileOutSizeNow;
-                                    latitudeBands.push_back( boundary );
+                                    temporaryBoundary.position = (*it1).latitude;
+                                    temporaryBoundary.index = (fenceCount * 2) + 1;
+                                    NSBoundaries.push_back( temporaryBoundary );
+
+
         
-                                    /* Establish a lookup to cross reference the
-                                       pre ordered vertex indexes to the post
-                                       ordered vertex indexes. Used subsequently
-                                       for re enumerating the indexes for
-                                       consistency with new order*/ 
+                                    // Establish a lookup to cross reference the
+                                    // pre ordered vertex indexes to the post
+                                    // ordered vertex indexes. Used subsequently
+                                    // for re enumerating the indexes for
+                                    // consistency with new order
                                     unsigned int i = 0;
 
                                     it1 = fenceMap.vertices.begin();
                                     while (it1 != fenceMap.vertices.end())
                                     {
                                         it2 = fenceMap.vertices.begin();
-                                        std::advance( it2, (*it1).key );
-                                        (*it2).orderedKey = i;
+                                        std::advance( it2, (*it1).index );
+                                        (*it2).orderedIndex = i;
                                         ++i;
                                         ++it1;
                                     }
                                     
                                     
-                                    /* Re enumerate vertex links for the re ordered
-                                       list so the new keys refer to the
-                                       correct vertices in reordered S/N list */
+                                    // Re enumerate vertex indexes for the re ordered
+                                    // list
                                     it1 = fenceMap.vertices.begin();
                                     while (it1 != fenceMap.vertices.end())
                                     {
                                         it2 = fenceMap.vertices.begin();
                                         
-                                        std::advance( it2, (*it1).preKey );
-                                        (*it1).preKey = (*it2).orderedKey;
+                                        std::advance( it2, (*it1).westIndex );
+                                        (*it1).westIndex = (*it2).orderedIndex;
                                         
                                         it2 = fenceMap.vertices.begin();
-                                        std::advance( it2, (*it1).postKey );
-                                        (*it1).postKey = (*it2).orderedKey;
+                                        std::advance( it2, (*it1).eastIndex );
+                                        (*it1).eastIndex = (*it2).orderedIndex;
                                         ++it1;
                                     }
 
@@ -404,18 +410,20 @@ namespace geofence {
                                     {
                                         /* Do edge 1 */
                                         it2 = fenceMap.vertices.begin();
-                                        std::advance( it2, (*it1).preKey );
+                                        std::advance( it2, (*it1).westIndex );
                                     
                                         if ((*it1).latitude < (*it2).latitude)
                                         {
+                                            //Only N going edge wanted
+                                            //Record it W to E
                                             if ((*it1).longitude <= (*it2).longitude)
                                             {
                                                 edge.vEast = j;
-                                                edge.vWest = (*it1).preKey;
+                                                edge.vWest = (*it1).westIndex;
                                             }
                                             else
                                             {
-                                                edge.vEast = (*it1).preKey;
+                                                edge.vEast = (*it1).westIndex;
                                                 edge.vWest = j;
                                             }
                                             
@@ -439,18 +447,18 @@ namespace geofence {
 
                                         /* Do edge 2 */
                                         it2 = fenceMap.vertices.begin();
-                                        std::advance( it2, (*it1).postKey );
+                                        std::advance( it2, (*it1).eastIndex );
                                     
                                         if ((*it1).latitude < (*it2).latitude)
                                         {
                                             if ((*it1).longitude <= (*it2).longitude)
                                             {
                                                 edge.vEast = j;
-                                                edge.vWest = (*it1).postKey;
+                                                edge.vWest = (*it1).eastIndex;
                                             }
                                             else
                                             {
-                                                edge.vEast = (*it1).postKey;
+                                                edge.vEast = (*it1).eastIndex;
                                                 edge.vWest = j;
                                             }
                                             
@@ -478,24 +486,17 @@ namespace geofence {
                                             it2 = it1;
                                             --it2;
                                             
-                                            if ((*it1).latitude != (*it2).latitude)
+                                            std::list<Edge>::iterator it4 = (*it2).edges.begin();
+                                            while (it4 != (*it2).edges.end())
                                             {
-                                                std::list<Edge>::iterator it4 = (*it2).edges.begin();
-                                                while (it4 != (*it2).edges.end())
+                                                if ( ((*it4).vEast != j)
+                                                     && ((*it4).vWest) != j )
                                                 {
-                                                    if ( ((*it4).vEast != j)
-                                                         && ((*it4).vWest) != j )
-                                                    {
-                                                        (*it1).edges.push_back( *it4 );
-                                                    }
-                                                    ++it4;
+                                                    //This previous edge does not contain the current vertex index
+                                                    //So it is inherited by the current edge list
+                                                    (*it1).edges.push_back( *it4 );
                                                 }
-                                            }
-                                            else
-                                            {
-                                                /* Duplicate latitude (horizontal
-                                                edge) so don't need previous vertex */
-                                                fenceMap.vertices.erase( it2 );
+                                                ++it4;
                                             }
                                         }
                                         
@@ -509,131 +510,55 @@ namespace geofence {
                                     
                                     
                                     /* Report all the data */
-                                    fenceData->Text = String::Concat( fenceData->Text, "Box " );
-                                    
-                                    String ^msg = String::Format( "{0} {1} {2} {3}""\x0d\x0a",
-                                                                  boxNorth,
-                                                                  boxSouth,
-                                                                  boxEast,
-                                                                  boxWest );
-                                    
-                                    fenceData->Text = String::Concat( fenceData->Text, msg );
-		                            
-                                    int totalOutSz = FILE_SIZE_SZ + ID_SZ +
-                                                     BEHAVIOUR_SZ + EDGE_SZ +
-                                                     VERTEX_COUNT_SZ +
-                                                     ((LAT_LONG_SZ + EDGE_LOC_SZ + EDGE_COUNT_SZ) * fenceMap.vertexCount);
-		                            
-                                    it1 = fenceMap.vertices.begin();
-                                    
-                                    while (it1 != fenceMap.vertices.end())
-                                    {
-                                        totalOutSz += EDGE_SZ * (*it1).edges.size();
-                                        ++it1;
-                                    }
-                                    
-//                                    fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, totalOutSz );
-//		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, boxNorth );
-//		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, boxSouth );
-//		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, boxEast );
-//		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, boxWest );
-		                            fileOutSizeNow = writeOutFile8( &fileOut, fileOutSizeNow, binBuffer, fenceMap.id );
-		                            fileOutSizeNow = writeOutFile8( &fileOut, fileOutSizeNow, binBuffer, fenceMap.behaviour );
-		                            fileOutSizeNow = writeOutFile16( &fileOut, fileOutSizeNow, binBuffer, fenceMap.vertexCount );
-                                    
-                                    it1 = fenceMap.vertices.begin();
-                                    
-                                    while (it1 != fenceMap.vertices.end())
-                                    {
-                                        /* The basic vertex data */
-                                        String ^msg = String::Format( "{0} {1} {2}, {3} {4} {5}",
-                                                                      (*it1).latitude,
-                                                                      (*it1).longitude,
-                                                                      (*it1).key,
-                                                                      (*it1).orderedKey,
-                                                                      (*it1).preKey,
-                                                                      (*it1).postKey
-                                                                    );
-                                                                
-                                              
-                                        fenceData->Text = String::Concat( fenceData->Text, msg );
-                                        fenceData->Text = String::Concat( fenceData->Text, "     " );
-                                        
-                                        /* Enum for each edge */
-                                        std::list<Edge>::iterator it3 = (*it1).edges.begin();
-                                        
-                                        while (it3 != (*it1).edges.end())
-                                        {
-                                            msg = String::Format( " {0} {1}",
-                                                                  (*it3).vEast,
-                                                                  (*it3).vWest );
-                                            
-                                            fenceData->Text = String::Concat( fenceData->Text, msg );
-                                            
-                                            ++it3;
-                                        }
-                                        
-                                        
-                                        #if 0
-                                        /* Lat/long for each edge */
-                                        it3 = (*it1).edges.begin();
-                                        
-                                        while (it3 != (*it1).edges.end())
-                                        {
-                                            msg = String::Format( " {0} {1} {2} {3}",
-                                                                  (*it3).latitudeEast,
-                                                                  (*it3).longitudeEast,
-                                                                  (*it3).latitudeWest,
-                                                                  (*it3).longitudeWest );
-                                            
-                                            fenceData->Text = String::Concat( fenceData->Text, msg );
-                                            
-                                            ++it3;
-                                        }
-                                        #endif
-                                        
-                                        fenceData->Text = String::Concat( fenceData->Text, "\x0d\x0a" );
-                                        
-                                        ++it1;
-                                    }
+		                            fileWrite( &fileOut, BYTES_2, fenceMap.id );
+		                            fileWrite( &fileOut, BYTES_1, fenceMap.behaviour );
 
-                                    
-                                    fenceData->Text = String::Concat( fenceData->Text, "\x0d\x0a" );
+		                            fileWrite( &fileOut, BYTES_1, fenceMap.transmitMode );
+		                            fileWrite( &fileOut, BYTES_4, fenceMap.altitudeFloor );
+		                            fileWrite( &fileOut, BYTES_4, fenceMap.altitudeCeiling );
+		                            fileWrite( &fileOut, BYTES_4, fenceMap.startDate );
+		                            fileWrite( &fileOut, BYTES_4, fenceMap.stopDate );
+		                            fileWrite( &fileOut, BYTES_2, fenceMap.minSpeed );
+		                            fileWrite( &fileOut, BYTES_1, fenceMap.slowTransmit );
+		                            fileWrite( &fileOut, BYTES_1, fenceMap.normalTransmit );
+
+		                            fileWrite( &fileOut, BYTES_4, fenceMap.vertexCount );
                                     
                                     
                                     /* Now add to output file */
-                                    /* SN */
+                                    /* SN latitude table*/
                                     it1 = fenceMap.vertices.begin();
                                     while (it1 != fenceMap.vertices.end())
                                     {
-		                                fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).latitude );
+		                                fileWrite( &fileOut, BYTES_4, (*it1).latitude );
                                         
                                         ++it1;
                                     }
                                     
+                                    #if 0
                                     /* Edge list counts */
                                     it1 = fenceMap.vertices.begin();
                                     while (it1 != fenceMap.vertices.end())
                                     {
-		                                fileOutSizeNow = writeOutFile8( &fileOut, fileOutSizeNow, binBuffer, (*it1).edges.size() );
+		                                fileWrite( &fileOut, 1, (*it1).edges.size() );
                                         
                                         ++it1;
                                     }
+                                    #endif
 
                                     /* Edge list locations */
-                                    int edgesListOffset = fileOutSizeNow + (4 * fenceMap.vertexCount);
                                     
                                     it1 = fenceMap.vertices.begin();
-                                    int edgesListSize = 0;
+                                    int edgesListSize = fenceMap.vertices.size() * BYTES_4;
                                     while (it1 != fenceMap.vertices.end())
                                     {
-		                                fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, edgesListOffset + edgesListSize );
-                                        edgesListSize += 16 * (*it1).edges.size();
+		                                fileWrite( &fileOut, BYTES_4, edgesListSize );
+                                        edgesListSize += BYTES_4 * 4 * (*it1).edges.size();
                                         
                                         ++it1;
                                     }
 
-                                    /* Edge lists */
+                                    /* Now the edge lists */
                                     it1 = fenceMap.vertices.begin();
                                     while (it1 != fenceMap.vertices.end())
                                     {
@@ -641,107 +566,83 @@ namespace geofence {
                                         it3 = (*it1).edges.begin();
                                         while (it3 != (*it1).edges.end())
                                         {
-		                                    fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it3).latitudeEast );
-		                                    fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it3).longitudeEast );
-		                                    fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it3).latitudeWest );
-		                                    fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it3).longitudeWest );
+		                                    fileWrite( &fileOut, BYTES_4, (*it3).latitudeEast );
+		                                    fileWrite( &fileOut, BYTES_4, (*it3).longitudeEast );
+		                                    fileWrite( &fileOut, BYTES_4, (*it3).latitudeWest );
+		                                    fileWrite( &fileOut, BYTES_4, (*it3).longitudeWest );
                                             ++it3;
                                         }
                                         
                                         ++it1;
                                     }
                                     
-                                    ++totalFences;
+                                    fenceOffsets.push_back( (int)fileOut.tellp() );
+
+                                    ++fenceCount;
                                 }
-		                        writeOutFileFinish( &fileOut, fileOutSizeNow, binBuffer );
+
                                 fileOut.close();
                                 
+                                /* Create the box file */
+                                fileOut.open( "fence.box", std::fstream::out | std::fstream::binary | std::fstream::trunc);
+                                
+                                
+                                /* Add ordered box latitude and longitude lists */
+                                BoxBoundaries( &fileOut, &NSBoundaries );
+                                BoxBoundaries( &fileOut, &EWBoundaries );
+
+                                // Offset to 'active' lists:-
+                                // NS Location list = ( ((box edge(4) x 2) x fences)
+                                // EW Location list = ( ((box edge(4) x 2) x fences)
+                                //
+                                int activeLocationsOffset = fenceOffsets.size() * BYTES_4 * 2 * 2;
+                                activeLocationsOffset = ActiveBoxListLocations( &fileOut, &NSBoundaries, activeLocationsOffset );
+
+                                activeLocationsOffset += fenceOffsets.size() * BYTES_4 * 2 ;
+                                (void)ActiveBoxListLocations( &fileOut, &EWBoundaries, activeLocationsOffset );
+
+                                ActiveBoxLists( &fileOut, &NSBoundaries );
+                                ActiveBoxLists( &fileOut, &EWBoundaries );
+
+                                int sizeSoFar = (int)fileOut.tellp();
+
+                                fileOut.close();
+                                
+		                        
                                 /* Create the output file */
-                                fileOut.open( "fence.bin", fstream::out | fstream::binary | fstream::trunc);
-                                fileOutSizeNow = 0;
-                                
-                                
-                                std::list<Band>::iterator it1;
-                                
-                                /* Add ordered latitude band list */
-                                latitudeBands.sort();
-                                
-                                it1 = latitudeBands.begin();
-                                while (it1 != latitudeBands.end())
-                                {
-                                    String ^msg = String::Format( "[{0} {1} {2}]  ",
-                                                                  (*it1).value,
-                                                                  (*it1).id,
-                                                                  (*it1).type
-                                                                );
-                                    
-                                    fenceData->Text = String::Concat( fenceData->Text, msg );
-                                          
-		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).value );
-		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).id );
-		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).type );
-//		                            fileOutSizeNow = writeOutFile8( &fileOut, fileOutSizeNow, binBuffer, (*it1).type );
-                                    
-                                    ++it1;
-                                }
+                                fileOut.open( "fence.bin", std::fstream::out | std::fstream::binary | std::fstream::trunc);
 
-                                fenceData->Text = String::Concat( fenceData->Text, "\x0d\x0a" );
-                                
-                                /* Add ordered longitude band list */
-                                longitudeBands.sort();
-                                
-                                it1 = longitudeBands.begin();
-                                while (it1 != longitudeBands.end())
+                                //Write fence description locations
+                                sizeSoFar += (2 * BYTES_4);
+                                std::list<int>::iterator it1;
+                                it1 = fenceOffsets.begin();
+                                while (it1 != fenceOffsets.end())
                                 {
-                                    String ^msg = String::Format( "[{0} {1} {2}]  ",
-                                                                  (*it1).value,
-                                                                  (*it1).id,
-                                                                  (*it1).type
-                                                                );
-                                    
-                                    fenceData->Text = String::Concat( fenceData->Text, msg );
-		                        
-                                    fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).value );
-		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).id );
-		                            fileOutSizeNow = writeOutFile32( &fileOut, fileOutSizeNow, binBuffer, (*it1).type );
-//		                            fileOutSizeNow = writeOutFile8( &fileOut, fileOutSizeNow, binBuffer, (*it1).type );
-                                    
+                                    fileWrite( &fileOut, BYTES_4, sizeSoFar );
+                                    sizeSoFar += *it1;
                                     ++it1;
                                 }
                                 
-		                        
-                                fenceData->Text = String::Concat( fenceData->Text, "\x0d\x0a" );
                                 
-                                writeOutFileFinish( &fileOut, fileOutSizeNow, binBuffer );
 
-                                
-                                /* Concatenate the tmp file */
-                                fileIn.open( "fence.tmp", fstream::in | fstream::binary);
-		                        
-                                int size;
-                                fileIn.seekp( 0, ios_base::end );
-                                size = (int)fileIn.tellp();
-            
-		                        fileIn.seekp( 0, ios_base::beg );
-                                
-                                do
-                                {
-                                    int bytes = size < sizeof(binBuffer) ? size : sizeof(binBuffer);
-                                    
-                                    fileIn.read( ( char *)binBuffer, bytes );
-                        	        fileOut.write(( char *)binBuffer, bytes );
-                                    
-                                    size -= bytes;
-                                }
-                                while(size != 0);
-
+                                /* Concatenate the box file */
+                                fileIn.open( "fence.box", std::fstream::in | std::fstream::binary);
+                                fileConcat( &fileOut, &fileIn );
                                 fileIn.close();
+
+
+
+                                /* Concatenate the tmp file */
+                                fileIn.open( "fence.pol", std::fstream::in | std::fstream::binary);
+                                fileConcat( &fileOut, &fileIn );
+                                fileIn.close();
+		                        
                                 
                                 fileOut.close();
                                 
                                 
                                 #if 0
-                                fileOut.open( "fence.bin", fstream::out | fstream::binary | fstream::trunc);
+                                fileOut.open( "fence.bin", std::fstream::out | std::fstream::binary | std::fstream::trunc);
                                 if (fileOut.fail() != true)
                                 {
 		                            fileOut.write( (char *)binBuffer, _packer->size() );
@@ -883,7 +784,7 @@ namespace geofence {
                             value = _packer->round( value + LONG_DATUM, 6, 5 );
                             _packer->insert( value, 26 );
                             vertex.longitude = value;
-                            vertex.key = csvRows;
+                            vertex.index = csvRows;
                             fenceMap->vertices.push_back( vertex );
                             
                             endPosn = csvPosn;//Remember potential end of a fence
@@ -923,67 +824,162 @@ namespace geofence {
     }
     
     
-	int writeOutFile8( fstream *fileOut, int sizeNow, unsigned char *binBuffer, int value )
-	{
-        if ((sizeNow + 1) > 1000)
+
+    void BoxBoundaries( std::fstream *fileOut, std::list<BoxBoundary> *boundaries )
+    {
+        std::list<BoxBoundary>::iterator it1;
+
+        /* Add ordered box latitude list */
+        boundaries->sort();
+
+        it1 = boundaries->begin();
+        while (it1 != boundaries->end())
         {
-	        fileOut->write(( char *)binBuffer, sizeNow );
-            sizeNow = 0;
+            fileWrite( fileOut, BYTES_4, (*it1).position );
+            ++it1;
         }
 
-        binBuffer += sizeNow;
-        
-        *binBuffer = value & 0xff;
 
-        return(sizeNow + 1);
-	}
-    
-    
-    int writeOutFile16( fstream *fileOut, int sizeNow, unsigned char *binBuffer, int value )
-	{
-        if ((sizeNow + 2) > 1000)
+//        it1 = boundaries->begin();
+//        while (it1 != boundaries->end())
+//        {
+//            fileWrite( fileOut, BYTES_4, ((*it1).index) );
+//            ++it1;
+//        }
+
+
+        //Determine active index lists for each latitude
+        std::list<int> active;
+
+        it1 = boundaries->begin();
+        while (it1 != boundaries->end())
         {
-	        fileOut->write(( char *)binBuffer, sizeNow );
-            sizeNow = 0;
+            int index = (*it1).index;
+
+            if ((index & 1) == 0)
+            {
+                //Add
+                active.push_back( index / 2 );
+            }
+            else
+            {
+                //Remove
+                index /= 2;
+
+                std::list<int>::iterator it2;
+                it2 = active.begin();
+                while (it2 != active.end())
+                {
+                    if (index == *it2)
+                    {
+                        active.erase( it2 );
+                        break;
+                    }
+
+                    ++it2;
+                }
+            }
+
+            active.sort();
+
+            //Copy
+            std::list<int>::iterator it2;
+            it2 = active.begin();
+            while (it2 != active.end())
+            {
+                (*it1).activeIndexes.push_back( *it2 );
+                ++it2;
+            }
+
+            ++it1;
+
         }
 
-        binBuffer += sizeNow;
-        
-        *binBuffer = (value >> 8) & 0xff;
-        ++binBuffer;
-        *binBuffer = value & 0xff;
+    }
 
-        return(sizeNow + 2);
-	}
-    
-    
-	int writeOutFile32( fstream *fileOut, int sizeNow, unsigned char *binBuffer, int value )
-	{
-        if ((sizeNow + 4) > 1000)
+
+    int ActiveBoxListLocations( std::fstream *fileOut, std::list<BoxBoundary> *boundaries, int offset )
+    {
+        std::list<BoxBoundary>::iterator it1;
+
+        it1 = boundaries->begin();
+
+        int size = 0;
+
+        it1 = boundaries->begin();
+        while (it1 != boundaries->end())
         {
-	        fileOut->write(( char *)binBuffer, sizeNow );
-            sizeNow = 0;
+
+            fileWrite( fileOut, BYTES_4, offset + size );
+            size += ((*it1).activeIndexes.size() * BYTES_2);
+            ++it1;
         }
 
-        binBuffer += sizeNow;
-        
-        *binBuffer = (value >> 24) & 0xff;
-        ++binBuffer;
-        *binBuffer = (value >> 16) & 0xff;
-        ++binBuffer;
-        *binBuffer = (value >> 8) & 0xff;
-        ++binBuffer;
-        *binBuffer = value & 0xff;
-
-        return(sizeNow + 4);
-	}
+        return(size);
+    }
 
 
+    void ActiveBoxLists( std::fstream *fileOut, std::list<BoxBoundary> *boundaries )
+    {
+        std::list<BoxBoundary>::iterator it1;
 
-	void writeOutFileFinish( fstream *fileOut, int sizeNow, unsigned char *binBuffer )
+        it1 = boundaries->begin();
+        while (it1 != boundaries->end())
+        {
+            std::list<int>::iterator it2;
+            it2 = (*it1).activeIndexes.begin();
+            while (it2 != (*it1).activeIndexes.end())
+            {
+                fileWrite( fileOut, BYTES_2, *it2 );
+                ++it2;
+            }
+
+            ++it1;
+        }
+
+    }
+
+
+    void fileConcat( std::fstream *fileOut, std::fstream *fileIn )
+    {
+        unsigned char buffer[128];
+        int size;
+        fileIn->seekp( 0, std::ios_base::end );
+        size = (int)fileIn->tellp();
+
+        fileIn->seekp( 0, std::ios_base::beg );
+
+        do
+        {
+            int bytes = size < sizeof(buffer) ? size : sizeof(buffer);
+
+            fileIn->read( ( char *)buffer, bytes );
+            fileOut->write(( char *)buffer, bytes );
+
+            size -= bytes;
+
+        }
+        while(size != 0);
+
+    }
+
+
+	void fileWrite( std::fstream *fileOut, int size, int value )
 	{
-	    fileOut->write(( char *)binBuffer, sizeNow );
+        unsigned char buffer[4];
+
+        int n = size;
+        unsigned char *p = buffer;
+
+        while (n != 0)
+        {
+            *p = (value >> ((n - 1) * 8)) & 0xff;
+            ++p;
+            --n;
+        }
+        fileOut->write(( char *)buffer, size );
 	}
+
 
 
 

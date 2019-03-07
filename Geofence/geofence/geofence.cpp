@@ -6,6 +6,7 @@
 using namespace geofence;
 
 [STAThreadAttribute]
+//int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 int main(array<System::String ^> ^args)
 {
 	// Enabling Windows XP visual effects before any controls are created
@@ -16,3 +17,5 @@ int main(array<System::String ^> ^args)
 	Application::Run(gcnew Form1());
 	return 0;
 }
+
+

@@ -1,6 +1,6 @@
 using namespace System;
 using namespace System::Collections;
-using namespace std;
+//using namespace std;
 
 class Edge
 {
@@ -105,11 +105,11 @@ class Vertex
 
         int latitude;
         int longitude;
-        int key;
-        int orderedKey;
-        int preKey;
-        int postKey;
-        list<Edge> edges;
+        int index;
+        int orderedIndex;
+        int westIndex;
+        int eastIndex;
+        std::list<Edge> edges;
         
         static bool orderByLatitude;
         
@@ -135,40 +135,47 @@ class Fence
 
         int id;
         int behaviour;
-        int vertexCount;
-        list<Vertex> vertices;
+        int transmitMode;
+        int altitudeFloor;
+        int altitudeCeiling;
+        int startDate;
+        int stopDate;
+        int minSpeed;
+        int slowTransmit;
+        int normalTransmit;
         
+        int vertexCount;
+        std::list<Vertex> vertices;
+        
+        static bool orderByLatitude;
         
 };
 
 
 
-class Band
+class BoxBoundary
 {
 
     public:
     
-        Band( void )
+        BoxBoundary( void )
         {
         }
     
 
-        ~Band( void )
+        ~BoxBoundary( void )
         {
         }
         
-        
 
-
-
-	    bool operator <( Band & bandObj )
+        bool operator <( BoxBoundary & boxBoundary )
 	    {
-		    return (value < bandObj.value);
+            return (position < boxBoundary.position);
 	    }
 
-        int value;
-        int id;
-        int type;
+        int position;
+        int index;
+        std::list<int> activeIndexes;
         
 };
 
