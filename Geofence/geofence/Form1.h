@@ -522,7 +522,7 @@ namespace geofence {
 		                            fileWrite( &fileOut, BYTES_1, fenceMap.slowTransmit );
 		                            fileWrite( &fileOut, BYTES_1, fenceMap.normalTransmit );
 
-		                            fileWrite( &fileOut, BYTES_4, fenceMap.vertexCount );
+		                            fileWrite( &fileOut, BYTES_2, fenceMap.vertexCount );
                                     
                                     
                                     /* Now add to output file */
@@ -591,20 +591,23 @@ namespace geofence {
                                 BoxBoundaries( &fileOut, &NSBoundaries );
                                 BoxBoundaries( &fileOut, &EWBoundaries );
 
-                                // Offset to 'active' lists:-
-                                // NS Location list = ( ((box edge(4) x 2) x fences)
-                                // EW Location list = ( ((box edge(4) x 2) x fences)
-                                //
-                                int activeLocationsOffset = fenceOffsets.size() * BYTES_4 * 2 * 2;
-                                activeLocationsOffset = ActiveBoxListLocations( &fileOut, &NSBoundaries, activeLocationsOffset );
+                                int sizeSoFar = (int)fileOut.tellp();
 
-                                activeLocationsOffset += fenceOffsets.size() * BYTES_4 * 2 ;
-                                (void)ActiveBoxListLocations( &fileOut, &EWBoundaries, activeLocationsOffset );
+                                // Offset to 'active' lists:-
+                                // Start point = Fence count (2) + descrip offset size(4) x no fences
+                                // Then add = list offset size(4) x 2(edges per fence) x no of fences x 2(lists)
+                                //
+                                sizeSoFar += (2 + (fenceOffsets.size() * BYTES_4));
+                                sizeSoFar += (fenceOffsets.size() * BYTES_4 * 2 * 2);
+                                sizeSoFar += ActiveBoxListLocations( &fileOut, &NSBoundaries, sizeSoFar );
+
+                                //sizeSoFar += fenceOffsets.size() * BYTES_4 * 2 ;
+                                (void)ActiveBoxListLocations( &fileOut, &EWBoundaries, sizeSoFar );
 
                                 ActiveBoxLists( &fileOut, &NSBoundaries );
                                 ActiveBoxLists( &fileOut, &EWBoundaries );
 
-                                int sizeSoFar = (int)fileOut.tellp();
+                                sizeSoFar = (int)fileOut.tellp();
 
                                 fileOut.close();
                                 
@@ -612,8 +615,13 @@ namespace geofence {
                                 /* Create the output file */
                                 fileOut.open( "fence.bin", std::fstream::out | std::fstream::binary | std::fstream::trunc);
 
+                                //Write total fences count 
+                                fileWrite( &fileOut, BYTES_2, fenceOffsets.size() );
+
+                                //Add size of fence count and fence locations
+                                sizeSoFar += BYTES_2 + (fenceOffsets.size() * BYTES_4);
+
                                 //Write fence description locations
-                                sizeSoFar += (2 * BYTES_4);
                                 std::list<int>::iterator it1;
                                 it1 = fenceOffsets.begin();
                                 while (it1 != fenceOffsets.end())
@@ -632,7 +640,7 @@ namespace geofence {
 
 
 
-                                /* Concatenate the tmp file */
+                                /* Concatenate the polyfence file */
                                 fileIn.open( "fence.pol", std::fstream::in | std::fstream::binary);
                                 fileConcat( &fileOut, &fileIn );
                                 fileIn.close();
