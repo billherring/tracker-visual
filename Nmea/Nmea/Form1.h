@@ -990,9 +990,10 @@ private: System::Void startButton_Click(System::Object^  sender, System::EventAr
                     connectStatus->Text = e->Message;
 //                    connectStatus->Text = "Com port: Reset the connection";
                 }
-                catch (UnauthorizedAccessException ^)
+                catch (UnauthorizedAccessException ^ f)
                 {
-                    connectStatus->Text = "Com port: No access";
+                    connectStatus->Text = f->Message;
+//                    connectStatus->Text = "Com port: No access";
                 }
                 catch (ArgumentOutOfRangeException ^)
                 {

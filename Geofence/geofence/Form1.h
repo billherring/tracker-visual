@@ -262,6 +262,7 @@ namespace geofence {
                                 std::list<BoxBoundary> EWBoundaries;
                                 std::list<int> fenceOffsets;
                                 
+                                int polyfenceFileSz = 0;
                                 while (csvTextIndex < csvTextSize)
                                 {
                                     /* Get a single fence */
@@ -510,7 +511,10 @@ namespace geofence {
                                     
                                     
                                     /* Report all the data */
-		                            fileWrite( &fileOut, BYTES_2, fenceMap.id );
+                                    /* Mark start of this fence data */
+                                    int sizeSoFar = (int)fileOut.tellp();
+
+                                    fileWrite( &fileOut, BYTES_2, fenceMap.id );
 		                            fileWrite( &fileOut, BYTES_1, fenceMap.behaviour );
 
 		                            fileWrite( &fileOut, BYTES_1, fenceMap.transmitMode );
@@ -546,14 +550,18 @@ namespace geofence {
                                     }
                                     #endif
 
-                                    /* Edge list locations */
+                                    sizeSoFar = (int)fileOut.tellp() - sizeSoFar;
+
+                                    /* Edge list locations  - add the size of the
+                                       location list to get offset to first edge list */
                                     
+                                    sizeSoFar += (fenceMap.vertices.size() * BYTES_4);
+
                                     it1 = fenceMap.vertices.begin();
-                                    int edgesListSize = fenceMap.vertices.size() * BYTES_4;
                                     while (it1 != fenceMap.vertices.end())
                                     {
-		                                fileWrite( &fileOut, BYTES_4, edgesListSize );
-                                        edgesListSize += BYTES_4 * 4 * (*it1).edges.size();
+		                                fileWrite( &fileOut, BYTES_4, sizeSoFar );
+                                        sizeSoFar += BYTES_4 * 4 * (*it1).edges.size();
                                         
                                         ++it1;
                                     }
@@ -576,7 +584,12 @@ namespace geofence {
                                         ++it1;
                                     }
                                     
-                                    fenceOffsets.push_back( (int)fileOut.tellp() );
+
+                                    sizeSoFar = (int)fileOut.tellp();
+
+                                    fenceOffsets.push_back( sizeSoFar - polyfenceFileSz );
+
+                                    polyfenceFileSz = sizeSoFar;
 
                                     ++fenceCount;
                                 }
