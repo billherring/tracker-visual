@@ -1337,7 +1337,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// geofStatusCombo
 			// 
 			this->geofStatusCombo->FormattingEnabled = true;
-			this->geofStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Off", L"Monofence", L"Polyfence" });
+			this->geofStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"Off", L"Monofence", L"Polyfence", L"Away From Home" });
 			this->geofStatusCombo->Location = System::Drawing::Point(3, 219);
 			this->geofStatusCombo->Name = L"geofStatusCombo";
 			this->geofStatusCombo->Size = System::Drawing::Size(86, 21);
