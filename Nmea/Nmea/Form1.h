@@ -1039,7 +1039,8 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
         unsigned int minsWhole;
         unsigned int minsFract;
 
-        pOut = ((gnSelectRadio->Checked == true) ? gpsGnInstrument : gpsGpInstrument);
+        pOut = gpsGpInstrument;
+//        pOut = ((gnSelectRadio->Checked == true) ? gpsGnInstrument : gpsGpInstrument);
     
         altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
         if (northStepRadio->Checked == northLatitudeRadio->Checked)
@@ -1127,7 +1128,14 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
                     case 12:
                     case 14:
                         //Check
-                        checkString( cStr, checksum );
+                        if (gnSelectRadio->Checked == false)
+                        {
+                            checkString( cStr, checksum );
+                        }
+                        else
+                        {
+                            checkString( cStr, 0 );
+                        }
                         break;
 
                     case 0:

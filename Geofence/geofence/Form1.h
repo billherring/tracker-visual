@@ -624,7 +624,7 @@ namespace geofence {
 
                                 fileOut.close();
                                 
-		                        
+		                        #if 0
                                 /* Create the output file */
                                 fileOut.open( "fence.bin", std::fstream::out | std::fstream::binary | std::fstream::trunc);
 
@@ -662,8 +662,8 @@ namespace geofence {
                                 fileOut.close();
                                 
                                 
-                                #if 0
-                                fileOut.open( "fence.bin", std::fstream::out | std::fstream::binary | std::fstream::trunc);
+                                #else
+                                fileOut.open( "fence_a.bin", std::fstream::out | std::fstream::binary | std::fstream::trunc);
                                 if (fileOut.fail() != true)
                                 {
 		                            fileOut.write( (char *)binBuffer, _packer->size() );

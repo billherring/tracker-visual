@@ -920,7 +920,7 @@ namespace Iridium {
                                                         s = String::Concat( s, String::Format( "{0}"",""{1}"",""{2}"",""{3}"",""{4}"",""{5}",
                                                                                                 noNetworkCheck->Checked == false ? (cmd == HAYES::CMD_SESSION ? 0 : 1) : (cmd == HAYES::CMD_SESSION ? 18 : 2),
                                                                                                 _momsn,
-                                                                                                (outMessagesAvailable() == 0) ? 0 : 1,
+                                                                                                (outMessagesAvailable() == 0) ? ((noNetworkCheck->Checked == false) ? 0 : 2) : ((noNetworkCheck->Checked == false) ? 1 : 2),
                                                                                                 _mimsn,
                                                                                                 (outMessagesAvailable() == 0) ? 0 : (msgSize + (isNextMessageHex() ? 0 : BINARY_REPLY::PREAMBLE_LENGTH)),
                                                                                                 (outMessagesAvailable() > 0) ? outMessagesAvailable() - 1 : 0 ) );

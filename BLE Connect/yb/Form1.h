@@ -1273,7 +1273,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// activityStatusCombo
 			// 
 			this->activityStatusCombo->FormattingEnabled = true;
-			this->activityStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"Off", L"Power", L"Bump", L"SOG", L"Bump+SOG" });
+			this->activityStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"Off", L"Power", L"Bump", L"SOG", L"Bump+SOG",
+					L"Away From Home"
+			});
 			this->activityStatusCombo->Location = System::Drawing::Point(3, 165);
 			this->activityStatusCombo->Name = L"activityStatusCombo";
 			this->activityStatusCombo->Size = System::Drawing::Size(86, 21);
@@ -1337,7 +1340,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// geofStatusCombo
 			// 
 			this->geofStatusCombo->FormattingEnabled = true;
-			this->geofStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"Off", L"Monofence", L"Polyfence", L"Away From Home" });
+			this->geofStatusCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Off", L"Monofence", L"Polyfence" });
 			this->geofStatusCombo->Location = System::Drawing::Point(3, 219);
 			this->geofStatusCombo->Name = L"geofStatusCombo";
 			this->geofStatusCombo->Size = System::Drawing::Size(86, 21);
