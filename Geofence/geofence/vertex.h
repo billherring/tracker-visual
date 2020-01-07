@@ -20,57 +20,19 @@ class Edge
 
 
 	    bool operator <( Edge & edgeObj )
-        /* If current edge is leftmost then return true condition
-            
-            Calculate longitude of intersection with edge baseline for each
-            edge (use signed arithmetic):-
-            lon west + ((lon east - lon west)(lat east - lat base)) / (lat east - lat west)
-        */
+        /* If current edge is leftmost then return true condition */
    	    {
-            signed int baseLongitude;
-            signed int baseLongitudeObj;
-            signed int baseDelta;
-          
-            baseDelta = ( ((longitudeEast - longitudeWest) * (latitudeEast - baseLatitude))
-                           / (latitudeEast - latitudeWest) );
-                            
-            if ((latitudeEast - latitudeWest) < 0)
-            {
-                baseLongitude = longitudeEast - baseDelta;
-            }
-            else
-            {
-                baseLongitude = longitudeWest + baseDelta;
-            }
+            return (longitude < edgeObj.longitude);
 
-
-            baseDelta = ( ((edgeObj.longitudeEast - edgeObj.longitudeWest) * (edgeObj.latitudeEast - edgeObj.baseLatitude))
-                           / (edgeObj.latitudeEast - edgeObj.latitudeWest) );
-                            
-            if ((edgeObj.latitudeEast - edgeObj.latitudeWest) < 0)
-            {
-                baseLongitudeObj = edgeObj.longitudeEast - baseDelta;
-            }
-            else
-            {
-                baseLongitudeObj = edgeObj.longitudeWest + baseDelta;
-            }
-
-
-            return (baseLongitude < baseLongitudeObj);
-//            return (longitudeEast < edgeObj.longitudeEast);
 	    }
 
-        int vEast;
-        int vWest;
-        signed int latitudeEast;
-        signed int longitudeEast;
-        signed int latitudeWest;
-        signed int longitudeWest;
 
-        signed int baseLatitude;
+
+
+        int east;
+        int west;
+        int longitude;
 };
-
 
 
 class Vertex
@@ -86,6 +48,13 @@ class Vertex
         ~Vertex( void )
         {
         }
+
+        enum
+        {
+            ORDER_BY_LATITUDE = 0,
+            ORDER_BY_LONGITUDE,
+            ORDER_BY_INDEX
+        };
         
         
 
@@ -93,28 +62,56 @@ class Vertex
 
 	    bool operator <( Vertex & vertexObj )
 	    {
-            if (orderByLatitude)
+            if (orderBy == ORDER_BY_LATITUDE)
             {
 		        return (latitude < vertexObj.latitude);
             }
-            else
+            else if (orderBy == ORDER_BY_LONGITUDE)
             {
 		        return (longitude < vertexObj.longitude);
+            }
+            else
+            {
+		        return (index < vertexObj.index);
             }
 	    }
 
         int latitude;
         int longitude;
         int index;
-        int orderedIndex;
-        int westIndex;
-        int eastIndex;
-        std::list<Edge> edges;
+        int edgeListOffset;
+        Edge edge1;
+        Edge edge2;
         
-        static bool orderByLatitude;
+        static int orderBy;
         
 };
 
+
+
+class VertexCrossRef
+{
+    public:
+        VertexCrossRef( void )
+        {
+        }
+
+
+        ~VertexCrossRef( void )
+        {
+        }
+
+
+        bool operator <( VertexCrossRef & vertexCrossRef )
+	    {
+            return (index < vertexCrossRef.index);
+	    }
+
+        int index;
+        int orderedIndex;
+        
+
+};
 
 
 class Fence
@@ -130,8 +127,6 @@ class Fence
         ~Fence( void )
         {
         }
-        
-        
 
         int id;
         int behaviour;
@@ -146,8 +141,8 @@ class Fence
         
         int vertexCount;
         std::list<Vertex> vertices;
-        
-        static bool orderByLatitude;
+
+        std::list<VertexCrossRef> crossRef;
         
 };
 
@@ -175,9 +170,34 @@ class BoxBoundary
 
         int position;
         int index;
-        std::list<int> activeIndexes;
+        int boxListOffset;
         
 };
+
+
+class FenceSummary
+{
+    public:
+        FenceSummary( void )
+        {
+        }
+
+
+        ~FenceSummary( void )
+        {
+        }
+
+
+        bool operator <( FenceSummary & fenceSummary )
+	    {
+            return (id < fenceSummary.id);
+	    }
+
+        int index;
+        int id;
+        int offset;
+};
+
 
 
 

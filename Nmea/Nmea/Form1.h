@@ -1,11 +1,11 @@
 #pragma once
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 
 #include "gps.h"
 using namespace std;
 
-#if 1
 static const char *gpsGpInstrument[] =
 {
     "$GPRMC,",
@@ -42,62 +42,18 @@ static const char *gpsGpInstrument[] =
     
     0
 };
-#else
-static const char *gpsGpInstrument[] =
-{
-    "$GPRMC,095629.00,A,0012.87155,N,00012.87155,W,6.0,315.0,090616,0.0,W,A*",
-    //RMC Check
-    "\x0d\x0a",
-    //
-    "$GPGGA,095629.00,5135.00000,N,00019.00000,W,1,12,2.0,27.0,M,100.0,M,,*",
-    //GGA Check
-    "\x0d\x0a",
-    //
-    "$GPGSA,A,3,2,6,10,14,18,22,26,30,,,,,2.0,2.0,2.0*",
-    //GSA Check
-    "\x0d\x0a",
-    
-    0
-};
-#endif
 
-static const char *gpsGnInstrument[] =
-{
-    "$GNRMC,",
-    //095629.00
-    ".00,A,0012.87155,N,00012.87155,W,",
-    //6.0
-    ",315.0,",
-    //<ddmmyy>
-    ",0.0,W,A*",
-    //RMC Check
-    "\x0d\x0a",
-    //
-    "$GNGGA,",
-    //<hhmmss>
-    ".00,",
-    //5135.00000
-    ",",
-    //N/S
-    ",",
-    //00019.00000
-    ",",
-    //E/W
-    ",",
-    //1
-    ",12,2.0,",
-    //<aaaaa>
-    ",M,100.0,M,,*",
-    //GGA Check
-    "\x0d\x0a",
-    //
-    "$GNGSA,A,3,2,6,10,14,18,22,26,30,,,,,2.0,2.0,2.0*",
-    //GSA Check
-    "\x0d\x0a",
-    
-    0
-};
 
+
+namespace GPS_TRACK_DIRECTION
+{
+        enum
+        {
+            UP,
+            DOWN,
+            PAUSE,
+        };
+}
 
 namespace Nmea {
 //    class GpsTrack;
@@ -125,25 +81,8 @@ namespace Nmea {
 			//TODO: Add the constructor code here
 			//
             trackerConnected = false;
-            testEvent = false;
             gpsTrack = gcnew GpsTrack();
-            gpsTrack->setDirection( GPS_TRACK_DIRECTION::UP );
-            gpsTrack->setAltitudeStep( "0" );
-            upRadio->Checked = true;
-            eastStepRadio->Checked = true;
-            northStepRadio->Checked = true;
-            northLatitudeRadio->Checked = true;
-            eastLongitudeRadio->Checked = true;
-            latitudeStepBox->Text = "0";
-            longitudeStepBox->Text = "0";
-            latitudeBox->Text = "5160526";
-            longitudeBox->Text = "29768";
-            speedStepBox->Text = "0";
-            
-            altitude = 0;
-            latitude = Convert::ToInt32( latitudeBox->Text );
-            longitude = Convert::ToInt32( longitudeBox->Text );
-		    gpSelectRadio->Checked = true;
+            resetCourse();
         }
 
 	protected:
@@ -176,15 +115,14 @@ namespace Nmea {
 		/// Required designer variable.
         SerialPort^ trackerPort;
 		bool trackerConnected;
-		bool testEvent;
         GpsTrack^ gpsTrack;
         DateTime^ timeNow;
 
         int altitude;
         int altitudeDirection;
         int altitudeStep;
-        int latitude;
-        int longitude;
+
+
 
 
 	private: System::Windows::Forms::Label^  label5;
@@ -205,53 +143,63 @@ namespace Nmea {
 
 	private: System::Windows::Forms::NumericUpDown^  secondsStepBox;
 	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::TextBox^  latitudeBox;
-	private: System::Windows::Forms::TextBox^  longitudeBox;
-	private: System::Windows::Forms::Label^  label8;
-	private: System::Windows::Forms::NumericUpDown^  latitudeStepBox;
-	private: System::Windows::Forms::Label^  label9;
-	private: System::Windows::Forms::NumericUpDown^  longitudeStepBox;
-	private: System::Windows::Forms::GroupBox^  groupBox4;
-	private: System::Windows::Forms::RadioButton^  southStepRadio;
-
-	private: System::Windows::Forms::RadioButton^  northStepRadio;
-
-
-
-	private: System::Windows::Forms::GroupBox^  groupBox5;
-	private: System::Windows::Forms::RadioButton^  westStepRadio;
-
-	private: System::Windows::Forms::RadioButton^  eastStepRadio;
-	private: System::Windows::Forms::RadioButton^  southLatitudeRadio;
 
 
 
 
 
-	private: System::Windows::Forms::RadioButton^  northLatitudeRadio;
 
 
 
-	private: System::Windows::Forms::RadioButton^  westLongitudeRadio;
 
 
-private: System::Windows::Forms::RadioButton^  eastLongitudeRadio;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private: System::Windows::Forms::Button^  button1;
-private: System::Windows::Forms::GroupBox^  groupBox7;
-private: System::Windows::Forms::GroupBox^  groupBox6;
-private: System::Windows::Forms::GroupBox^  groupBox9;
-private: System::Windows::Forms::GroupBox^  groupBox8;
-private: System::Windows::Forms::Label^  label10;
-private: System::Windows::Forms::Label^  label11;
+
+
+
+
+private: System::Windows::Forms::Label^  showLongitude;
+
+private: System::Windows::Forms::Label^  showLatitude;
+
 private: System::Windows::Forms::CheckBox^  fixNoFixCheck;
-private: System::Windows::Forms::TextBox^  speedBox;
+
 private: System::Windows::Forms::Label^  label12;
 private: System::Windows::Forms::NumericUpDown^  speedStepBox;
-private: System::Windows::Forms::RadioButton^  gnSelectRadio;
-private: System::Windows::Forms::RadioButton^  gpSelectRadio;
+
+
 private: System::Windows::Forms::Button^  testButton;
-private: System::Windows::Forms::RadioButton^  deadRadioButton;
+
+private: System::Windows::Forms::TextBox^  courseBox;
+
+private: System::Windows::Forms::Label^  label9;
+private: System::Windows::Forms::Label^  label10;
+
+private: System::Windows::Forms::GroupBox^  groupBox3;
+private: System::Windows::Forms::CheckBox^  trackPauseCheckBox;
+private: System::Windows::Forms::CheckBox^  deadCheckBox;
 
 
 
@@ -301,57 +249,32 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->secondsStepBox = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->latitudeBox = (gcnew System::Windows::Forms::TextBox());
-			this->longitudeBox = (gcnew System::Windows::Forms::TextBox());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->latitudeStepBox = (gcnew System::Windows::Forms::NumericUpDown());
-			this->label9 = (gcnew System::Windows::Forms::Label());
-			this->longitudeStepBox = (gcnew System::Windows::Forms::NumericUpDown());
-			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
-			this->northLatitudeRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->southLatitudeRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->label11 = (gcnew System::Windows::Forms::Label());
-			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
-			this->northStepRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->southStepRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
-			this->label10 = (gcnew System::Windows::Forms::Label());
-			this->groupBox9 = (gcnew System::Windows::Forms::GroupBox());
-			this->eastStepRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->westStepRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
-			this->westLongitudeRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->eastLongitudeRadio = (gcnew System::Windows::Forms::RadioButton());
+			this->showLatitude = (gcnew System::Windows::Forms::Label());
+			this->showLongitude = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->fixNoFixCheck = (gcnew System::Windows::Forms::CheckBox());
-			this->speedBox = (gcnew System::Windows::Forms::TextBox());
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->speedStepBox = (gcnew System::Windows::Forms::NumericUpDown());
-			this->gnSelectRadio = (gcnew System::Windows::Forms::RadioButton());
-			this->gpSelectRadio = (gcnew System::Windows::Forms::RadioButton());
 			this->testButton = (gcnew System::Windows::Forms::Button());
-			this->deadRadioButton = (gcnew System::Windows::Forms::RadioButton());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->altitudeStepBox))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->hoursStepBox))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->minutesStepBox))->BeginInit();
+			this->courseBox = (gcnew System::Windows::Forms::TextBox());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->trackPauseCheckBox = (gcnew System::Windows::Forms::CheckBox());
+			this->deadCheckBox = (gcnew System::Windows::Forms::CheckBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->altitudeStepBox))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->hoursStepBox))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->minutesStepBox))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->secondsStepBox))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->latitudeStepBox))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->longitudeStepBox))->BeginInit();
-			this->groupBox4->SuspendLayout();
-			this->groupBox7->SuspendLayout();
-			this->groupBox6->SuspendLayout();
-			this->groupBox5->SuspendLayout();
-			this->groupBox9->SuspendLayout();
-			this->groupBox8->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->speedStepBox))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->secondsStepBox))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->speedStepBox))->BeginInit();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// comPortBox
 			// 
-			this->comPortBox->Location = System::Drawing::Point(471, 25);
+			this->comPortBox->Location = System::Drawing::Point(528, 25);
 			this->comPortBox->Name = L"comPortBox";
 			this->comPortBox->Size = System::Drawing::Size(46, 20);
 			this->comPortBox->TabIndex = 0;
@@ -359,7 +282,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(409, 28);
+			this->label1->Location = System::Drawing::Point(466, 28);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(56, 13);
 			this->label1->TabIndex = 1;
@@ -367,7 +290,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// 
 			// altitudeBox
 			// 
-			this->altitudeBox->Location = System::Drawing::Point(9, 32);
+			this->altitudeBox->Location = System::Drawing::Point(11, 24);
 			this->altitudeBox->Name = L"altitudeBox";
 			this->altitudeBox->Size = System::Drawing::Size(62, 20);
 			this->altitudeBox->TabIndex = 2;
@@ -389,7 +312,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// connectStatus
 			// 
 			this->connectStatus->AutoSize = true;
-			this->connectStatus->Location = System::Drawing::Point(132, 450);
+			this->connectStatus->Location = System::Drawing::Point(9, 496);
 			this->connectStatus->Name = L"connectStatus";
 			this->connectStatus->Size = System::Drawing::Size(77, 13);
 			this->connectStatus->TabIndex = 10;
@@ -398,7 +321,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(148, 16);
+			this->label5->Location = System::Drawing::Point(8, 59);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(32, 13);
 			this->label5->TabIndex = 15;
@@ -406,7 +329,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// 
 			// altitudeStepBox
 			// 
-			this->altitudeStepBox->Location = System::Drawing::Point(151, 32);
+			this->altitudeStepBox->Location = System::Drawing::Point(46, 59);
 			this->altitudeStepBox->Name = L"altitudeStepBox";
 			this->altitudeStepBox->Size = System::Drawing::Size(46, 20);
 			this->altitudeStepBox->TabIndex = 16;
@@ -415,7 +338,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// upRadio
 			// 
 			this->upRadio->AutoSize = true;
-			this->upRadio->Location = System::Drawing::Point(214, 16);
+			this->upRadio->Location = System::Drawing::Point(11, 81);
 			this->upRadio->Name = L"upRadio";
 			this->upRadio->Size = System::Drawing::Size(39, 17);
 			this->upRadio->TabIndex = 17;
@@ -427,7 +350,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// downRadio
 			// 
 			this->downRadio->AutoSize = true;
-			this->downRadio->Location = System::Drawing::Point(214, 33);
+			this->downRadio->Location = System::Drawing::Point(11, 102);
 			this->downRadio->Name = L"downRadio";
 			this->downRadio->Size = System::Drawing::Size(53, 17);
 			this->downRadio->TabIndex = 18;
@@ -439,7 +362,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// pauseRadio
 			// 
 			this->pauseRadio->AutoSize = true;
-			this->pauseRadio->Location = System::Drawing::Point(214, 50);
+			this->pauseRadio->Location = System::Drawing::Point(11, 125);
 			this->pauseRadio->Name = L"pauseRadio";
 			this->pauseRadio->Size = System::Drawing::Size(55, 17);
 			this->pauseRadio->TabIndex = 19;
@@ -486,7 +409,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// 
 			// hoursStepBox
 			// 
-			this->hoursStepBox->Location = System::Drawing::Point(21, 44);
+			this->hoursStepBox->Location = System::Drawing::Point(60, 29);
 			this->hoursStepBox->Name = L"hoursStepBox";
 			this->hoursStepBox->Size = System::Drawing::Size(44, 20);
 			this->hoursStepBox->TabIndex = 24;
@@ -495,7 +418,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(18, 28);
+			this->label6->Location = System::Drawing::Point(10, 29);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(35, 13);
 			this->label6->TabIndex = 25;
@@ -504,7 +427,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(92, 29);
+			this->label7->Location = System::Drawing::Point(10, 55);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(44, 13);
 			this->label7->TabIndex = 26;
@@ -512,7 +435,7 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// 
 			// minutesStepBox
 			// 
-			this->minutesStepBox->Location = System::Drawing::Point(95, 44);
+			this->minutesStepBox->Location = System::Drawing::Point(60, 55);
 			this->minutesStepBox->Name = L"minutesStepBox";
 			this->minutesStepBox->Size = System::Drawing::Size(41, 20);
 			this->minutesStepBox->TabIndex = 27;
@@ -526,9 +449,9 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			this->groupBox1->Controls->Add(this->upRadio);
 			this->groupBox1->Controls->Add(this->downRadio);
 			this->groupBox1->Controls->Add(this->pauseRadio);
-			this->groupBox1->Location = System::Drawing::Point(12, 67);
+			this->groupBox1->Location = System::Drawing::Point(287, 77);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(277, 80);
+			this->groupBox1->Size = System::Drawing::Size(125, 305);
 			this->groupBox1->TabIndex = 28;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Altitude";
@@ -541,16 +464,16 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			this->groupBox2->Controls->Add(this->label7);
 			this->groupBox2->Controls->Add(this->label6);
 			this->groupBox2->Controls->Add(this->hoursStepBox);
-			this->groupBox2->Location = System::Drawing::Point(326, 67);
+			this->groupBox2->Location = System::Drawing::Point(448, 87);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(277, 80);
+			this->groupBox2->Size = System::Drawing::Size(126, 295);
 			this->groupBox2->TabIndex = 29;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Advance time";
 			// 
 			// secondsStepBox
 			// 
-			this->secondsStepBox->Location = System::Drawing::Point(170, 44);
+			this->secondsStepBox->Location = System::Drawing::Point(60, 82);
 			this->secondsStepBox->Name = L"secondsStepBox";
 			this->secondsStepBox->Size = System::Drawing::Size(41, 20);
 			this->secondsStepBox->TabIndex = 29;
@@ -559,239 +482,33 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(164, 29);
+			this->label2->Location = System::Drawing::Point(10, 82);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(49, 13);
 			this->label2->TabIndex = 28;
 			this->label2->Text = L"Seconds";
 			// 
-			// latitudeBox
+			// showLatitude
 			// 
-			this->latitudeBox->Location = System::Drawing::Point(10, 31);
-			this->latitudeBox->Name = L"latitudeBox";
-			this->latitudeBox->Size = System::Drawing::Size(61, 20);
-			this->latitudeBox->TabIndex = 32;
-			this->latitudeBox->Text = L"5160526";
+			this->showLatitude->AutoSize = true;
+			this->showLatitude->Location = System::Drawing::Point(58, 206);
+			this->showLatitude->Name = L"showLatitude";
+			this->showLatitude->Size = System::Drawing::Size(13, 13);
+			this->showLatitude->TabIndex = 45;
+			this->showLatitude->Text = L"0";
 			// 
-			// longitudeBox
+			// showLongitude
 			// 
-			this->longitudeBox->Location = System::Drawing::Point(10, 34);
-			this->longitudeBox->Name = L"longitudeBox";
-			this->longitudeBox->Size = System::Drawing::Size(55, 20);
-			this->longitudeBox->TabIndex = 33;
-			this->longitudeBox->Text = L"29768";
-			// 
-			// label8
-			// 
-			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(171, 16);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(32, 13);
-			this->label8->TabIndex = 34;
-			this->label8->Text = L"Step:";
-			// 
-			// latitudeStepBox
-			// 
-			this->latitudeStepBox->Location = System::Drawing::Point(173, 32);
-			this->latitudeStepBox->Name = L"latitudeStepBox";
-			this->latitudeStepBox->Size = System::Drawing::Size(46, 20);
-			this->latitudeStepBox->TabIndex = 35;
-			// 
-			// label9
-			// 
-			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(169, 16);
-			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(32, 13);
-			this->label9->TabIndex = 36;
-			this->label9->Text = L"Step:";
-			// 
-			// longitudeStepBox
-			// 
-			this->longitudeStepBox->Location = System::Drawing::Point(172, 34);
-			this->longitudeStepBox->Name = L"longitudeStepBox";
-			this->longitudeStepBox->Size = System::Drawing::Size(46, 20);
-			this->longitudeStepBox->TabIndex = 37;
-			// 
-			// groupBox4
-			// 
-			this->groupBox4->Controls->Add(this->groupBox7);
-			this->groupBox4->Controls->Add(this->label11);
-			this->groupBox4->Controls->Add(this->groupBox6);
-			this->groupBox4->Controls->Add(this->label8);
-			this->groupBox4->Controls->Add(this->latitudeStepBox);
-			this->groupBox4->Controls->Add(this->latitudeBox);
-			this->groupBox4->Location = System::Drawing::Point(12, 187);
-			this->groupBox4->Name = L"groupBox4";
-			this->groupBox4->Size = System::Drawing::Size(277, 125);
-			this->groupBox4->TabIndex = 38;
-			this->groupBox4->TabStop = false;
-			this->groupBox4->Text = L"Latitude";
-			// 
-			// groupBox7
-			// 
-			this->groupBox7->Controls->Add(this->northLatitudeRadio);
-			this->groupBox7->Controls->Add(this->southLatitudeRadio);
-			this->groupBox7->Location = System::Drawing::Point(74, 19);
-			this->groupBox7->Name = L"groupBox7";
-			this->groupBox7->Size = System::Drawing::Size(42, 53);
-			this->groupBox7->TabIndex = 41;
-			this->groupBox7->TabStop = false;
-			// 
-			// northLatitudeRadio
-			// 
-			this->northLatitudeRadio->AutoSize = true;
-			this->northLatitudeRadio->Location = System::Drawing::Point(4, 11);
-			this->northLatitudeRadio->Name = L"northLatitudeRadio";
-			this->northLatitudeRadio->Size = System::Drawing::Size(33, 17);
-			this->northLatitudeRadio->TabIndex = 41;
-			this->northLatitudeRadio->TabStop = true;
-			this->northLatitudeRadio->Text = L"N";
-			this->northLatitudeRadio->UseVisualStyleBackColor = true;
-			// 
-			// southLatitudeRadio
-			// 
-			this->southLatitudeRadio->AutoSize = true;
-			this->southLatitudeRadio->Location = System::Drawing::Point(4, 31);
-			this->southLatitudeRadio->Name = L"southLatitudeRadio";
-			this->southLatitudeRadio->Size = System::Drawing::Size(32, 17);
-			this->southLatitudeRadio->TabIndex = 42;
-			this->southLatitudeRadio->TabStop = true;
-			this->southLatitudeRadio->Text = L"S";
-			this->southLatitudeRadio->UseVisualStyleBackColor = true;
-			// 
-			// label11
-			// 
-			this->label11->AutoSize = true;
-			this->label11->Location = System::Drawing::Point(170, 96);
-			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(101, 13);
-			this->label11->TabIndex = 45;
-			this->label11->Text = L"1 step = 4Km/hr NS";
-			// 
-			// groupBox6
-			// 
-			this->groupBox6->Controls->Add(this->northStepRadio);
-			this->groupBox6->Controls->Add(this->southStepRadio);
-			this->groupBox6->Location = System::Drawing::Point(225, 19);
-			this->groupBox6->Name = L"groupBox6";
-			this->groupBox6->Size = System::Drawing::Size(42, 54);
-			this->groupBox6->TabIndex = 43;
-			this->groupBox6->TabStop = false;
-			// 
-			// northStepRadio
-			// 
-			this->northStepRadio->AutoSize = true;
-			this->northStepRadio->Location = System::Drawing::Point(6, 14);
-			this->northStepRadio->Name = L"northStepRadio";
-			this->northStepRadio->Size = System::Drawing::Size(33, 17);
-			this->northStepRadio->TabIndex = 36;
-			this->northStepRadio->TabStop = true;
-			this->northStepRadio->Text = L"N";
-			this->northStepRadio->UseVisualStyleBackColor = true;
-			// 
-			// southStepRadio
-			// 
-			this->southStepRadio->AutoSize = true;
-			this->southStepRadio->Location = System::Drawing::Point(6, 31);
-			this->southStepRadio->Name = L"southStepRadio";
-			this->southStepRadio->Size = System::Drawing::Size(32, 17);
-			this->southStepRadio->TabIndex = 40;
-			this->southStepRadio->TabStop = true;
-			this->southStepRadio->Text = L"S";
-			this->southStepRadio->UseVisualStyleBackColor = true;
-			// 
-			// groupBox5
-			// 
-			this->groupBox5->Controls->Add(this->label10);
-			this->groupBox5->Controls->Add(this->groupBox9);
-			this->groupBox5->Controls->Add(this->groupBox8);
-			this->groupBox5->Controls->Add(this->label9);
-			this->groupBox5->Controls->Add(this->longitudeStepBox);
-			this->groupBox5->Controls->Add(this->longitudeBox);
-			this->groupBox5->Location = System::Drawing::Point(326, 187);
-			this->groupBox5->Name = L"groupBox5";
-			this->groupBox5->Size = System::Drawing::Size(277, 125);
-			this->groupBox5->TabIndex = 39;
-			this->groupBox5->TabStop = false;
-			this->groupBox5->Text = L"Longitude";
-			// 
-			// label10
-			// 
-			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(133, 96);
-			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(139, 13);
-			this->label10->TabIndex = 44;
-			this->label10->Text = L"1 step = 4Km/hr EW at lat 0";
-			// 
-			// groupBox9
-			// 
-			this->groupBox9->Controls->Add(this->eastStepRadio);
-			this->groupBox9->Controls->Add(this->westStepRadio);
-			this->groupBox9->Location = System::Drawing::Point(225, 24);
-			this->groupBox9->Name = L"groupBox9";
-			this->groupBox9->Size = System::Drawing::Size(41, 51);
-			this->groupBox9->TabIndex = 41;
-			this->groupBox9->TabStop = false;
-			// 
-			// eastStepRadio
-			// 
-			this->eastStepRadio->AutoSize = true;
-			this->eastStepRadio->Location = System::Drawing::Point(6, 10);
-			this->eastStepRadio->Name = L"eastStepRadio";
-			this->eastStepRadio->Size = System::Drawing::Size(32, 17);
-			this->eastStepRadio->TabIndex = 42;
-			this->eastStepRadio->TabStop = true;
-			this->eastStepRadio->Text = L"E";
-			this->eastStepRadio->UseVisualStyleBackColor = true;
-			// 
-			// westStepRadio
-			// 
-			this->westStepRadio->AutoSize = true;
-			this->westStepRadio->Location = System::Drawing::Point(6, 29);
-			this->westStepRadio->Name = L"westStepRadio";
-			this->westStepRadio->Size = System::Drawing::Size(36, 17);
-			this->westStepRadio->TabIndex = 41;
-			this->westStepRadio->TabStop = true;
-			this->westStepRadio->Text = L"W";
-			this->westStepRadio->UseVisualStyleBackColor = true;
-			// 
-			// groupBox8
-			// 
-			this->groupBox8->Controls->Add(this->westLongitudeRadio);
-			this->groupBox8->Controls->Add(this->eastLongitudeRadio);
-			this->groupBox8->Location = System::Drawing::Point(73, 23);
-			this->groupBox8->Name = L"groupBox8";
-			this->groupBox8->Size = System::Drawing::Size(43, 53);
-			this->groupBox8->TabIndex = 41;
-			this->groupBox8->TabStop = false;
-			// 
-			// westLongitudeRadio
-			// 
-			this->westLongitudeRadio->AutoSize = true;
-			this->westLongitudeRadio->Location = System::Drawing::Point(8, 30);
-			this->westLongitudeRadio->Name = L"westLongitudeRadio";
-			this->westLongitudeRadio->Size = System::Drawing::Size(36, 17);
-			this->westLongitudeRadio->TabIndex = 43;
-			this->westLongitudeRadio->TabStop = true;
-			this->westLongitudeRadio->Text = L"W";
-			this->westLongitudeRadio->UseVisualStyleBackColor = true;
-			// 
-			// eastLongitudeRadio
-			// 
-			this->eastLongitudeRadio->AutoSize = true;
-			this->eastLongitudeRadio->Location = System::Drawing::Point(8, 9);
-			this->eastLongitudeRadio->Name = L"eastLongitudeRadio";
-			this->eastLongitudeRadio->Size = System::Drawing::Size(32, 17);
-			this->eastLongitudeRadio->TabIndex = 44;
-			this->eastLongitudeRadio->TabStop = true;
-			this->eastLongitudeRadio->Text = L"E";
-			this->eastLongitudeRadio->UseVisualStyleBackColor = true;
+			this->showLongitude->AutoSize = true;
+			this->showLongitude->Location = System::Drawing::Point(58, 219);
+			this->showLongitude->Name = L"showLongitude";
+			this->showLongitude->Size = System::Drawing::Size(13, 13);
+			this->showLongitude->TabIndex = 44;
+			this->showLongitude->Text = L"0";
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(498, 450);
+			this->button1->Location = System::Drawing::Point(469, 450);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(105, 34);
 			this->button1->TabIndex = 40;
@@ -804,61 +521,33 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			this->fixNoFixCheck->AutoSize = true;
 			this->fixNoFixCheck->Checked = true;
 			this->fixNoFixCheck->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->fixNoFixCheck->Location = System::Drawing::Point(12, 329);
+			this->fixNoFixCheck->Location = System::Drawing::Point(226, 450);
 			this->fixNoFixCheck->Name = L"fixNoFixCheck";
 			this->fixNoFixCheck->Size = System::Drawing::Size(57, 17);
 			this->fixNoFixCheck->TabIndex = 42;
 			this->fixNoFixCheck->Text = L"Fix OK";
 			this->fixNoFixCheck->UseVisualStyleBackColor = true;
 			// 
-			// speedBox
-			// 
-			this->speedBox->Location = System::Drawing::Point(399, 329);
-			this->speedBox->Name = L"speedBox";
-			this->speedBox->Size = System::Drawing::Size(85, 20);
-			this->speedBox->TabIndex = 43;
-			// 
 			// label12
 			// 
 			this->label12->AutoSize = true;
-			this->label12->Location = System::Drawing::Point(263, 328);
+			this->label12->Location = System::Drawing::Point(7, 152);
 			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(38, 13);
+			this->label12->Size = System::Drawing::Size(74, 13);
 			this->label12->TabIndex = 44;
-			this->label12->Text = L"Speed";
+			this->label12->Text = L"Speed (Knots)";
 			// 
 			// speedStepBox
 			// 
-			this->speedStepBox->Location = System::Drawing::Point(307, 328);
+			this->speedStepBox->Location = System::Drawing::Point(87, 152);
+			this->speedStepBox->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000, 0, 0, 0 });
 			this->speedStepBox->Name = L"speedStepBox";
-			this->speedStepBox->Size = System::Drawing::Size(84, 20);
+			this->speedStepBox->Size = System::Drawing::Size(59, 20);
 			this->speedStepBox->TabIndex = 45;
-			// 
-			// gnSelectRadio
-			// 
-			this->gnSelectRadio->AutoSize = true;
-			this->gnSelectRadio->Location = System::Drawing::Point(106, 329);
-			this->gnSelectRadio->Name = L"gnSelectRadio";
-			this->gnSelectRadio->Size = System::Drawing::Size(41, 17);
-			this->gnSelectRadio->TabIndex = 46;
-			this->gnSelectRadio->TabStop = true;
-			this->gnSelectRadio->Text = L"GN";
-			this->gnSelectRadio->UseVisualStyleBackColor = true;
-			// 
-			// gpSelectRadio
-			// 
-			this->gpSelectRadio->AutoSize = true;
-			this->gpSelectRadio->Location = System::Drawing::Point(106, 352);
-			this->gpSelectRadio->Name = L"gpSelectRadio";
-			this->gpSelectRadio->Size = System::Drawing::Size(40, 17);
-			this->gpSelectRadio->TabIndex = 47;
-			this->gpSelectRadio->TabStop = true;
-			this->gpSelectRadio->Text = L"GP";
-			this->gpSelectRadio->UseVisualStyleBackColor = true;
 			// 
 			// testButton
 			// 
-			this->testButton->Location = System::Drawing::Point(565, 329);
+			this->testButton->Location = System::Drawing::Point(536, 402);
 			this->testButton->Name = L"testButton";
 			this->testButton->Size = System::Drawing::Size(38, 23);
 			this->testButton->TabIndex = 48;
@@ -866,34 +555,80 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			this->testButton->UseVisualStyleBackColor = true;
 			this->testButton->Click += gcnew System::EventHandler(this, &Form1::testButton_Click);
 			// 
-			// deadRadioButton
+			// courseBox
 			// 
-			this->deadRadioButton->AutoSize = true;
-			this->deadRadioButton->Location = System::Drawing::Point(106, 375);
-			this->deadRadioButton->Name = L"deadRadioButton";
-			this->deadRadioButton->Size = System::Drawing::Size(51, 17);
-			this->deadRadioButton->TabIndex = 49;
-			this->deadRadioButton->TabStop = true;
-			this->deadRadioButton->Text = L"Dead";
-			this->deadRadioButton->UseVisualStyleBackColor = true;
+			this->courseBox->Location = System::Drawing::Point(10, 43);
+			this->courseBox->Multiline = true;
+			this->courseBox->Name = L"courseBox";
+			this->courseBox->Size = System::Drawing::Size(136, 91);
+			this->courseBox->TabIndex = 50;
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(7, 206);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(45, 13);
+			this->label9->TabIndex = 52;
+			this->label9->Text = L"Latitude";
+			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Location = System::Drawing::Point(8, 219);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(54, 13);
+			this->label10->TabIndex = 53;
+			this->label10->Text = L"Longitude";
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->trackPauseCheckBox);
+			this->groupBox3->Controls->Add(this->label10);
+			this->groupBox3->Controls->Add(this->label9);
+			this->groupBox3->Controls->Add(this->showLongitude);
+			this->groupBox3->Controls->Add(this->courseBox);
+			this->groupBox3->Controls->Add(this->showLatitude);
+			this->groupBox3->Controls->Add(this->speedStepBox);
+			this->groupBox3->Controls->Add(this->label12);
+			this->groupBox3->Location = System::Drawing::Point(21, 77);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(198, 305);
+			this->groupBox3->TabIndex = 55;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Ground Track";
+			// 
+			// trackPauseCheckBox
+			// 
+			this->trackPauseCheckBox->AutoSize = true;
+			this->trackPauseCheckBox->Location = System::Drawing::Point(11, 258);
+			this->trackPauseCheckBox->Name = L"trackPauseCheckBox";
+			this->trackPauseCheckBox->Size = System::Drawing::Size(56, 17);
+			this->trackPauseCheckBox->TabIndex = 54;
+			this->trackPauseCheckBox->Text = L"Pause";
+			this->trackPauseCheckBox->UseVisualStyleBackColor = true;
+			// 
+			// deadCheckBox
+			// 
+			this->deadCheckBox->AutoSize = true;
+			this->deadCheckBox->Location = System::Drawing::Point(308, 450);
+			this->deadCheckBox->Name = L"deadCheckBox";
+			this->deadCheckBox->Size = System::Drawing::Size(52, 17);
+			this->deadCheckBox->TabIndex = 56;
+			this->deadCheckBox->Text = L"Dead";
+			this->deadCheckBox->UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->ClientSize = System::Drawing::Size(618, 497);
-			this->Controls->Add(this->deadRadioButton);
+			this->ClientSize = System::Drawing::Size(618, 531);
+			this->Controls->Add(this->deadCheckBox);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->testButton);
-			this->Controls->Add(this->gpSelectRadio);
-			this->Controls->Add(this->gnSelectRadio);
-			this->Controls->Add(this->speedStepBox);
-			this->Controls->Add(this->label12);
-			this->Controls->Add(this->speedBox);
 			this->Controls->Add(this->fixNoFixCheck);
 			this->Controls->Add(this->button1);
-			this->Controls->Add(this->groupBox5);
-			this->Controls->Add(this->groupBox4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->timeBox);
 			this->Controls->Add(this->groupBox2);
@@ -907,30 +642,18 @@ private: System::Windows::Forms::RadioButton^  deadRadioButton;
 			this->DoubleBuffered = true;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
 			this->Name = L"Form1";
-			this->Text = L"GPS Altitude Simulator";
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->altitudeStepBox))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->hoursStepBox))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->minutesStepBox))->EndInit();
+			this->Text = L"GPS Simulator";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->altitudeStepBox))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->hoursStepBox))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->minutesStepBox))->EndInit();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->secondsStepBox))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->latitudeStepBox))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->longitudeStepBox))->EndInit();
-			this->groupBox4->ResumeLayout(false);
-			this->groupBox4->PerformLayout();
-			this->groupBox7->ResumeLayout(false);
-			this->groupBox7->PerformLayout();
-			this->groupBox6->ResumeLayout(false);
-			this->groupBox6->PerformLayout();
-			this->groupBox5->ResumeLayout(false);
-			this->groupBox5->PerformLayout();
-			this->groupBox9->ResumeLayout(false);
-			this->groupBox9->PerformLayout();
-			this->groupBox8->ResumeLayout(false);
-			this->groupBox8->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->speedStepBox))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->secondsStepBox))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->speedStepBox))->EndInit();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -973,8 +696,8 @@ private: System::Void startButton_Click(System::Object^  sender, System::EventAr
                     {
                         altitude = Convert::ToInt32( altitudeBox->Text );
                     }
-                    latitude = Convert::ToInt32( latitudeBox->Text );
-                    longitude = Convert::ToInt32( longitudeBox->Text );
+
+                    gpsTrack->start( courseBox->Text, speedStepBox->Text );
                     
                     
                     
@@ -988,12 +711,10 @@ private: System::Void startButton_Click(System::Object^  sender, System::EventAr
                 catch (System::IO::IOException ^ e)
                 {
                     connectStatus->Text = e->Message;
-//                    connectStatus->Text = "Com port: Reset the connection";
                 }
                 catch (UnauthorizedAccessException ^ f)
                 {
                     connectStatus->Text = f->Message;
-//                    connectStatus->Text = "Com port: No access";
                 }
                 catch (ArgumentOutOfRangeException ^)
                 {
@@ -1029,7 +750,7 @@ private: System::Void startButton_Click(System::Object^  sender, System::EventAr
 
 private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^  e)
 {
-    if (deadRadioButton->Checked == false)
+    if (deadCheckBox->Checked == false)
     {
         const char * *pOut;
         int s = 0;
@@ -1040,49 +761,16 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
         unsigned int minsFract;
 
         pOut = gpsGpInstrument;
-//        pOut = ((gnSelectRadio->Checked == true) ? gpsGnInstrument : gpsGpInstrument);
     
         altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
-        if (northStepRadio->Checked == northLatitudeRadio->Checked)
+
+
+        if (trackPauseCheckBox->Checked == false)
         {
-            latitude += Convert::ToInt32( latitudeStepBox->Text );
+            gpsTrack->nextPosition( speedStepBox->Text );
         }
-        else
-        {
-            latitude -= Convert::ToInt32( latitudeStepBox->Text );
-            if (latitude < 0)
-            {
-                latitude = -latitude;
-                if (northLatitudeRadio->Checked == true)
-                {
-                    southLatitudeRadio->Checked = true;
-                }
-                else
-                {
-                    northLatitudeRadio->Checked = true;
-                }
-            }
-        }
-        if (eastStepRadio->Checked == eastLongitudeRadio->Checked)
-        {
-            longitude += Convert::ToInt32( longitudeStepBox->Text );
-        }
-        else
-        {
-            longitude -= (int)Convert::ToInt32( longitudeStepBox->Text );
-            if (longitude < 0)
-            {
-                longitude = -longitude;
-                if (eastLongitudeRadio->Checked == true)
-                {
-                    westLongitudeRadio->Checked = true;
-                }
-                else
-                {
-                    eastLongitudeRadio->Checked = true;
-                }
-            }
-        }
+        int latitude = gpsTrack->latitude();
+        int longitude = gpsTrack->longitude();
 
         //Time
         timeNow = DateTime::Now;
@@ -1110,7 +798,6 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
 
                 switch (s)
                 {
-                    #if 1
                     case 1:
                         sprintf_s( cStr, sizeof(cStr), "%u"".00", Convert::ToInt32( speedStepBox->Text ) );
                         checksum = runningCheck( cStr, checksum );
@@ -1128,14 +815,8 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
                     case 12:
                     case 14:
                         //Check
-                        if (gnSelectRadio->Checked == false)
-                        {
-                            checkString( cStr, checksum );
-                        }
-                        else
-                        {
-                            checkString( cStr, 0 );
-                        }
+                        checkString( cStr, checksum );
+                        //checkString( cStr, 0 );
                         break;
 
                     case 0:
@@ -1151,8 +832,8 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
                     case 6:
                         if (fixNoFixCheck->Checked == true)
                         {
-                            degrees = latitude / 100000;
-                            mins = (latitude % 100000) * 60;
+                            degrees = abs( latitude ) / 100000;
+                            mins = (abs( latitude ) % 100000) * 60;
                             minsWhole = mins / 100000; 
                             minsFract = mins % 100000; 
                             sprintf_s( cStr, sizeof(cStr), "%02u""%02u"".""%05u", degrees, minsWhole, minsFract );
@@ -1166,15 +847,15 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
 
                     case 7:
                         //North/South
-                        strcpy_s( cStr, sizeof(cStr), (northLatitudeRadio->Checked == true) ? "N" : "S" );
+                        strcpy_s( cStr, sizeof(cStr), (latitude >= 0) ? "N" : "S" );
                         checksum = runningCheck( cStr, checksum );
                         break;
 
                     case 8:
                         if (fixNoFixCheck->Checked == true)
                         {
-                            degrees = longitude / 100000;
-                            mins = (longitude % 100000) * 60;
+                            degrees = abs( longitude ) / 100000;
+                            mins = (abs( longitude ) % 100000) * 60;
                             minsWhole = mins / 100000; 
                             minsFract = mins % 100000; 
                             sprintf_s( cStr, sizeof(cStr), "%03u""%02u"".""%05u", degrees, minsWhole, minsFract );
@@ -1188,7 +869,7 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
 
                     case 9:
                         //East/West
-                        strcpy_s( cStr, sizeof(cStr), (eastLongitudeRadio->Checked == true) ? "E" : "W" );
+                        strcpy_s( cStr, sizeof(cStr), (longitude >= 0) ? "E" : "W" );
                         checksum = runningCheck( cStr, checksum );
                         break;
 
@@ -1213,45 +894,6 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
                         checksum = runningCheck( cStr, checksum );
                         break;
 
-                    #else
-                    case 0:
-                        sprintf_s( cStr, sizeof(cStr), "%02u", timeNow->Hour );
-                        sprintf_s( cStr + 2, sizeof(cStr) - 2, "%02u", timeNow->Minute );
-                        sprintf_s( cStr + 4, sizeof(cStr) - 4, "%02u", timeNow->Second );
-                        time = gcnew String( cStr );
-                        timeBox->Text = time;
-                    
-                        sprintf_s( cStr, sizeof(cStr), "%02u", timeNow->Day );
-                        sprintf_s( cStr + 2, sizeof(cStr) - 2, "%02u", timeNow->Month );
-                        sprintf_s( cStr + 4, sizeof(cStr) - 4, "%02u", (timeNow->Year % 100) );
-                        time = gcnew String( cStr );
-                        dateBox->Text = time;
-                    
-                        //RMC Check
-                        checkString( cStr, checksum );
-                        break;
-
-                    case 1:
-                        //crlf
-                        checksum = 0;
-                        break;
-                    
-                    case 2:
-                        //GGA Check
-                        checkString( cStr, checksum );
-                        break;
-                
-                    case 3:
-                        //crlf
-                        checksum = 0;
-                        break;
-                    
-                    case 4:
-                        //GSA Check
-                        checkString( cStr, checksum );
-                        break;
-                
-                    #endif
                 
                     default:
                         checksum = 0;
@@ -1266,6 +908,9 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
                 }
                 trackerPort->Write( insertString, 0, insertString->Length );
                 ++s;
+
+                showLatitude->Text = Convert::ToString( latitude );
+                showLongitude->Text = Convert::ToString( longitude );
             }
             catch (System::IO::IOException ^)
             {
@@ -1285,8 +930,6 @@ private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^
             ++pOut;
         }
 
-        latitudeBox->Text = Convert::ToString( latitude );
-        longitudeBox->Text = Convert::ToString( longitude );
     }
 }
 
@@ -1328,26 +971,21 @@ private: System::Void secondsStepBox_ValueChanged(System::Object^  sender, Syste
 
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
 {
-    gpsTrack->setDirection( GPS_TRACK_DIRECTION::UP );
-    gpsTrack->setAltitudeStep( "0" );
-    upRadio->Checked = true;
-    eastStepRadio->Checked = true;
-    northStepRadio->Checked = true;
-    northLatitudeRadio->Checked = true;
-    eastLongitudeRadio->Checked = true;
-    latitudeStepBox->Text = "0";
-    longitudeStepBox->Text = "0";
-    latitudeBox->Text = "5160526";
-    longitudeBox->Text = "29768";
-    altitudeBox->Text == "0";
-
-    altitude = 0;
-    latitude = Convert::ToInt32( latitudeBox->Text );
-    longitude = Convert::ToInt32( longitudeBox->Text );
+    resetCourse();
+    gpsTrack->start( courseBox->Text, speedStepBox->Text );
 }
 
 
 
+
+
+   private: void resetCourse( void )
+   {
+       upRadio->Checked = true;
+       altitudeBox->Text == "0";
+
+       altitude = 0;
+   }
 
 
 	private: unsigned char runningCheck( const char *p, unsigned char sum )
@@ -1386,6 +1024,8 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
     private: System::Void testButton_Click(System::Object^  sender, System::EventArgs^  e)
     {
     }
+
+
 
 };
 

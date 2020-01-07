@@ -1,11 +1,17 @@
+#include "stream_out.h"
+
 using namespace System;
 
 public ref class Pack
 {
     public:
     
-        Pack( void )
+        Pack( char* name )
         {
+            _packedFile = gcnew StreamOut( name );
+
+            _bitPosn = (1U << 7);
+            _byte = 0;
         }
     
 
@@ -14,13 +20,9 @@ public ref class Pack
         }
         
 
-        //Prepare packing variables. Call this to start.
-        //  binary - ptr to a binary buffer for output
-        void initialise( unsigned char *binary )
+        void save( void )
         {
-            _bytePtr = binary;
-            _bitPosn = (1U << 7);
-            _byteCount = 0;
+            _packedFile->close();
         }
     
     
@@ -31,16 +33,15 @@ public ref class Pack
             unsigned int valueBit = (1U << (numBits - 1));
             while (valueBit != 0)
             {
-                *_bytePtr &= ~_bitPosn;
-                *_bytePtr |= (((value & valueBit) != 0) ? _bitPosn : 0U);
+                _byte &= ~_bitPosn;
+                _byte |= (((value & valueBit) != 0) ? _bitPosn : 0U);
                 _bitPosn >>= 1;
                 
                 if (_bitPosn == 0U)
                 {
                     //Reset bit position
                     _bitPosn = (1U << 7);
-                    ++_bytePtr;
-                    ++_byteCount;
+                    _packedFile->put( _byte );
                 }
             
                 valueBit >>= 1;
@@ -48,6 +49,7 @@ public ref class Pack
         }
 
 
+        #if 0
         //Extract 'numBits' from the byte buffer starting at current addressed
         //bit
         unsigned int extract( int numBits )
@@ -57,15 +59,15 @@ public ref class Pack
 
             while (valueBit != 0)
             {
-                value |= (((*_bytePtr & _bitPosn) != 0) ? valueBit : 0U);
+                value |= (((_byte & _bitPosn) != 0) ? valueBit : 0U);
                 _bitPosn >>= 1;
                 
                 if (_bitPosn == 0U)
                 {
                     //Reset bit position
                     _bitPosn = (1U << 7);
-                    ++_bytePtr;
-                    ++_byteCount;
+
+                    //Get next byte
                 }
             
                 valueBit >>= 1;
@@ -73,14 +75,9 @@ public ref class Pack
             
             return(value);
         }
+        #endif
 
 
-        //Provide total binary bytes
-        int size( void )
-        {
-            return(_byteCount);
-        }
-    
         //Pads to next byte boundary
         void pad( void )
         {
@@ -88,8 +85,7 @@ public ref class Pack
             {
                 //Finish with the current byte
                 _bitPosn = (1U << 7);
-                ++_bytePtr;
-                ++_byteCount;
+                _packedFile->put( _byte );
             }
         }
 
@@ -115,8 +111,9 @@ public ref class Pack
 
 
     private:
-        unsigned char * _bytePtr;//ptr to output file
+        StreamOut^ _packedFile;
+
         unsigned char _bitPosn;//bit position within a byte
-        int _byteCount;//count bytes outputted
+        int _byte;//byte under construction
         
 };
