@@ -8,6 +8,7 @@
 #include "pack.h"
 #include "vertex.h"
 #include "stream_in.h"
+//#include <algorithm>    // std::stable_sort
 
 const int MAX_ENTRY_SZ = 30;
 
@@ -375,7 +376,6 @@ namespace geofence {
                                         {
                                             /* Ignore the edge if horizontal */
                                             /* Pass on 'this' edge2 to next edge2 (since vertices are effectively the same) */
-                                            (*iterVertex2).edge2 = (*iterVertex).edge2;
                                         }
                                         ++iterVertex;
                                         ++iterVertex2;
@@ -409,6 +409,9 @@ namespace geofence {
                                     // Box boundaries SN
                                     Vertex::orderBy = Vertex::ORDER_BY_LATITUDE;
                                     fenceMap.vertices.sort();
+                                    //Comp compare_vertices;
+                                    //std::stable_sort( fenceMap.vertices.begin(), fenceMap.vertices.end(), compare_vertices );
+
 
                                     iterVertex = fenceMap.vertices.begin();
                                     boundary.position = (*iterVertex).latitude;
@@ -454,6 +457,7 @@ namespace geofence {
                                     std::list<Edge> edgeBlock;
 
                                     int edgeOffset = 0;
+                                    int band = 0;
 
                                     iterVertex = fenceMap.vertices.begin();
                                     while (iterVertex != fenceMap.vertices.end())
@@ -507,6 +511,26 @@ namespace geofence {
 
                                         runningEdges.sort();
 
+                                        /* Check for duplicate edges */
+                                        iterRunning = runningEdges.begin();
+                                        std::list<Edge>::iterator iterRunning2 = runningEdges.begin();
+
+                                        if (iterRunning2 != runningEdges.end())
+                                        {
+                                            ++iterRunning2;
+                                        }
+
+                                        while ((iterRunning2 != runningEdges.end()) && (iterRunning != runningEdges.end()))
+                                        {
+                                            if ( ((*iterRunning2).west == (*iterRunning).west)
+                                                && ((*iterRunning2).east == (*iterRunning).east) )
+                                            {
+                                                status->Text = "Duplicate edge";
+                                            }
+                                            ++iterRunning;
+                                            ++iterRunning2;
+                                        }
+
                                         /* Copy edges to edge block */
                                         iterRunning = runningEdges.begin();
                                         while (iterRunning != runningEdges.end())
@@ -518,6 +542,7 @@ namespace geofence {
                                         }
 
                                         ++iterVertex;
+                                        ++band;
                                     }
 
                                     //********** Write edge list offsets & their edge lists ****************
@@ -765,6 +790,7 @@ namespace geofence {
             //Or skip past to start of next line
             while (((character == '\x0d') || (character == '\x0a')) && (csvFile->isEnd() == false))
             {
+                character = csvFile->get();
             }
         
             if (charCount != 0)
@@ -1017,8 +1043,11 @@ namespace geofence {
 	}
 
 
+    //#define TXT_FILE
+    #define NON_CIRCULAR
     void generateFence( std::fstream *fileOut, int id, double latitude, double longitude, double radius, int points )
     {
+
 
         #define PI 3.14159265
         #define DEG_TO_RADS (PI / 180)
@@ -1030,12 +1059,39 @@ namespace geofence {
         fileOut->write(buffer, strlen( buffer ) );
         #endif
 
+        #if defined NON_CIRCULAR
+        int percent = ((rand() % 100) + 1);
+        #else
+        int percent = 100;
+        #endif
+
+        int firstPercent = percent;
+        int j = 0;
+
         for (int i = 0; i != points; ++i)
         {
             double radians = ((360 / (double)points) * (i + 1)) * DEG_TO_RADS;
 
-            double pointLat = latitude + (cos( radians ) * radius);
-            double pointLong = longitude + (sin( radians ) * radius);
+            //Change radius every 'n' angle steps
+            ++j;
+            if (j == 50)
+            {
+                #if defined NON_CIRCULAR
+                percent = ((rand() % 100) + 1);
+                #else
+                percent = 100;
+                #endif
+                j = 0;
+            }
+
+            //Make final radius same as the very first
+            if (i == (points - 1))
+            {
+                percent = firstPercent;
+            }
+
+            double pointLat = latitude + (cos( radians ) * ((radius * percent) / 100));
+            double pointLong = longitude + (sin( radians ) * ((radius * percent) / 100));
 
             #if defined TXT_FILE
             if (false)
@@ -1075,7 +1131,7 @@ namespace geofence {
 
         double radius = MASS_RADIUS / 100000;
 
-        double centreStep = (2 * radius) / 5;
+        double centreStep = (2 * radius) / 3;
 
         for (int i = 0; i < 10; ++i)
         {
@@ -1091,6 +1147,7 @@ namespace geofence {
 
         status->Text = "Generated successfully";
     }
+
 
 };
 }

@@ -199,5 +199,24 @@ class FenceSummary
 };
 
 
+class Comp
+{
+    public:
+    bool operator()( const Vertex & first, const Vertex & second )
+    {
+        if (first.latitude < second.latitude)
+        {
+            return (true) ;
+        }
+        else if (first.latitude > second.latitude)
+        {
+            return (false) ;
+        }
+        else
+        {
+            return (first.index > second.index) ;
+        }
+    }
+};
 
 
