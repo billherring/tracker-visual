@@ -346,7 +346,7 @@ namespace geofence {
 
                                     //****************** Establish vertex links (edges) ********************
 
-                                    /* Assumes they are listed in circular order */
+                                    // Assumes they are listed in circular order
 
                                     std::list<Vertex>::iterator iterVertex = fenceMap.vertices.begin();
                                     std::list<Vertex>::iterator iterVertex2 = fenceMap.vertices.begin();
@@ -355,7 +355,7 @@ namespace geofence {
                                     while (iterVertex != fenceMap.vertices.end())
                                     {
 
-                                        /* Use edge1 if link belongs to 'this' vertex, else it belongs to 'next' (use edge2) */
+                                        // Use edge1 if link belongs to 'this' vertex, else it belongs to 'next' (use edge2)
                                         if ((*iterVertex).latitude != (*iterVertex2).latitude)
                                         {
                                             Edge *edgePtr = ((*iterVertex).latitude > (*iterVertex2).latitude) ? &((*iterVertex2).edge2) : &((*iterVertex).edge1);
@@ -372,13 +372,10 @@ namespace geofence {
                                             }
 
                                         }
-                                        else
-                                        {
-                                            /* Ignore the edge if horizontal */
-                                            /* Pass on 'this' edge2 to next edge2 (since vertices are effectively the same) */
-                                        }
                                         ++iterVertex;
                                         ++iterVertex2;
+
+                                        //Link last back to first
                                         if (iterVertex2 == fenceMap.vertices.end())
                                         {
                                             iterVertex2 = fenceMap.vertices.begin();
@@ -457,92 +454,86 @@ namespace geofence {
                                     std::list<Edge> edgeBlock;
 
                                     int edgeOffset = 0;
-                                    int band = 0;
 
                                     iterVertex = fenceMap.vertices.begin();
+                                    iterVertex2 = iterVertex;
+
                                     while (iterVertex != fenceMap.vertices.end())
                                     {
+                                        std::list<Edge>::iterator iterRunning;
+                                        int currentLatitude = (*iterVertex).latitude;
 
-                                        /* Set edge list offset for this vertex */
-                                        (*iterVertex).edgeListOffset = edgeOffset;
-
-                                        /* Band latitude */
-                                        int vertexNum = (*iterVertex).index;
-
-
-                                        /* Copy edges from previous list (if any) */
-                                        /* Remove any that have no common link to this vertex number */
-                                        std::list<Edge>::iterator iterRunning = runningEdges.begin();
-                                        while (iterRunning != runningEdges.end())
+                                        do
                                         {
-                                            if ( (vertexNum == (*iterRunning).west)
-                                                 || (vertexNum == (*iterRunning).east) )
+                                            /* Band latitude */
+                                            int vertexNum = (*iterVertex2).index;
+
+
+                                            // Copy edges from previous list (if any)
+                                            // Remove any that have no common link to this vertex number
+                                            iterRunning = runningEdges.begin();
+                                            while (iterRunning != runningEdges.end())
                                             {
-                                                iterRunning = runningEdges.erase( iterRunning );
-                                                if (runningEdges.empty())
+                                                if ( (vertexNum == (*iterRunning).west)
+                                                     || (vertexNum == (*iterRunning).east) )
                                                 {
-                                                    iterRunning = runningEdges.end();
+                                                    iterRunning = runningEdges.erase( iterRunning );
+                                                    if (runningEdges.empty())
+                                                    {
+                                                        iterRunning = runningEdges.end();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    (*iterRunning).longitude = edgeLongitude( (*iterRunning).west, (*iterRunning).east, currentLatitude, &fenceMap );
+                                                    ++iterRunning;
                                                 }
                                             }
-                                            else
+
+                                            //Add edges for this vertex
+                                            Edge tempEdge;
+
+                                            if ((*iterVertex2).edge1.west != NO_VERTEX)
                                             {
-                                                (*iterRunning).longitude = edgeLongitude( (*iterRunning).west, (*iterRunning).east, (*iterVertex).latitude, &fenceMap );
-                                                ++iterRunning;
+                                                tempEdge = (*iterVertex2).edge1;
+                                                tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, currentLatitude, &fenceMap );
+                                                runningEdges.push_back( tempEdge );
                                             }
-                                        }
 
-                                        /* Add edges for this vertex */
-                                        Edge tempEdge;
+                                            if ((*iterVertex2).edge2.west != NO_VERTEX)
+                                            {
+                                                tempEdge = (*iterVertex2).edge2;
+                                                tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, currentLatitude, &fenceMap );
+                                                runningEdges.push_back( tempEdge );
+                                            }
 
-                                        if ((*iterVertex).edge1.west != NO_VERTEX)
-                                        {
-                                            tempEdge = (*iterVertex).edge1;
-                                            tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, (*iterVertex).latitude, &fenceMap );
-                                            runningEdges.push_back( tempEdge );
-                                        }
+                                            ++iterVertex2;
 
-                                        if ((*iterVertex).edge2.west != NO_VERTEX)
-                                        {
-                                            tempEdge = (*iterVertex).edge2;
-                                            tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, (*iterVertex).latitude, &fenceMap );
-                                            runningEdges.push_back( tempEdge );
-                                        }
+                                            //Update running edges with next vertex if it is same latitude
+                                        } while ((iterVertex2 != fenceMap.vertices.end()) && ((*iterVertex2).latitude == currentLatitude));
 
 
                                         runningEdges.sort();
 
-                                        /* Check for duplicate edges */
-                                        iterRunning = runningEdges.begin();
-                                        std::list<Edge>::iterator iterRunning2 = runningEdges.begin();
 
-                                        if (iterRunning2 != runningEdges.end())
+                                        // Copy running edge list (note: for one or more vertices) to edge block
+                                        while (iterVertex != iterVertex2)
                                         {
-                                            ++iterRunning2;
-                                        }
+                                            // Set edge list offset for vertex
+                                            (*iterVertex).edgeListOffset = edgeOffset;
 
-                                        while ((iterRunning2 != runningEdges.end()) && (iterRunning != runningEdges.end()))
-                                        {
-                                            if ( ((*iterRunning2).west == (*iterRunning).west)
-                                                && ((*iterRunning2).east == (*iterRunning).east) )
+                                            iterRunning = runningEdges.begin();
+                                            while (iterRunning != runningEdges.end())
                                             {
-                                                status->Text = "Duplicate edge";
+                                                edgeBlock.push_back( *iterRunning );
+                                                ++iterRunning;
+
+                                                ++edgeOffset;
                                             }
-                                            ++iterRunning;
-                                            ++iterRunning2;
+
+                                            ++iterVertex;
                                         }
 
-                                        /* Copy edges to edge block */
-                                        iterRunning = runningEdges.begin();
-                                        while (iterRunning != runningEdges.end())
-                                        {
-                                            edgeBlock.push_back( *iterRunning );
-                                            ++iterRunning;
-
-                                            ++edgeOffset;
-                                        }
-
-                                        ++iterVertex;
-                                        ++band;
                                     }
 
                                     //********** Write edge list offsets & their edge lists ****************
