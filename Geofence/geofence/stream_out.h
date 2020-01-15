@@ -15,7 +15,7 @@ public ref class StreamOut
         {
             String^ nameString = gcnew String( name );
             _buffer = gcnew array<unsigned char>( BUFFER_SZ );
-            _fs = File::OpenWrite( nameString );
+            _fs = File::Create( nameString );
             _fs->Position = 0;
 
             clearBuffer();
@@ -56,7 +56,7 @@ public ref class StreamOut
 
     private:
 
-        static const int BUFFER_SZ = 10;
+        static const int BUFFER_SZ = 100;
 
         FileStream^ _fs;
         array<unsigned char>^ _buffer;

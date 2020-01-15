@@ -406,8 +406,6 @@ namespace geofence {
                                     // Box boundaries SN
                                     Vertex::orderBy = Vertex::ORDER_BY_LATITUDE;
                                     fenceMap.vertices.sort();
-                                    //Comp compare_vertices;
-                                    //std::stable_sort( fenceMap.vertices.begin(), fenceMap.vertices.end(), compare_vertices );
 
 
                                     iterVertex = fenceMap.vertices.begin();
@@ -901,6 +899,7 @@ namespace geofence {
 
 
         /* Use m, n as part calculations */
+        bandLatitude += 100;
         int m = latitudeWest - bandLatitude;
         int n = latitudeWest - latitudeEast;
         if (bandLatitude > latitudeWest)
