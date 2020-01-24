@@ -69,13 +69,13 @@ using namespace System::Collections;
 
             int latitude()
             {
-                return (originLatitude + deltaLatitude);
+                return ((int)(originLatitude + deltaLatitude));
             }
 
 
             int longitude()
             {
-                return (originLongitude + deltaLongitude);
+                return ((int)(originLongitude + deltaLongitude));
             }
 
 

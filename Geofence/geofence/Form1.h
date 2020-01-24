@@ -419,15 +419,6 @@ namespace geofence {
                                     boundary.index = fenceCount;
                                     NSBoundaries.push_back( boundary );
 
-                                    // Output ordered latitude (SN) */
-                                    iterVertex = fenceMap.vertices.begin();
-                                    while (iterVertex != fenceMap.vertices.end())
-                                    {
-                                        fileWrite( &fileOut, BYTE_4, (*iterVertex).latitude );
-                                        ++iterVertex;
-                                    }
-
-
                                     // Establish a vertex index cross ref between ordered and unordered
                                     int orderedIndex = 0;
                                     iterVertex = fenceMap.vertices.begin();
@@ -435,6 +426,7 @@ namespace geofence {
                                     {
                                         VertexCrossRef crossRef;
 
+                                        fileWrite( &fileOut, BYTE_4, (*iterVertex).latitude );
                                         crossRef.index = (*iterVertex).index;
                                         crossRef.orderedIndex = orderedIndex;
                                         fenceMap.crossRef.push_back( crossRef );
@@ -460,8 +452,31 @@ namespace geofence {
                                     {
                                         std::list<Edge>::iterator iterRunning;
                                         int currentLatitude = (*iterVertex).latitude;
+                                        int newLatitude = currentLatitude;
 
+                                        ///////Find next latitude///////////////
+                                        std::list<Vertex>::iterator iterVertexStop = iterVertex;
                                         do
+                                        {
+                                            ++iterVertexStop;
+
+                                            if (iterVertexStop != fenceMap.vertices.end())
+                                            {
+                                                newLatitude = (*iterVertexStop).latitude;
+                                            }
+                                            else
+                                            {
+                                                newLatitude = currentLatitude;
+                                            }
+
+                                        } while ((iterVertexStop != fenceMap.vertices.end()) && (newLatitude == currentLatitude));
+
+
+                                        int midBandLatitude = (currentLatitude + newLatitude) / 2;
+                                        ///////Find next latitude///////////////
+
+
+                                        while (iterVertex2 != iterVertexStop)
                                         {
                                             /* Band latitude */
                                             int vertexNum = (*iterVertex2).index;
@@ -483,7 +498,7 @@ namespace geofence {
                                                 }
                                                 else
                                                 {
-                                                    (*iterRunning).longitude = edgeLongitude( (*iterRunning).west, (*iterRunning).east, currentLatitude, &fenceMap );
+                                                    (*iterRunning).longitude = edgeLongitude( (*iterRunning).west, (*iterRunning).east, midBandLatitude, &fenceMap );
                                                     ++iterRunning;
                                                 }
                                             }
@@ -494,21 +509,21 @@ namespace geofence {
                                             if ((*iterVertex2).edge1.west != NO_VERTEX)
                                             {
                                                 tempEdge = (*iterVertex2).edge1;
-                                                tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, currentLatitude, &fenceMap );
+                                                tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, midBandLatitude, &fenceMap );
                                                 runningEdges.push_back( tempEdge );
                                             }
 
                                             if ((*iterVertex2).edge2.west != NO_VERTEX)
                                             {
                                                 tempEdge = (*iterVertex2).edge2;
-                                                tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, currentLatitude, &fenceMap );
+                                                tempEdge.longitude = edgeLongitude( tempEdge.west, tempEdge.east, midBandLatitude, &fenceMap );
                                                 runningEdges.push_back( tempEdge );
                                             }
 
                                             ++iterVertex2;
 
                                             //Update running edges with next vertex if it is same latitude
-                                        } while ((iterVertex2 != fenceMap.vertices.end()) && ((*iterVertex2).latitude == currentLatitude));
+                                        }
 
 
                                         runningEdges.sort();
@@ -899,7 +914,6 @@ namespace geofence {
 
 
         /* Use m, n as part calculations */
-        bandLatitude += 100;
         int m = latitudeWest - bandLatitude;
         int n = latitudeWest - latitudeEast;
         if (bandLatitude > latitudeWest)
@@ -1141,4 +1155,7 @@ namespace geofence {
 
 };
 }
+
+
+
 
