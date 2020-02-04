@@ -1,6 +1,13 @@
 using namespace System;
 using namespace System::Collections;
 
+    enum
+    {
+        DELIMIT_COMMA,
+        DELIMIT_CR,
+        DELIMIT_LF,
+        DELIMIT_NONE,
+    };
 
     public ref class GpsTrack
     {
@@ -29,7 +36,12 @@ using namespace System::Collections;
             {
                 course = courseStr;
                 courseIndex = 0;
-                setNextTrack();
+                originLatitude = 0;
+                originLongitude = 0;
+                targetLatitude = 0;
+                targetLongitude = 0;
+                setNextTrack();/* Establish origin */
+                setNextTrack();/* Now target */
             }
 
             /*
@@ -78,6 +90,25 @@ using namespace System::Collections;
                 return ((int)(originLongitude + deltaLongitude));
             }
 
+            int altitude()
+            {
+                return (trackHeight);
+            }
+
+            int speed()
+            {
+                return (trackSpeed);
+            }
+
+            bool isTrackHeight( void )
+            {
+                return (trackHeightSet);
+            }
+
+            bool isTrackSpeed( void )
+            {
+                return (trackSpeedSet);
+            }
 
         private:
             long long int originLatitude;
@@ -88,9 +119,14 @@ using namespace System::Collections;
             long long int deltaLongitude;
             long long int trackLength;
             long long int deltaTrackLength;
+            int trackHeight;
+            int trackSpeed;
+            bool trackHeightSet;
+            bool trackSpeedSet;
 
             String ^course;
             int courseIndex;
+
 
 
             void setNextTrack( void )
@@ -99,30 +135,45 @@ using namespace System::Collections;
                 {
 
                     int point;
+                    int delimit;
 
-                    if (courseIndex == 0)
+                    trackHeightSet = false;
+                    trackSpeedSet = false;
+
+                    originLatitude = targetLatitude;
+                    originLongitude = targetLongitude;
+
+
+                    do
                     {
-                        originLatitude = 0;
-                        originLongitude = 0;
+                        delimit = setTrackPoint( &point );
+                    } while ((delimit == DELIMIT_CR) || (delimit == DELIMIT_LF));
 
-                        setTrackPoint( ',', &point );
-                        targetLatitude = originLatitude = point;
-                        setTrackPoint( 0x0d, &point );
-                        targetLongitude = originLongitude = point;
-                        setTrackPoint( 0x0a, &point );
-                    }
-                    else
+                    if (delimit != DELIMIT_NONE)
                     {
-                        originLatitude = targetLatitude;
-                        originLongitude = targetLongitude;
+                        targetLatitude = point;
+                        delimit = setTrackPoint( &point );
+                        targetLongitude = point;
+                        if (delimit == DELIMIT_COMMA)
+                        {
+                            delimit = setTrackPoint( &point );
+                            trackHeight = point;
+                            trackHeightSet = true;
+
+                            if (delimit == DELIMIT_COMMA)
+                            {
+                                delimit = setTrackPoint( &point );
+                                trackSpeed = point;
+                                trackSpeedSet = true;
+
+                                while (delimit == DELIMIT_COMMA)
+                                {
+                                    delimit = setTrackPoint( &point );
+                                }
+                            }
+                        }
+
                     }
-
-                    setTrackPoint( ',', &point );
-                    targetLatitude = point;
-                    setTrackPoint( 0x0d, &point );
-                    targetLongitude = point;
-                    setTrackPoint( 0x0a, &point );
-
                     trackLength = getTrackLength( targetLatitude - originLatitude, targetLongitude - originLongitude );
 
                     deltaLatitude = 0;
@@ -133,10 +184,25 @@ using namespace System::Collections;
             }
 
 
-            void setTrackPoint( char delimiter, int *point )
+            int setTrackPoint( int *point )
             {
                 int length;
-                int position = course->IndexOf( delimiter, courseIndex );
+                int delimiter = DELIMIT_COMMA;/* Assumed */
+
+                int position = course->IndexOf( ',', courseIndex );
+                int positionCR = course->IndexOf( 0x0d, courseIndex );
+                int positionLF = course->IndexOf( 0x0a, courseIndex );
+
+                if ((positionCR >= 0) && ((positionCR < position) || (position < 0)))
+                {
+                    position = positionCR;
+                    delimiter = DELIMIT_CR;
+                }
+                if ((positionLF >= 0) && (positionLF < position))
+                {
+                    position = positionLF;
+                    delimiter = DELIMIT_LF;
+                }
 
                 if (position > 0)
                 {
@@ -154,7 +220,10 @@ using namespace System::Collections;
                 {
                     //Bring to an end by going to end of string
                     courseIndex = course->Length;
+                    delimiter = DELIMIT_NONE;
                 }
+
+                return (delimiter);
 
             }
 

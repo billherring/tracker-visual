@@ -55,7 +55,8 @@ namespace GPS_TRACK_DIRECTION
         };
 }
 
-namespace Nmea {
+namespace Nmea
+{
 //    class GpsTrack;
 
 	using namespace System;
@@ -73,7 +74,7 @@ namespace Nmea {
 	/// </summary>
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
-	public:
+    	public:
 		Form1(void)
 		{
 			InitializeComponent();
@@ -85,7 +86,7 @@ namespace Nmea {
             resetCourse();
         }
 
-	protected:
+    	protected:
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
@@ -96,53 +97,53 @@ namespace Nmea {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^  comPortBox;
-	protected: 
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::TextBox^  altitudeBox;
+    	private: System::Windows::Forms::TextBox^  comPortBox;
+    	protected: 
+    	private: System::Windows::Forms::Label^  label1;
+    	private: System::Windows::Forms::TextBox^  altitudeBox;
 
 
-	private: System::Windows::Forms::Button^  startButton;
+    	private: System::Windows::Forms::Button^  startButton;
 
 
 
 
-	private: System::Windows::Forms::Timer^  secTicker;
-	private: System::ComponentModel::IContainer^  components;
+    	private: System::Windows::Forms::Timer^  secTicker;
+    	private: System::ComponentModel::IContainer^  components;
 
-	private:
-		/// <summary>
-		/// Required designer variable.
-        SerialPort^ trackerPort;
-		bool trackerConnected;
-        GpsTrack^ gpsTrack;
-        DateTime^ timeNow;
+    	private:
+    		/// <summary>
+    		/// Required designer variable.
+            SerialPort^ trackerPort;
+    		bool trackerConnected;
+            GpsTrack^ gpsTrack;
+            DateTime^ timeNow;
 
-        int altitude;
-        int altitudeDirection;
-        int altitudeStep;
+            int altitude;
+            int altitudeDirection;
+            int altitudeStep;
 
 
 
 
-	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::NumericUpDown^  altitudeStepBox;
-	private: System::Windows::Forms::RadioButton^  upRadio;
-	private: System::Windows::Forms::RadioButton^  downRadio;
-	private: System::Windows::Forms::RadioButton^  pauseRadio;
-	private: System::Windows::Forms::Label^  timeBox;
-	private: System::Windows::Forms::Label^  dateBox;
-	private: System::Windows::Forms::Label^  label3;
-	private: System::Windows::Forms::Label^  label4;
-	private: System::Windows::Forms::NumericUpDown^  hoursStepBox;
-	private: System::Windows::Forms::Label^  label6;
-	private: System::Windows::Forms::Label^  label7;
-	private: System::Windows::Forms::NumericUpDown^  minutesStepBox;
-	private: System::Windows::Forms::GroupBox^  groupBox1;
-	private: System::Windows::Forms::GroupBox^  groupBox2;
+    	private: System::Windows::Forms::Label^  label5;
+    	private: System::Windows::Forms::NumericUpDown^  altitudeStepBox;
+    	private: System::Windows::Forms::RadioButton^  upRadio;
+    	private: System::Windows::Forms::RadioButton^  downRadio;
+    	private: System::Windows::Forms::RadioButton^  pauseRadio;
+    	private: System::Windows::Forms::Label^  timeBox;
+    	private: System::Windows::Forms::Label^  dateBox;
+    	private: System::Windows::Forms::Label^  label3;
+    	private: System::Windows::Forms::Label^  label4;
+    	private: System::Windows::Forms::NumericUpDown^  hoursStepBox;
+    	private: System::Windows::Forms::Label^  label6;
+    	private: System::Windows::Forms::Label^  label7;
+    	private: System::Windows::Forms::NumericUpDown^  minutesStepBox;
+    	private: System::Windows::Forms::GroupBox^  groupBox1;
+    	private: System::Windows::Forms::GroupBox^  groupBox2;
 
-	private: System::Windows::Forms::NumericUpDown^  secondsStepBox;
-	private: System::Windows::Forms::Label^  label2;
+    	private: System::Windows::Forms::NumericUpDown^  secondsStepBox;
+    	private: System::Windows::Forms::Label^  label2;
 
 
 
@@ -175,31 +176,37 @@ namespace Nmea {
 
 
 
-	private: System::Windows::Forms::Button^  button1;
+    	private: System::Windows::Forms::Button^  button1;
 
 
 
 
-private: System::Windows::Forms::Label^  showLongitude;
+        private: System::Windows::Forms::Label^  showLongitude;
 
-private: System::Windows::Forms::Label^  showLatitude;
+        private: System::Windows::Forms::Label^  showLatitude;
 
-private: System::Windows::Forms::CheckBox^  fixNoFixCheck;
+        private: System::Windows::Forms::CheckBox^  fixNoFixCheck;
 
-private: System::Windows::Forms::Label^  label12;
-private: System::Windows::Forms::NumericUpDown^  speedStepBox;
+        private: System::Windows::Forms::Label^  label12;
+        private: System::Windows::Forms::NumericUpDown^  speedStepBox;
 
 
-private: System::Windows::Forms::Button^  testButton;
+        private: System::Windows::Forms::Button^  testButton;
 
-private: System::Windows::Forms::TextBox^  courseBox;
+        private: System::Windows::Forms::TextBox^  courseBox;
 
-private: System::Windows::Forms::Label^  label9;
-private: System::Windows::Forms::Label^  label10;
+        private: System::Windows::Forms::Label^  label9;
+        private: System::Windows::Forms::Label^  label10;
 
-private: System::Windows::Forms::GroupBox^  groupBox3;
-private: System::Windows::Forms::CheckBox^  trackPauseCheckBox;
-private: System::Windows::Forms::CheckBox^  deadCheckBox;
+        private: System::Windows::Forms::GroupBox^  groupBox3;
+        private: System::Windows::Forms::CheckBox^  trackPauseCheckBox;
+        private: System::Windows::Forms::CheckBox^  deadCheckBox;
+private: System::Windows::Forms::Label^  showSpeed;
+private: System::Windows::Forms::Label^  showAltitude;
+private: System::Windows::Forms::Label^  label11;
+private: System::Windows::Forms::Label^  label8;
+private: System::Windows::Forms::Label^  label14;
+private: System::Windows::Forms::Label^  label13;
 
 
 
@@ -212,7 +219,7 @@ private: System::Windows::Forms::CheckBox^  deadCheckBox;
 
 
 
-	private: System::Windows::Forms::Label^  connectStatus;
+    	private: System::Windows::Forms::Label^  connectStatus;
 
 		/// </summary>
 
@@ -260,8 +267,14 @@ private: System::Windows::Forms::CheckBox^  deadCheckBox;
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->showSpeed = (gcnew System::Windows::Forms::Label());
+			this->showAltitude = (gcnew System::Windows::Forms::Label());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->trackPauseCheckBox = (gcnew System::Windows::Forms::CheckBox());
 			this->deadCheckBox = (gcnew System::Windows::Forms::CheckBox());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->label14 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->altitudeStepBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->hoursStepBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->minutesStepBox))->BeginInit();
@@ -583,6 +596,12 @@ private: System::Windows::Forms::CheckBox^  deadCheckBox;
 			// 
 			// groupBox3
 			// 
+			this->groupBox3->Controls->Add(this->label14);
+			this->groupBox3->Controls->Add(this->label13);
+			this->groupBox3->Controls->Add(this->showSpeed);
+			this->groupBox3->Controls->Add(this->showAltitude);
+			this->groupBox3->Controls->Add(this->label11);
+			this->groupBox3->Controls->Add(this->label8);
 			this->groupBox3->Controls->Add(this->trackPauseCheckBox);
 			this->groupBox3->Controls->Add(this->label10);
 			this->groupBox3->Controls->Add(this->label9);
@@ -598,10 +617,46 @@ private: System::Windows::Forms::CheckBox^  deadCheckBox;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Ground Track";
 			// 
+			// showSpeed
+			// 
+			this->showSpeed->AutoSize = true;
+			this->showSpeed->Location = System::Drawing::Point(58, 245);
+			this->showSpeed->Name = L"showSpeed";
+			this->showSpeed->Size = System::Drawing::Size(13, 13);
+			this->showSpeed->TabIndex = 58;
+			this->showSpeed->Text = L"0";
+			// 
+			// showAltitude
+			// 
+			this->showAltitude->AutoSize = true;
+			this->showAltitude->Location = System::Drawing::Point(58, 232);
+			this->showAltitude->Name = L"showAltitude";
+			this->showAltitude->Size = System::Drawing::Size(13, 13);
+			this->showAltitude->TabIndex = 57;
+			this->showAltitude->Text = L"0";
+			// 
+			// label11
+			// 
+			this->label11->AutoSize = true;
+			this->label11->Location = System::Drawing::Point(8, 245);
+			this->label11->Name = L"label11";
+			this->label11->Size = System::Drawing::Size(38, 13);
+			this->label11->TabIndex = 56;
+			this->label11->Text = L"Speed";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(8, 232);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(42, 13);
+			this->label8->TabIndex = 55;
+			this->label8->Text = L"Altitude";
+			// 
 			// trackPauseCheckBox
 			// 
 			this->trackPauseCheckBox->AutoSize = true;
-			this->trackPauseCheckBox->Location = System::Drawing::Point(11, 258);
+			this->trackPauseCheckBox->Location = System::Drawing::Point(11, 268);
 			this->trackPauseCheckBox->Name = L"trackPauseCheckBox";
 			this->trackPauseCheckBox->Size = System::Drawing::Size(56, 17);
 			this->trackPauseCheckBox->TabIndex = 54;
@@ -617,6 +672,24 @@ private: System::Windows::Forms::CheckBox^  deadCheckBox;
 			this->deadCheckBox->TabIndex = 56;
 			this->deadCheckBox->Text = L"Dead";
 			this->deadCheckBox->UseVisualStyleBackColor = true;
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Location = System::Drawing::Point(77, 232);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(39, 13);
+			this->label13->TabIndex = 59;
+			this->label13->Text = L"Meters";
+			// 
+			// label14
+			// 
+			this->label14->AutoSize = true;
+			this->label14->Location = System::Drawing::Point(77, 245);
+			this->label14->Name = L"label14";
+			this->label14->Size = System::Drawing::Size(34, 13);
+			this->label14->TabIndex = 60;
+			this->label14->Text = L"Knots";
 			// 
 			// Form1
 			// 
@@ -661,369 +734,394 @@ private: System::Windows::Forms::CheckBox^  deadCheckBox;
 #pragma endregion
 
 
-private: System::Void startButton_Click(System::Object^  sender, System::EventArgs^  e)
-{
-        if (!trackerConnected)
+        private: System::Void startButton_Click(System::Object^  sender, System::EventArgs^  e)
         {
-            trackerPort = gcnew SerialPort();
-            trackerConnected = true;
-        }
-        
-        if (!trackerPort->IsOpen)
-        {
-            if (comPortBox->Text != "")
+            if (!trackerConnected)
             {
-                trackerPort->PortName = String::Concat( "COM", comPortBox->Text );
+                trackerPort = gcnew SerialPort();
+                trackerConnected = true;
+            }
+            
+            if (!trackerPort->IsOpen)
+            {
+                if (comPortBox->Text != "")
+                {
+                    trackerPort->PortName = String::Concat( "COM", comPortBox->Text );
 
-                trackerPort->BaudRate = 4800;
-                trackerPort->Parity = Parity::None;
-                trackerPort->StopBits = StopBits::One;
-                trackerPort->DataBits = 8;
-                trackerPort->Handshake = Handshake::None;
-        
-                try
-                {
-                    trackerPort->Open();
-                    connectStatus->Text = "Ready";
-                    startButton->Text = "Stop";
-                    connectStatus->Text = "Running";
-                    
-                    if (altitudeBox->Text == "")
+                    trackerPort->BaudRate = 4800;
+                    trackerPort->Parity = Parity::None;
+                    trackerPort->StopBits = StopBits::One;
+                    trackerPort->DataBits = 8;
+                    trackerPort->Handshake = Handshake::None;
+            
+                    try
                     {
-                        altitude = 0;
-                    }
-                    else
-                    {
-                        altitude = Convert::ToInt32( altitudeBox->Text );
-                    }
+                        trackerPort->Open();
+                        connectStatus->Text = "Ready";
+                        startButton->Text = "Stop";
+                        connectStatus->Text = "Running";
+                        
+                        if (altitudeBox->Text == "")
+                        {
+                            altitude = 0;
+                        }
+                        else
+                        {
+                            altitude = Convert::ToInt32( altitudeBox->Text );
+                        }
 
-                    gpsTrack->start( courseBox->Text, speedStepBox->Text );
-                    
-                    
-                    
-                    //Start
-                    secTicker->Interval = 1000;
-                    secTicker->Enabled = true;
-                    secTicker->Start();
-                    
-                    altitudeBox->ReadOnly = true;
+                        gpsTrack->start( courseBox->Text, speedStepBox->Text );
+                        
+                        
+                        
+                        //Start
+                        secTicker->Interval = 1000;
+                        secTicker->Enabled = true;
+                        secTicker->Start();
+                        
+                        altitudeBox->ReadOnly = true;
+                    }
+                    catch (System::IO::IOException ^ e)
+                    {
+                        connectStatus->Text = e->Message;
+                    }
+                    catch (UnauthorizedAccessException ^ f)
+                    {
+                        connectStatus->Text = f->Message;
+                    }
+                    catch (ArgumentOutOfRangeException ^)
+                    {
+                        connectStatus->Text = "Com port: Illegal setting";
+                    }
+                    catch (ArgumentException ^)
+                    {
+                        connectStatus->Text = "Com port: Invalid name";
+                    }
+                    catch (InvalidOperationException ^)
+                    {
+                        connectStatus->Text = "Com port: Already open";
+                    }
                 }
-                catch (System::IO::IOException ^ e)
+                else
                 {
-                    connectStatus->Text = e->Message;
-                }
-                catch (UnauthorizedAccessException ^ f)
-                {
-                    connectStatus->Text = f->Message;
-                }
-                catch (ArgumentOutOfRangeException ^)
-                {
-                    connectStatus->Text = "Com port: Illegal setting";
-                }
-                catch (ArgumentException ^)
-                {
-                    connectStatus->Text = "Com port: Invalid name";
-                }
-                catch (InvalidOperationException ^)
-                {
-                    connectStatus->Text = "Com port: Already open";
+                    connectStatus->Text = "Need port number";
                 }
             }
             else
             {
-                connectStatus->Text = "Need port number";
-            }
-        }
-        else
-        {
-            trackerPort->Close();
-            startButton->Text = "Start";
-            connectStatus->Text = "Idle";
-            
-            //Stop
-            secTicker->Enabled = false;
-            secTicker->Stop();
-            altitudeBox->ReadOnly = false;
-        }
-}
-
-
-private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^  e)
-{
-    if (deadCheckBox->Checked == false)
-    {
-        const char * *pOut;
-        int s = 0;
-        char cStr[20];
-        unsigned int degrees;
-        unsigned int mins;
-        unsigned int minsWhole;
-        unsigned int minsFract;
-
-        pOut = gpsGpInstrument;
-    
-        altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
-
-
-        if (trackPauseCheckBox->Checked == false)
-        {
-            gpsTrack->nextPosition( speedStepBox->Text );
-        }
-        int latitude = gpsTrack->latitude();
-        int longitude = gpsTrack->longitude();
-
-        //Time
-        timeNow = DateTime::Now;
-        timeNow = timeNow->AddHours( Convert::ToInt32( hoursStepBox->Text ) );
-        timeNow = timeNow->AddMinutes( Convert::ToInt32( minutesStepBox->Text ) );
-        timeNow = timeNow->AddSeconds( Convert::ToInt32( secondsStepBox->Text ) );
-
-        unsigned char checksum = 0;
-        while ((*pOut != 0) && (trackerConnected = true))
-        {
-            String ^time;
-            try
-            {
-                const char *pString = *pOut;
-                int length = strlen( pString );
-                array<unsigned char>^ gpsString = gcnew array<unsigned char>( length );
-                for (int i = 0; i < length; ++i)
-                {
-                    gpsString[i] = *pString;
-                    ++pString;
-                }
-            
-                checksum = runningCheck( *pOut, checksum );
-                trackerPort->Write( gpsString, 0, length );
-
-                switch (s)
-                {
-                    case 1:
-                        sprintf_s( cStr, sizeof(cStr), "%u"".00", Convert::ToInt32( speedStepBox->Text ) );
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-                    case 2:
-                        sprintf_s( cStr, sizeof(cStr), "%02u", timeNow->Day );
-                        sprintf_s( cStr + 2, sizeof(cStr) - 2, "%02u", timeNow->Month );
-                        sprintf_s( cStr + 4, sizeof(cStr) - 4, "%02u", (timeNow->Year % 100) );
-                        time = gcnew String( cStr );
-                        dateBox->Text = time;
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 3:
-                    case 12:
-                    case 14:
-                        //Check
-                        checkString( cStr, checksum );
-                        //checkString( cStr, 0 );
-                        break;
-
-                    case 0:
-                    case 5:
-                        sprintf_s( cStr, sizeof(cStr), "%02u", timeNow->Hour );
-                        sprintf_s( cStr + 2, sizeof(cStr) - 2, "%02u", timeNow->Minute );
-                        sprintf_s( cStr + 4, sizeof(cStr) - 4, "%02u", timeNow->Second );
-                        time = gcnew String( cStr );
-                        timeBox->Text = time;
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 6:
-                        if (fixNoFixCheck->Checked == true)
-                        {
-                            degrees = abs( latitude ) / 100000;
-                            mins = (abs( latitude ) % 100000) * 60;
-                            minsWhole = mins / 100000; 
-                            minsFract = mins % 100000; 
-                            sprintf_s( cStr, sizeof(cStr), "%02u""%02u"".""%05u", degrees, minsWhole, minsFract );
-                        }
-                        else
-                        {
-                            strcpy_s( cStr, sizeof(cStr), "" );
-                        }
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 7:
-                        //North/South
-                        strcpy_s( cStr, sizeof(cStr), (latitude >= 0) ? "N" : "S" );
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 8:
-                        if (fixNoFixCheck->Checked == true)
-                        {
-                            degrees = abs( longitude ) / 100000;
-                            mins = (abs( longitude ) % 100000) * 60;
-                            minsWhole = mins / 100000; 
-                            minsFract = mins % 100000; 
-                            sprintf_s( cStr, sizeof(cStr), "%03u""%02u"".""%05u", degrees, minsWhole, minsFract );
-                        }
-                        else
-                        {
-                            strcpy_s( cStr, sizeof(cStr), "" );
-                        }
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 9:
-                        //East/West
-                        strcpy_s( cStr, sizeof(cStr), (longitude >= 0) ? "E" : "W" );
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 10:
-                        //Fix/no fix
-                        strcpy_s( cStr, sizeof(cStr), (fixNoFixCheck->Checked == true) ? "1" : "0" );
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                    case 11:
-                        Convert::ToInt32( s );
-                        if (altitudeDirection == GPS_TRACK_DIRECTION::UP)
-                        {
-                            altitude += altitudeStep;
-                        }
-                        else if (altitudeDirection == GPS_TRACK_DIRECTION::DOWN)
-                        {
-                            altitude -= altitudeStep;
-                        }
-                        sprintf_s( cStr, sizeof(cStr), "%i", altitude );
-                        altitudeBox->Text = Convert::ToString( altitude );
-                        checksum = runningCheck( cStr, checksum );
-                        break;
-
-                
-                    default:
-                        checksum = 0;
-                        cStr[0] = '\0';
-                        break;
-                }
-                length = strlen( cStr );
-                array<unsigned char>^ insertString = gcnew array<unsigned char>( length );
-                for (int i = 0; i < length; ++i)
-                {
-                    insertString[i] = cStr[i];
-                }
-                trackerPort->Write( insertString, 0, insertString->Length );
-                ++s;
-
-                showLatitude->Text = Convert::ToString( latitude );
-                showLongitude->Text = Convert::ToString( longitude );
-            }
-            catch (System::IO::IOException ^)
-            {
-                connectStatus->Text = "Reset the connection";
-                try
-                {
-                    trackerPort->~SerialPort();
-                }
-                catch (System::IO::IOException ^)
-                {
-                }
-                trackerConnected = false;
-
+                trackerPort->Close();
                 startButton->Text = "Start";
+                connectStatus->Text = "Idle";
+                
+                //Stop
+                secTicker->Enabled = false;
+                secTicker->Stop();
+                altitudeBox->ReadOnly = false;
             }
-        
-            ++pOut;
         }
 
-    }
-}
 
-
-private: System::Void altitudeStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
-{
-    altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
-}
-
-
-private: System::Void radioButton1_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
-{
-    altitudeDirection = GPS_TRACK_DIRECTION::UP;
-}
-
-private: System::Void radioButton2_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
-{
-    altitudeDirection = GPS_TRACK_DIRECTION::DOWN;
-}
-
-private: System::Void radioButton3_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
-{
-    altitudeDirection = GPS_TRACK_DIRECTION::PAUSE;
-}
-
-private: System::Void hoursStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
-{
-}
-
-private: System::Void minutesStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
-{
-}
-
-
-private: System::Void secondsStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
-{
-}
-
-
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
-{
-    resetCourse();
-    gpsTrack->start( courseBox->Text, speedStepBox->Text );
-}
-
-
-
-
-
-   private: void resetCourse( void )
-   {
-       upRadio->Checked = true;
-       altitudeBox->Text == "0";
-
-       altitude = 0;
-   }
-
-
-	private: unsigned char runningCheck( const char *p, unsigned char sum )
-	{
-        while (*p != '\0')
-		{
-            if ((*p != '$') && (*p != '*'))
+        private: System::Void secTicker_Tick(System::Object^  sender, System::EventArgs^  e)
+        {
+            if (deadCheckBox->Checked == false)
             {
-		        sum ^= *p;
+                const char * *pOut;
+                int s = 0;
+                char cStr[20];
+                unsigned int degrees;
+                unsigned int mins;
+                unsigned int minsWhole;
+                unsigned int minsFract;
+
+                pOut = gpsGpInstrument;
+            
+                altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
+
+
+                if (trackPauseCheckBox->Checked == false)
+                {
+                    gpsTrack->nextPosition( speedStepBox->Text );
+                }
+                int latitude = gpsTrack->latitude();
+                int longitude = gpsTrack->longitude();
+
+                int speed;
+
+                if (gpsTrack->isTrackSpeed())
+                {
+                    speed = gpsTrack->speed();
+                }
+                else
+                {
+                    speed = Convert::ToInt32( speedStepBox->Text );
+                }
+
+                //Time
+                timeNow = DateTime::Now;
+                timeNow = timeNow->AddHours( Convert::ToInt32( hoursStepBox->Text ) );
+                timeNow = timeNow->AddMinutes( Convert::ToInt32( minutesStepBox->Text ) );
+                timeNow = timeNow->AddSeconds( Convert::ToInt32( secondsStepBox->Text ) );
+
+                unsigned char checksum = 0;
+                while ((*pOut != 0) && (trackerConnected = true))
+                {
+                    String ^time;
+                    try
+                    {
+                        const char *pString = *pOut;
+                        int length = strlen( pString );
+                        array<unsigned char>^ gpsString = gcnew array<unsigned char>( length );
+                        for (int i = 0; i < length; ++i)
+                        {
+                            gpsString[i] = *pString;
+                            ++pString;
+                        }
+                    
+                        checksum = runningCheck( *pOut, checksum );
+                        trackerPort->Write( gpsString, 0, length );
+
+                        switch (s)
+                        {
+                        case 1:
+                                {
+
+                                    sprintf_s( cStr, sizeof(cStr), "%u"".00", speed );
+                                    checksum = runningCheck( cStr, checksum );
+                                }
+                                break;
+                            case 2:
+                                sprintf_s( cStr, sizeof(cStr), "%02u", timeNow->Day );
+                                sprintf_s( cStr + 2, sizeof(cStr) - 2, "%02u", timeNow->Month );
+                                sprintf_s( cStr + 4, sizeof(cStr) - 4, "%02u", (timeNow->Year % 100) );
+                                time = gcnew String( cStr );
+                                dateBox->Text = time;
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                            case 3:
+                            case 12:
+                            case 14:
+                                //Check
+                                checkString( cStr, checksum );
+                                //checkString( cStr, 0 );
+                                break;
+
+                            case 0:
+                            case 5:
+                                sprintf_s( cStr, sizeof(cStr), "%02u", timeNow->Hour );
+                                sprintf_s( cStr + 2, sizeof(cStr) - 2, "%02u", timeNow->Minute );
+                                sprintf_s( cStr + 4, sizeof(cStr) - 4, "%02u", timeNow->Second );
+                                time = gcnew String( cStr );
+                                timeBox->Text = time;
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                            case 6:
+                                if (fixNoFixCheck->Checked == true)
+                                {
+                                    degrees = abs( latitude ) / 100000;
+                                    mins = (abs( latitude ) % 100000) * 60;
+                                    minsWhole = mins / 100000; 
+                                    minsFract = mins % 100000; 
+                                    sprintf_s( cStr, sizeof(cStr), "%02u""%02u"".""%05u", degrees, minsWhole, minsFract );
+                                }
+                                else
+                                {
+                                    strcpy_s( cStr, sizeof(cStr), "" );
+                                }
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                            case 7:
+                                //North/South
+                                strcpy_s( cStr, sizeof(cStr), (latitude >= 0) ? "N" : "S" );
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                            case 8:
+                                if (fixNoFixCheck->Checked == true)
+                                {
+                                    degrees = abs( longitude ) / 100000;
+                                    mins = (abs( longitude ) % 100000) * 60;
+                                    minsWhole = mins / 100000; 
+                                    minsFract = mins % 100000; 
+                                    sprintf_s( cStr, sizeof(cStr), "%03u""%02u"".""%05u", degrees, minsWhole, minsFract );
+                                }
+                                else
+                                {
+                                    strcpy_s( cStr, sizeof(cStr), "" );
+                                }
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                            case 9:
+                                //East/West
+                                strcpy_s( cStr, sizeof(cStr), (longitude >= 0) ? "E" : "W" );
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                            case 10:
+                                //Fix/no fix
+                                strcpy_s( cStr, sizeof(cStr), (fixNoFixCheck->Checked == true) ? "1" : "0" );
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                        case 11:
+                                if (gpsTrack->isTrackHeight())
+                                {
+                                    altitude = gpsTrack->altitude();
+                                }
+                                else
+                                {
+                                    Convert::ToInt32( s );
+                                    if (altitudeDirection == GPS_TRACK_DIRECTION::UP)
+                                    {
+                                        altitude += altitudeStep;
+                                    }
+                                    else if (altitudeDirection == GPS_TRACK_DIRECTION::DOWN)
+                                    {
+                                        altitude -= altitudeStep;
+                                    }
+
+                                    altitudeBox->Text = Convert::ToString( altitude );
+                                }
+                                sprintf_s( cStr, sizeof(cStr), "%i", altitude );
+                                checksum = runningCheck( cStr, checksum );
+                                break;
+
+                        
+                            default:
+                                checksum = 0;
+                                cStr[0] = '\0';
+                                break;
+                        }
+                        length = strlen( cStr );
+                        array<unsigned char>^ insertString = gcnew array<unsigned char>( length );
+                        for (int i = 0; i < length; ++i)
+                        {
+                            insertString[i] = cStr[i];
+                        }
+                        trackerPort->Write( insertString, 0, insertString->Length );
+                        ++s;
+
+                        showLatitude->Text = Convert::ToString( latitude );
+                        showLongitude->Text = Convert::ToString( longitude );
+                        showAltitude->Text = Convert::ToString( altitude );
+                        showSpeed->Text = Convert::ToString( speed );
+                    }
+                    catch (System::IO::IOException ^)
+                    {
+                        connectStatus->Text = "Reset the connection";
+                        try
+                        {
+                            trackerPort->~SerialPort();
+                        }
+                        catch (System::IO::IOException ^)
+                        {
+                        }
+                        trackerConnected = false;
+
+                        startButton->Text = "Start";
+                    }
+                
+                    ++pOut;
+                }
+
             }
+        }
+
+
+        private: System::Void altitudeStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+            altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
+        }
+
+
+        private: System::Void radioButton1_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+            altitudeDirection = GPS_TRACK_DIRECTION::UP;
+        }
+
+        private: System::Void radioButton2_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+            altitudeDirection = GPS_TRACK_DIRECTION::DOWN;
+        }
+
+        private: System::Void radioButton3_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+            altitudeDirection = GPS_TRACK_DIRECTION::PAUSE;
+        }
+
+        private: System::Void hoursStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+        }
+
+        private: System::Void minutesStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+        }
+
+
+        private: System::Void secondsStepBox_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+        }
+
+
+        private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
+        {
+            resetCourse();
+            gpsTrack->start( courseBox->Text, speedStepBox->Text );
+        }
+
+
+
+
+
+       private: void resetCourse( void )
+       {
+           upRadio->Checked = true;
+           altitudeBox->Text == "0";
+
+           altitude = 0;
+       }
+
+
+    	private: unsigned char runningCheck( const char *p, unsigned char sum )
+    	{
+            while (*p != '\0')
+    		{
+                if ((*p != '$') && (*p != '*'))
+                {
+    		        sum ^= *p;
+                }
+                
+                ++p;
+    		}
+            
+            return(sum);
+    	}
+
+
+    	private: void checkString( char *p, unsigned char sum )
+    	{
+            char upper = (sum >> 4) & 0x0f;
+    		upper +=  (upper < 10) ? '0' : 'a' - 0x0a;
+            *p = upper;
             
             ++p;
-		}
-        
-        return(sum);
-	}
+    		
+    		char lower = sum & 0x0f;
+    		lower +=  (lower < 10) ? '0' : 'a' - 0x0a;
+            *p = lower;
+            
+            *p++;
+            
+            *p = '\0';
+    	}
 
+        private: System::Void testButton_Click(System::Object^  sender, System::EventArgs^  e)
+        {
+        }
 
-	private: void checkString( char *p, unsigned char sum )
-	{
-        char upper = (sum >> 4) & 0x0f;
-		upper +=  (upper < 10) ? '0' : 'a' - 0x0a;
-        *p = upper;
-        
-        ++p;
-		
-		char lower = sum & 0x0f;
-		lower +=  (lower < 10) ? '0' : 'a' - 0x0a;
-        *p = lower;
-        
-        *p++;
-        
-        *p = '\0';
-	}
-
-    private: System::Void testButton_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-    }
 
 
 
