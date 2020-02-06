@@ -16,6 +16,7 @@ const int MAX_ENTRY_SZ = 30;
 
 const int LAT_DATUM = (90U * 100000U * 10U);/* x10 to match google position resolution */
 const int LONG_DATUM = (180U * 100000U * 10U);
+const int SECONDS_IN_DAY = (24 * 60 * 60);
 
 
 int Vertex::orderBy = Vertex::ORDER_BY_LATITUDE;
@@ -107,11 +108,11 @@ namespace geofence {
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::Label^  label6;
 
-	private: System::Windows::Forms::TextBox^  attributeSbdBurstFix;
-	private: System::Windows::Forms::TextBox^  attributeSbdBurstTx;
-	private: System::Windows::Forms::TextBox^  attributeCellTx;
-	private: System::Windows::Forms::TextBox^  attributeCellBurstFix;
-	private: System::Windows::Forms::TextBox^  attributeCellBurstTx;
+
+
+
+
+
 
 
 	private: System::Windows::Forms::Label^  label7;
@@ -127,13 +128,13 @@ namespace geofence {
 	private: System::Windows::Forms::Label^  label16;
 	private: System::Windows::Forms::Label^  label17;
 	private: System::Windows::Forms::Label^  label18;
-	private: System::Windows::Forms::TextBox^  attributeSlowCellBurstTx;
-	private: System::Windows::Forms::TextBox^  attributeSlowCellBurstFix;
-	private: System::Windows::Forms::TextBox^  attributeSlowCellTx;
-	private: System::Windows::Forms::TextBox^  attributeSlowSbdBurstTx;
-	private: System::Windows::Forms::TextBox^  attributeSlowSbdBurstFix;
-	private: System::Windows::Forms::TextBox^  attributeSlowSbdTx;
-	private: System::Windows::Forms::TextBox^  attributeBehaviour;
+
+
+
+
+
+
+
 	private: System::Windows::Forms::Label^  label19;
 	private: System::Windows::Forms::GroupBox^  fenceAttributeGroup;
 	private: System::Windows::Forms::Label^  fenceTotal;
@@ -143,27 +144,43 @@ namespace geofence {
 
 	private: System::Windows::Forms::Label^  label20;
 private: System::Windows::Forms::Button^  viewBackAttributesButton;
-private: System::Windows::Forms::Button^  resetSlowCellBurstTx;
-private: System::Windows::Forms::Button^  resetSlowCellBurstFix;
-private: System::Windows::Forms::Button^  resetSlowCellTx;
-private: System::Windows::Forms::Button^  resetSlowSbdBurstTx;
-private: System::Windows::Forms::Button^  resetSlowSbdBurstFix;
-private: System::Windows::Forms::Button^  resetSlowSbdTx;
-private: System::Windows::Forms::Button^  resetCellBurstTx;
-private: System::Windows::Forms::Button^  resetCellBurstFix;
-private: System::Windows::Forms::Button^  resetCellTx;
-private: System::Windows::Forms::Button^  resetSbdBurstTx;
-private: System::Windows::Forms::Button^  resetSbdBurstFix;
-private: System::Windows::Forms::Button^  resetSbdTx;
+
+
+
+
+
+
+
+
+
+
+
+
 private: System::Windows::Forms::Button^  resetSpeed;
 private: System::Windows::Forms::Button^  resetStopDate;
 private: System::Windows::Forms::Button^  resetStartDate;
 private: System::Windows::Forms::Button^  resetCeiling;
 private: System::Windows::Forms::Button^  resetFloor;
-private: System::Windows::Forms::Label^  label21;
+
 private: System::Windows::Forms::DateTimePicker^  startDataPicker;
 private: System::Windows::Forms::DateTimePicker^  stopDatePicker;
 private: System::Windows::Forms::ComboBox^  attributeSbdTx;
+private: System::Windows::Forms::ComboBox^  attributeSlowCellBurstTx;
+private: System::Windows::Forms::ComboBox^  attributeSlowCellBurstFix;
+private: System::Windows::Forms::ComboBox^  attributeSlowCellTx;
+private: System::Windows::Forms::ComboBox^  attributeSlowSbdBurstTx;
+private: System::Windows::Forms::ComboBox^  attributeSlowSbdBurstFix;
+private: System::Windows::Forms::ComboBox^  attributeSlowSbdTx;
+private: System::Windows::Forms::ComboBox^  attributeCellBurstTx;
+private: System::Windows::Forms::ComboBox^  attributeCellBurstFix;
+private: System::Windows::Forms::ComboBox^  attributeCellTx;
+private: System::Windows::Forms::ComboBox^  attributeSbdBurstTx;
+private: System::Windows::Forms::ComboBox^  attributeSbdBurstFix;
+private: System::Windows::Forms::DateTimePicker^  startTimePicker;
+private: System::Windows::Forms::DateTimePicker^  stopTimePicker;
+private: System::Windows::Forms::ComboBox^  attributeBehaviour;
+
+
 
 
 
@@ -201,11 +218,6 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->attributeSbdBurstFix = (gcnew System::Windows::Forms::TextBox());
-			this->attributeSbdBurstTx = (gcnew System::Windows::Forms::TextBox());
-			this->attributeCellTx = (gcnew System::Windows::Forms::TextBox());
-			this->attributeCellBurstFix = (gcnew System::Windows::Forms::TextBox());
-			this->attributeCellBurstTx = (gcnew System::Windows::Forms::TextBox());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label9 = (gcnew System::Windows::Forms::Label());
@@ -219,31 +231,25 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			this->label16 = (gcnew System::Windows::Forms::Label());
 			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->label18 = (gcnew System::Windows::Forms::Label());
-			this->attributeSlowCellBurstTx = (gcnew System::Windows::Forms::TextBox());
-			this->attributeSlowCellBurstFix = (gcnew System::Windows::Forms::TextBox());
-			this->attributeSlowCellTx = (gcnew System::Windows::Forms::TextBox());
-			this->attributeSlowSbdBurstTx = (gcnew System::Windows::Forms::TextBox());
-			this->attributeSlowSbdBurstFix = (gcnew System::Windows::Forms::TextBox());
-			this->attributeSlowSbdTx = (gcnew System::Windows::Forms::TextBox());
-			this->attributeBehaviour = (gcnew System::Windows::Forms::TextBox());
 			this->label19 = (gcnew System::Windows::Forms::Label());
 			this->fenceAttributeGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->attributeBehaviour = (gcnew System::Windows::Forms::ComboBox());
+			this->stopTimePicker = (gcnew System::Windows::Forms::DateTimePicker());
+			this->startTimePicker = (gcnew System::Windows::Forms::DateTimePicker());
+			this->attributeSlowCellBurstTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSlowCellBurstFix = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSlowCellTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSlowSbdBurstTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSlowSbdBurstFix = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSlowSbdTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeCellBurstTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeCellBurstFix = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeCellTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSbdBurstTx = (gcnew System::Windows::Forms::ComboBox());
+			this->attributeSbdBurstFix = (gcnew System::Windows::Forms::ComboBox());
 			this->attributeSbdTx = (gcnew System::Windows::Forms::ComboBox());
 			this->stopDatePicker = (gcnew System::Windows::Forms::DateTimePicker());
 			this->startDataPicker = (gcnew System::Windows::Forms::DateTimePicker());
-			this->label21 = (gcnew System::Windows::Forms::Label());
-			this->resetSlowCellBurstTx = (gcnew System::Windows::Forms::Button());
-			this->resetSlowCellBurstFix = (gcnew System::Windows::Forms::Button());
-			this->resetSlowCellTx = (gcnew System::Windows::Forms::Button());
-			this->resetSlowSbdBurstTx = (gcnew System::Windows::Forms::Button());
-			this->resetSlowSbdBurstFix = (gcnew System::Windows::Forms::Button());
-			this->resetSlowSbdTx = (gcnew System::Windows::Forms::Button());
-			this->resetCellBurstTx = (gcnew System::Windows::Forms::Button());
-			this->resetCellBurstFix = (gcnew System::Windows::Forms::Button());
-			this->resetCellTx = (gcnew System::Windows::Forms::Button());
-			this->resetSbdBurstTx = (gcnew System::Windows::Forms::Button());
-			this->resetSbdBurstFix = (gcnew System::Windows::Forms::Button());
-			this->resetSbdTx = (gcnew System::Windows::Forms::Button());
 			this->resetSpeed = (gcnew System::Windows::Forms::Button());
 			this->resetStopDate = (gcnew System::Windows::Forms::Button());
 			this->resetStartDate = (gcnew System::Windows::Forms::Button());
@@ -292,7 +298,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// status
 			// 
 			this->status->AutoSize = true;
-			this->status->Location = System::Drawing::Point(692, 36);
+			this->status->Location = System::Drawing::Point(672, 36);
 			this->status->Name = L"status";
 			this->status->Size = System::Drawing::Size(38, 13);
 			this->status->TabIndex = 9;
@@ -310,7 +316,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// viewAttributesButton
 			// 
-			this->viewAttributesButton->Location = System::Drawing::Point(182, 25);
+			this->viewAttributesButton->Location = System::Drawing::Point(355, 13);
 			this->viewAttributesButton->Name = L"viewAttributesButton";
 			this->viewAttributesButton->Size = System::Drawing::Size(42, 24);
 			this->viewAttributesButton->TabIndex = 12;
@@ -320,17 +326,17 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// writeAttributesButton
 			// 
-			this->writeAttributesButton->Location = System::Drawing::Point(332, 25);
+			this->writeAttributesButton->Location = System::Drawing::Point(278, 384);
 			this->writeAttributesButton->Name = L"writeAttributesButton";
-			this->writeAttributesButton->Size = System::Drawing::Size(85, 24);
+			this->writeAttributesButton->Size = System::Drawing::Size(110, 24);
 			this->writeAttributesButton->TabIndex = 13;
-			this->writeAttributesButton->Text = L"Update";
+			this->writeAttributesButton->Text = L"Update This Fence";
 			this->writeAttributesButton->UseVisualStyleBackColor = true;
 			this->writeAttributesButton->Click += gcnew System::EventHandler(this, &Form1::writeAttributesButton_Click);
 			// 
 			// attributeID
 			// 
-			this->attributeID->Location = System::Drawing::Point(105, 66);
+			this->attributeID->Location = System::Drawing::Point(105, 61);
 			this->attributeID->Name = L"attributeID";
 			this->attributeID->Size = System::Drawing::Size(85, 20);
 			this->attributeID->TabIndex = 14;
@@ -338,7 +344,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(72, 66);
+			this->label1->Location = System::Drawing::Point(72, 61);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(18, 13);
 			this->label1->TabIndex = 15;
@@ -346,21 +352,21 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// attributeFloor
 			// 
-			this->attributeFloor->Location = System::Drawing::Point(106, 122);
+			this->attributeFloor->Location = System::Drawing::Point(105, 117);
 			this->attributeFloor->Name = L"attributeFloor";
-			this->attributeFloor->Size = System::Drawing::Size(84, 20);
+			this->attributeFloor->Size = System::Drawing::Size(85, 20);
 			this->attributeFloor->TabIndex = 16;
 			// 
 			// attributeCeiling
 			// 
-			this->attributeCeiling->Location = System::Drawing::Point(106, 148);
+			this->attributeCeiling->Location = System::Drawing::Point(105, 143);
 			this->attributeCeiling->Name = L"attributeCeiling";
-			this->attributeCeiling->Size = System::Drawing::Size(84, 20);
+			this->attributeCeiling->Size = System::Drawing::Size(85, 20);
 			this->attributeCeiling->TabIndex = 17;
 			// 
 			// attributeStartDate
 			// 
-			this->attributeStartDate->Location = System::Drawing::Point(105, 222);
+			this->attributeStartDate->Location = System::Drawing::Point(105, 266);
 			this->attributeStartDate->Name = L"attributeStartDate";
 			this->attributeStartDate->ReadOnly = true;
 			this->attributeStartDate->Size = System::Drawing::Size(84, 20);
@@ -368,7 +374,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// attributeStopDate
 			// 
-			this->attributeStopDate->Location = System::Drawing::Point(106, 283);
+			this->attributeStopDate->Location = System::Drawing::Point(105, 348);
 			this->attributeStopDate->Name = L"attributeStopDate";
 			this->attributeStopDate->ReadOnly = true;
 			this->attributeStopDate->Size = System::Drawing::Size(84, 20);
@@ -377,87 +383,52 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(60, 122);
+			this->label2->Location = System::Drawing::Point(20, 117);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(30, 13);
+			this->label2->Size = System::Drawing::Size(70, 13);
 			this->label2->TabIndex = 21;
-			this->label2->Text = L"Floor";
+			this->label2->Text = L"Floor (meters)";
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(52, 148);
+			this->label3->Location = System::Drawing::Point(12, 143);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(38, 13);
+			this->label3->Size = System::Drawing::Size(78, 13);
 			this->label3->TabIndex = 22;
-			this->label3->Text = L"Ceiling";
+			this->label3->Text = L"Ceiling (metres)";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(35, 220);
+			this->label4->Location = System::Drawing::Point(60, 216);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(55, 13);
+			this->label4->Size = System::Drawing::Size(29, 13);
 			this->label4->TabIndex = 23;
-			this->label4->Text = L"Start Date";
+			this->label4->Text = L"Start";
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(35, 283);
+			this->label5->Location = System::Drawing::Point(61, 301);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(55, 13);
+			this->label5->Size = System::Drawing::Size(29, 13);
 			this->label5->TabIndex = 24;
-			this->label5->Text = L"Stop Date";
+			this->label5->Text = L"Stop";
 			// 
 			// label6
 			// 
 			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(26, 175);
+			this->label6->Location = System::Drawing::Point(7, 170);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(64, 13);
+			this->label6->Size = System::Drawing::Size(83, 13);
 			this->label6->TabIndex = 25;
-			this->label6->Text = L"Slow Speed";
-			// 
-			// attributeSbdBurstFix
-			// 
-			this->attributeSbdBurstFix->Location = System::Drawing::Point(332, 92);
-			this->attributeSbdBurstFix->Name = L"attributeSbdBurstFix";
-			this->attributeSbdBurstFix->Size = System::Drawing::Size(85, 20);
-			this->attributeSbdBurstFix->TabIndex = 27;
-			// 
-			// attributeSbdBurstTx
-			// 
-			this->attributeSbdBurstTx->Location = System::Drawing::Point(332, 117);
-			this->attributeSbdBurstTx->Name = L"attributeSbdBurstTx";
-			this->attributeSbdBurstTx->Size = System::Drawing::Size(85, 20);
-			this->attributeSbdBurstTx->TabIndex = 28;
-			// 
-			// attributeCellTx
-			// 
-			this->attributeCellTx->Location = System::Drawing::Point(332, 141);
-			this->attributeCellTx->Name = L"attributeCellTx";
-			this->attributeCellTx->Size = System::Drawing::Size(85, 20);
-			this->attributeCellTx->TabIndex = 29;
-			// 
-			// attributeCellBurstFix
-			// 
-			this->attributeCellBurstFix->Location = System::Drawing::Point(332, 167);
-			this->attributeCellBurstFix->Name = L"attributeCellBurstFix";
-			this->attributeCellBurstFix->Size = System::Drawing::Size(85, 20);
-			this->attributeCellBurstFix->TabIndex = 30;
-			// 
-			// attributeCellBurstTx
-			// 
-			this->attributeCellBurstTx->Location = System::Drawing::Point(332, 193);
-			this->attributeCellBurstTx->Name = L"attributeCellBurstTx";
-			this->attributeCellBurstTx->Size = System::Drawing::Size(85, 20);
-			this->attributeCellBurstTx->TabIndex = 31;
+			this->label6->Text = L"Slow (kn tenths)";
 			// 
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(273, 70);
+			this->label7->Location = System::Drawing::Point(273, 65);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(46, 13);
 			this->label7->TabIndex = 32;
@@ -466,7 +437,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label8
 			// 
 			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(247, 95);
+			this->label8->Location = System::Drawing::Point(247, 90);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(72, 13);
 			this->label8->TabIndex = 33;
@@ -475,7 +446,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label9
 			// 
 			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(246, 117);
+			this->label9->Location = System::Drawing::Point(246, 112);
 			this->label9->Name = L"label9";
 			this->label9->Size = System::Drawing::Size(73, 13);
 			this->label9->TabIndex = 34;
@@ -484,7 +455,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label10
 			// 
 			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(278, 141);
+			this->label10->Location = System::Drawing::Point(278, 136);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(41, 13);
 			this->label10->TabIndex = 35;
@@ -493,7 +464,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label11
 			// 
 			this->label11->AutoSize = true;
-			this->label11->Location = System::Drawing::Point(252, 167);
+			this->label11->Location = System::Drawing::Point(252, 162);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(67, 13);
 			this->label11->TabIndex = 36;
@@ -502,7 +473,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label12
 			// 
 			this->label12->AutoSize = true;
-			this->label12->Location = System::Drawing::Point(251, 193);
+			this->label12->Location = System::Drawing::Point(251, 188);
 			this->label12->Name = L"label12";
 			this->label12->Size = System::Drawing::Size(68, 13);
 			this->label12->TabIndex = 37;
@@ -510,7 +481,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// attributeSpeed
 			// 
-			this->attributeSpeed->Location = System::Drawing::Point(105, 175);
+			this->attributeSpeed->Location = System::Drawing::Point(105, 170);
 			this->attributeSpeed->Name = L"attributeSpeed";
 			this->attributeSpeed->Size = System::Drawing::Size(85, 20);
 			this->attributeSpeed->TabIndex = 38;
@@ -518,7 +489,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label13
 			// 
 			this->label13->AutoSize = true;
-			this->label13->Location = System::Drawing::Point(475, 194);
+			this->label13->Location = System::Drawing::Point(475, 189);
 			this->label13->Name = L"label13";
 			this->label13->Size = System::Drawing::Size(94, 13);
 			this->label13->TabIndex = 50;
@@ -527,7 +498,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label14
 			// 
 			this->label14->AutoSize = true;
-			this->label14->Location = System::Drawing::Point(476, 168);
+			this->label14->Location = System::Drawing::Point(476, 163);
 			this->label14->Name = L"label14";
 			this->label14->Size = System::Drawing::Size(93, 13);
 			this->label14->TabIndex = 49;
@@ -536,7 +507,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label15
 			// 
 			this->label15->AutoSize = true;
-			this->label15->Location = System::Drawing::Point(502, 142);
+			this->label15->Location = System::Drawing::Point(502, 137);
 			this->label15->Name = L"label15";
 			this->label15->Size = System::Drawing::Size(67, 13);
 			this->label15->TabIndex = 48;
@@ -545,7 +516,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label16
 			// 
 			this->label16->AutoSize = true;
-			this->label16->Location = System::Drawing::Point(470, 118);
+			this->label16->Location = System::Drawing::Point(470, 113);
 			this->label16->Name = L"label16";
 			this->label16->Size = System::Drawing::Size(99, 13);
 			this->label16->TabIndex = 47;
@@ -554,7 +525,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label17
 			// 
 			this->label17->AutoSize = true;
-			this->label17->Location = System::Drawing::Point(471, 96);
+			this->label17->Location = System::Drawing::Point(471, 91);
 			this->label17->Name = L"label17";
 			this->label17->Size = System::Drawing::Size(98, 13);
 			this->label17->TabIndex = 46;
@@ -563,65 +534,16 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label18
 			// 
 			this->label18->AutoSize = true;
-			this->label18->Location = System::Drawing::Point(497, 71);
+			this->label18->Location = System::Drawing::Point(497, 66);
 			this->label18->Name = L"label18";
 			this->label18->Size = System::Drawing::Size(72, 13);
 			this->label18->TabIndex = 45;
 			this->label18->Text = L"Slow SBD TX";
 			// 
-			// attributeSlowCellBurstTx
-			// 
-			this->attributeSlowCellBurstTx->Location = System::Drawing::Point(578, 194);
-			this->attributeSlowCellBurstTx->Name = L"attributeSlowCellBurstTx";
-			this->attributeSlowCellBurstTx->Size = System::Drawing::Size(85, 20);
-			this->attributeSlowCellBurstTx->TabIndex = 44;
-			// 
-			// attributeSlowCellBurstFix
-			// 
-			this->attributeSlowCellBurstFix->Location = System::Drawing::Point(578, 168);
-			this->attributeSlowCellBurstFix->Name = L"attributeSlowCellBurstFix";
-			this->attributeSlowCellBurstFix->Size = System::Drawing::Size(85, 20);
-			this->attributeSlowCellBurstFix->TabIndex = 43;
-			// 
-			// attributeSlowCellTx
-			// 
-			this->attributeSlowCellTx->Location = System::Drawing::Point(578, 142);
-			this->attributeSlowCellTx->Name = L"attributeSlowCellTx";
-			this->attributeSlowCellTx->Size = System::Drawing::Size(85, 20);
-			this->attributeSlowCellTx->TabIndex = 42;
-			// 
-			// attributeSlowSbdBurstTx
-			// 
-			this->attributeSlowSbdBurstTx->Location = System::Drawing::Point(578, 118);
-			this->attributeSlowSbdBurstTx->Name = L"attributeSlowSbdBurstTx";
-			this->attributeSlowSbdBurstTx->Size = System::Drawing::Size(85, 20);
-			this->attributeSlowSbdBurstTx->TabIndex = 41;
-			// 
-			// attributeSlowSbdBurstFix
-			// 
-			this->attributeSlowSbdBurstFix->Location = System::Drawing::Point(578, 93);
-			this->attributeSlowSbdBurstFix->Name = L"attributeSlowSbdBurstFix";
-			this->attributeSlowSbdBurstFix->Size = System::Drawing::Size(85, 20);
-			this->attributeSlowSbdBurstFix->TabIndex = 40;
-			// 
-			// attributeSlowSbdTx
-			// 
-			this->attributeSlowSbdTx->Location = System::Drawing::Point(578, 67);
-			this->attributeSlowSbdTx->Name = L"attributeSlowSbdTx";
-			this->attributeSlowSbdTx->Size = System::Drawing::Size(85, 20);
-			this->attributeSlowSbdTx->TabIndex = 39;
-			// 
-			// attributeBehaviour
-			// 
-			this->attributeBehaviour->Location = System::Drawing::Point(105, 93);
-			this->attributeBehaviour->Name = L"attributeBehaviour";
-			this->attributeBehaviour->Size = System::Drawing::Size(85, 20);
-			this->attributeBehaviour->TabIndex = 51;
-			// 
 			// label19
 			// 
 			this->label19->AutoSize = true;
-			this->label19->Location = System::Drawing::Point(35, 93);
+			this->label19->Location = System::Drawing::Point(35, 88);
 			this->label19->Name = L"label19";
 			this->label19->Size = System::Drawing::Size(55, 13);
 			this->label19->TabIndex = 52;
@@ -629,23 +551,24 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// fenceAttributeGroup
 			// 
+			this->fenceAttributeGroup->Controls->Add(this->attributeBehaviour);
+			this->fenceAttributeGroup->Controls->Add(this->stopTimePicker);
+			this->fenceAttributeGroup->Controls->Add(this->startTimePicker);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSlowCellBurstTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSlowCellBurstFix);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSlowCellTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSlowSbdBurstTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSlowSbdBurstFix);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSlowSbdTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeCellBurstTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeCellBurstFix);
+			this->fenceAttributeGroup->Controls->Add(this->attributeCellTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSbdBurstTx);
+			this->fenceAttributeGroup->Controls->Add(this->attributeSbdBurstFix);
 			this->fenceAttributeGroup->Controls->Add(this->attributeSbdTx);
 			this->fenceAttributeGroup->Controls->Add(this->stopDatePicker);
 			this->fenceAttributeGroup->Controls->Add(this->startDataPicker);
-			this->fenceAttributeGroup->Controls->Add(this->label21);
-			this->fenceAttributeGroup->Controls->Add(this->resetSlowCellBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->resetSlowCellBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->resetSlowCellTx);
-			this->fenceAttributeGroup->Controls->Add(this->resetSlowSbdBurstTx);
 			this->fenceAttributeGroup->Controls->Add(this->attributeStartDate);
-			this->fenceAttributeGroup->Controls->Add(this->resetSlowSbdBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->resetSlowSbdTx);
-			this->fenceAttributeGroup->Controls->Add(this->resetCellBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->resetCellBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->resetCellTx);
-			this->fenceAttributeGroup->Controls->Add(this->resetSbdBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->resetSbdBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->resetSbdTx);
 			this->fenceAttributeGroup->Controls->Add(this->resetSpeed);
 			this->fenceAttributeGroup->Controls->Add(this->resetStopDate);
 			this->fenceAttributeGroup->Controls->Add(this->resetStartDate);
@@ -657,19 +580,12 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			this->fenceAttributeGroup->Controls->Add(this->fenceNumber);
 			this->fenceAttributeGroup->Controls->Add(this->label20);
 			this->fenceAttributeGroup->Controls->Add(this->label19);
-			this->fenceAttributeGroup->Controls->Add(this->attributeBehaviour);
 			this->fenceAttributeGroup->Controls->Add(this->label13);
 			this->fenceAttributeGroup->Controls->Add(this->label14);
 			this->fenceAttributeGroup->Controls->Add(this->label15);
 			this->fenceAttributeGroup->Controls->Add(this->label16);
 			this->fenceAttributeGroup->Controls->Add(this->label17);
 			this->fenceAttributeGroup->Controls->Add(this->label18);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSlowCellBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSlowCellBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSlowCellTx);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSlowSbdBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSlowSbdBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSlowSbdTx);
 			this->fenceAttributeGroup->Controls->Add(this->attributeSpeed);
 			this->fenceAttributeGroup->Controls->Add(this->label12);
 			this->fenceAttributeGroup->Controls->Add(this->label11);
@@ -677,11 +593,6 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			this->fenceAttributeGroup->Controls->Add(this->label9);
 			this->fenceAttributeGroup->Controls->Add(this->label8);
 			this->fenceAttributeGroup->Controls->Add(this->label7);
-			this->fenceAttributeGroup->Controls->Add(this->attributeCellBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->attributeCellBurstFix);
-			this->fenceAttributeGroup->Controls->Add(this->attributeCellTx);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSbdBurstTx);
-			this->fenceAttributeGroup->Controls->Add(this->attributeSbdBurstFix);
 			this->fenceAttributeGroup->Controls->Add(this->label6);
 			this->fenceAttributeGroup->Controls->Add(this->label5);
 			this->fenceAttributeGroup->Controls->Add(this->label4);
@@ -696,10 +607,177 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			this->fenceAttributeGroup->Controls->Add(this->viewAttributesButton);
 			this->fenceAttributeGroup->Location = System::Drawing::Point(35, 128);
 			this->fenceAttributeGroup->Name = L"fenceAttributeGroup";
-			this->fenceAttributeGroup->Size = System::Drawing::Size(699, 391);
+			this->fenceAttributeGroup->Size = System::Drawing::Size(699, 436);
 			this->fenceAttributeGroup->TabIndex = 53;
 			this->fenceAttributeGroup->TabStop = false;
 			this->fenceAttributeGroup->Text = L"Fence Attributes";
+			// 
+			// attributeBehaviour
+			// 
+			this->attributeBehaviour->FormattingEnabled = true;
+			this->attributeBehaviour->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+				L"Entry+Exit", L"Entry", L"Exit", L"Entry+Disable",
+					L"None"
+			});
+			this->attributeBehaviour->Location = System::Drawing::Point(105, 88);
+			this->attributeBehaviour->Name = L"attributeBehaviour";
+			this->attributeBehaviour->Size = System::Drawing::Size(85, 21);
+			this->attributeBehaviour->TabIndex = 91;
+			// 
+			// stopTimePicker
+			// 
+			this->stopTimePicker->Format = System::Windows::Forms::DateTimePickerFormat::Time;
+			this->stopTimePicker->Location = System::Drawing::Point(105, 325);
+			this->stopTimePicker->Name = L"stopTimePicker";
+			this->stopTimePicker->ShowUpDown = true;
+			this->stopTimePicker->Size = System::Drawing::Size(84, 20);
+			this->stopTimePicker->TabIndex = 90;
+			this->stopTimePicker->ValueChanged += gcnew System::EventHandler(this, &Form1::stopTimePicker_ValueChanged);
+			// 
+			// startTimePicker
+			// 
+			this->startTimePicker->Format = System::Windows::Forms::DateTimePickerFormat::Time;
+			this->startTimePicker->Location = System::Drawing::Point(105, 241);
+			this->startTimePicker->Name = L"startTimePicker";
+			this->startTimePicker->ShowUpDown = true;
+			this->startTimePicker->Size = System::Drawing::Size(84, 20);
+			this->startTimePicker->TabIndex = 89;
+			this->startTimePicker->ValueChanged += gcnew System::EventHandler(this, &Form1::startTimePicker_ValueChanged);
+			// 
+			// attributeSlowCellBurstTx
+			// 
+			this->attributeSlowCellBurstTx->FormattingEnabled = true;
+			this->attributeSlowCellBurstTx->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min", L"NOT SET"
+			});
+			this->attributeSlowCellBurstTx->Location = System::Drawing::Point(578, 185);
+			this->attributeSlowCellBurstTx->Name = L"attributeSlowCellBurstTx";
+			this->attributeSlowCellBurstTx->Size = System::Drawing::Size(75, 21);
+			this->attributeSlowCellBurstTx->TabIndex = 88;
+			// 
+			// attributeSlowCellBurstFix
+			// 
+			this->attributeSlowCellBurstFix->FormattingEnabled = true;
+			this->attributeSlowCellBurstFix->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
+				L"5 secs", L"10 secs", L"15 secs",
+					L"20 secs", L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min", L"NOT SET"
+			});
+			this->attributeSlowCellBurstFix->Location = System::Drawing::Point(578, 159);
+			this->attributeSlowCellBurstFix->Name = L"attributeSlowCellBurstFix";
+			this->attributeSlowCellBurstFix->Size = System::Drawing::Size(75, 21);
+			this->attributeSlowCellBurstFix->TabIndex = 87;
+			// 
+			// attributeSlowCellTx
+			// 
+			this->attributeSlowCellTx->FormattingEnabled = true;
+			this->attributeSlowCellTx->Items->AddRange(gcnew cli::array< System::Object^  >(26) {
+				L"Continuous", L"5 min", L"10 min", L"15 min",
+					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
+					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec", L"NOT SET"
+			});
+			this->attributeSlowCellTx->Location = System::Drawing::Point(578, 133);
+			this->attributeSlowCellTx->Name = L"attributeSlowCellTx";
+			this->attributeSlowCellTx->Size = System::Drawing::Size(75, 21);
+			this->attributeSlowCellTx->TabIndex = 86;
+			// 
+			// attributeSlowSbdBurstTx
+			// 
+			this->attributeSlowSbdBurstTx->FormattingEnabled = true;
+			this->attributeSlowSbdBurstTx->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min", L"NOT SET"
+			});
+			this->attributeSlowSbdBurstTx->Location = System::Drawing::Point(578, 109);
+			this->attributeSlowSbdBurstTx->Name = L"attributeSlowSbdBurstTx";
+			this->attributeSlowSbdBurstTx->Size = System::Drawing::Size(75, 21);
+			this->attributeSlowSbdBurstTx->TabIndex = 85;
+			// 
+			// attributeSlowSbdBurstFix
+			// 
+			this->attributeSlowSbdBurstFix->FormattingEnabled = true;
+			this->attributeSlowSbdBurstFix->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
+				L"5 secs", L"10 secs", L"15 secs",
+					L"20 secs", L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min", L"NOT SET"
+			});
+			this->attributeSlowSbdBurstFix->Location = System::Drawing::Point(578, 85);
+			this->attributeSlowSbdBurstFix->Name = L"attributeSlowSbdBurstFix";
+			this->attributeSlowSbdBurstFix->Size = System::Drawing::Size(75, 21);
+			this->attributeSlowSbdBurstFix->TabIndex = 84;
+			// 
+			// attributeSlowSbdTx
+			// 
+			this->attributeSlowSbdTx->FormattingEnabled = true;
+			this->attributeSlowSbdTx->Items->AddRange(gcnew cli::array< System::Object^  >(26) {
+				L"Continuous", L"5 min", L"10 min", L"15 min",
+					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
+					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec", L"NOT SET"
+			});
+			this->attributeSlowSbdTx->Location = System::Drawing::Point(578, 61);
+			this->attributeSlowSbdTx->Name = L"attributeSlowSbdTx";
+			this->attributeSlowSbdTx->Size = System::Drawing::Size(75, 21);
+			this->attributeSlowSbdTx->TabIndex = 83;
+			// 
+			// attributeCellBurstTx
+			// 
+			this->attributeCellBurstTx->FormattingEnabled = true;
+			this->attributeCellBurstTx->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min", L"NOT SET"
+			});
+			this->attributeCellBurstTx->Location = System::Drawing::Point(332, 186);
+			this->attributeCellBurstTx->Name = L"attributeCellBurstTx";
+			this->attributeCellBurstTx->Size = System::Drawing::Size(75, 21);
+			this->attributeCellBurstTx->TabIndex = 82;
+			// 
+			// attributeCellBurstFix
+			// 
+			this->attributeCellBurstFix->FormattingEnabled = true;
+			this->attributeCellBurstFix->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
+				L"5 secs", L"10 secs", L"15 secs",
+					L"20 secs", L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min", L"NOT SET"
+			});
+			this->attributeCellBurstFix->Location = System::Drawing::Point(332, 159);
+			this->attributeCellBurstFix->Name = L"attributeCellBurstFix";
+			this->attributeCellBurstFix->Size = System::Drawing::Size(75, 21);
+			this->attributeCellBurstFix->TabIndex = 81;
+			// 
+			// attributeCellTx
+			// 
+			this->attributeCellTx->FormattingEnabled = true;
+			this->attributeCellTx->Items->AddRange(gcnew cli::array< System::Object^  >(26) {
+				L"Continuous", L"5 min", L"10 min", L"15 min",
+					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
+					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec", L"NOT SET"
+			});
+			this->attributeCellTx->Location = System::Drawing::Point(332, 133);
+			this->attributeCellTx->Name = L"attributeCellTx";
+			this->attributeCellTx->Size = System::Drawing::Size(75, 21);
+			this->attributeCellTx->TabIndex = 80;
+			// 
+			// attributeSbdBurstTx
+			// 
+			this->attributeSbdBurstTx->FormattingEnabled = true;
+			this->attributeSbdBurstTx->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+				L"1 min", L"2 min", L"5 min", L"10 min",
+					L"15 min", L"30 min", L"60 min", L"NOT SET"
+			});
+			this->attributeSbdBurstTx->Location = System::Drawing::Point(332, 109);
+			this->attributeSbdBurstTx->Name = L"attributeSbdBurstTx";
+			this->attributeSbdBurstTx->Size = System::Drawing::Size(75, 21);
+			this->attributeSbdBurstTx->TabIndex = 79;
+			// 
+			// attributeSbdBurstFix
+			// 
+			this->attributeSbdBurstFix->FormattingEnabled = true;
+			this->attributeSbdBurstFix->Items->AddRange(gcnew cli::array< System::Object^  >(12) {
+				L"5 secs", L"10 secs", L"15 secs", L"20 secs",
+					L"30 secs", L"1 min", L"2 min", L"5 min", L"10 min", L"15 min", L"20 min", L"NOT SET"
+			});
+			this->attributeSbdBurstFix->Location = System::Drawing::Point(332, 85);
+			this->attributeSbdBurstFix->Name = L"attributeSbdBurstFix";
+			this->attributeSbdBurstFix->Size = System::Drawing::Size(75, 21);
+			this->attributeSbdBurstFix->TabIndex = 78;
 			// 
 			// attributeSbdTx
 			// 
@@ -709,14 +787,14 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 					L"20 min", L"30 min", L"1 hour", L"90 min", L"2 hour", L"3 hour", L"4 hour", L"6 hour", L"8 hour", L"12 hour", L"Burst", L"1 min",
 					L"2 min", L"3 min", L"4 min", L"24 hour", L"6 min", L"8 min", L"12 min", L"15 sec", L"30 sec", L"NOT SET"
 			});
-			this->attributeSbdTx->Location = System::Drawing::Point(332, 65);
+			this->attributeSbdTx->Location = System::Drawing::Point(332, 60);
 			this->attributeSbdTx->Name = L"attributeSbdTx";
-			this->attributeSbdTx->Size = System::Drawing::Size(85, 21);
+			this->attributeSbdTx->Size = System::Drawing::Size(75, 21);
 			this->attributeSbdTx->TabIndex = 77;
 			// 
 			// stopDatePicker
 			// 
-			this->stopDatePicker->Location = System::Drawing::Point(106, 309);
+			this->stopDatePicker->Location = System::Drawing::Point(105, 301);
 			this->stopDatePicker->Name = L"stopDatePicker";
 			this->stopDatePicker->Size = System::Drawing::Size(120, 20);
 			this->stopDatePicker->TabIndex = 76;
@@ -724,145 +802,15 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// startDataPicker
 			// 
-			this->startDataPicker->Location = System::Drawing::Point(105, 248);
+			this->startDataPicker->Location = System::Drawing::Point(105, 216);
 			this->startDataPicker->Name = L"startDataPicker";
 			this->startDataPicker->Size = System::Drawing::Size(123, 20);
 			this->startDataPicker->TabIndex = 54;
 			this->startDataPicker->ValueChanged += gcnew System::EventHandler(this, &Form1::startDataPicker_ValueChanged);
 			// 
-			// label21
-			// 
-			this->label21->AutoSize = true;
-			this->label21->Location = System::Drawing::Point(26, 362);
-			this->label21->Name = L"label21";
-			this->label21->Size = System::Drawing::Size(398, 13);
-			this->label21->TabIndex = 75;
-			this->label21->Text = L"Set speed in knots tenths, floor/ceiling in metres, date in seconds since 1 Jan 2"
-				L"000";
-			// 
-			// resetSlowCellBurstTx
-			// 
-			this->resetSlowCellBurstTx->Location = System::Drawing::Point(669, 193);
-			this->resetSlowCellBurstTx->Name = L"resetSlowCellBurstTx";
-			this->resetSlowCellBurstTx->Size = System::Drawing::Size(14, 10);
-			this->resetSlowCellBurstTx->TabIndex = 74;
-			this->resetSlowCellBurstTx->Text = L"button17";
-			this->resetSlowCellBurstTx->UseVisualStyleBackColor = true;
-			this->resetSlowCellBurstTx->Click += gcnew System::EventHandler(this, &Form1::resetSlowCellBurstTx_Click);
-			// 
-			// resetSlowCellBurstFix
-			// 
-			this->resetSlowCellBurstFix->Location = System::Drawing::Point(669, 168);
-			this->resetSlowCellBurstFix->Name = L"resetSlowCellBurstFix";
-			this->resetSlowCellBurstFix->Size = System::Drawing::Size(14, 10);
-			this->resetSlowCellBurstFix->TabIndex = 73;
-			this->resetSlowCellBurstFix->Text = L"button16";
-			this->resetSlowCellBurstFix->UseVisualStyleBackColor = true;
-			this->resetSlowCellBurstFix->Click += gcnew System::EventHandler(this, &Form1::resetSlowCellBurstFix_Click);
-			// 
-			// resetSlowCellTx
-			// 
-			this->resetSlowCellTx->Location = System::Drawing::Point(669, 143);
-			this->resetSlowCellTx->Name = L"resetSlowCellTx";
-			this->resetSlowCellTx->Size = System::Drawing::Size(14, 10);
-			this->resetSlowCellTx->TabIndex = 72;
-			this->resetSlowCellTx->Text = L"button15";
-			this->resetSlowCellTx->UseVisualStyleBackColor = true;
-			this->resetSlowCellTx->Click += gcnew System::EventHandler(this, &Form1::resetSlowCellTx_Click);
-			// 
-			// resetSlowSbdBurstTx
-			// 
-			this->resetSlowSbdBurstTx->Location = System::Drawing::Point(669, 117);
-			this->resetSlowSbdBurstTx->Name = L"resetSlowSbdBurstTx";
-			this->resetSlowSbdBurstTx->Size = System::Drawing::Size(14, 10);
-			this->resetSlowSbdBurstTx->TabIndex = 71;
-			this->resetSlowSbdBurstTx->Text = L"button14";
-			this->resetSlowSbdBurstTx->UseVisualStyleBackColor = true;
-			this->resetSlowSbdBurstTx->Click += gcnew System::EventHandler(this, &Form1::resetSlowSbdBurstTx_Click);
-			// 
-			// resetSlowSbdBurstFix
-			// 
-			this->resetSlowSbdBurstFix->Location = System::Drawing::Point(669, 93);
-			this->resetSlowSbdBurstFix->Name = L"resetSlowSbdBurstFix";
-			this->resetSlowSbdBurstFix->Size = System::Drawing::Size(14, 10);
-			this->resetSlowSbdBurstFix->TabIndex = 70;
-			this->resetSlowSbdBurstFix->Text = L"button13";
-			this->resetSlowSbdBurstFix->UseVisualStyleBackColor = true;
-			this->resetSlowSbdBurstFix->Click += gcnew System::EventHandler(this, &Form1::resetSlowSbdBurstFix_Click);
-			// 
-			// resetSlowSbdTx
-			// 
-			this->resetSlowSbdTx->Location = System::Drawing::Point(669, 66);
-			this->resetSlowSbdTx->Name = L"resetSlowSbdTx";
-			this->resetSlowSbdTx->Size = System::Drawing::Size(14, 10);
-			this->resetSlowSbdTx->TabIndex = 69;
-			this->resetSlowSbdTx->Text = L"button12";
-			this->resetSlowSbdTx->UseVisualStyleBackColor = true;
-			this->resetSlowSbdTx->Click += gcnew System::EventHandler(this, &Form1::resetSlowSbdTx_Click);
-			// 
-			// resetCellBurstTx
-			// 
-			this->resetCellBurstTx->Location = System::Drawing::Point(423, 193);
-			this->resetCellBurstTx->Name = L"resetCellBurstTx";
-			this->resetCellBurstTx->Size = System::Drawing::Size(14, 10);
-			this->resetCellBurstTx->TabIndex = 68;
-			this->resetCellBurstTx->Text = L"button11";
-			this->resetCellBurstTx->UseVisualStyleBackColor = true;
-			this->resetCellBurstTx->Click += gcnew System::EventHandler(this, &Form1::resetCellBurstTx_Click);
-			// 
-			// resetCellBurstFix
-			// 
-			this->resetCellBurstFix->Location = System::Drawing::Point(423, 167);
-			this->resetCellBurstFix->Name = L"resetCellBurstFix";
-			this->resetCellBurstFix->Size = System::Drawing::Size(14, 10);
-			this->resetCellBurstFix->TabIndex = 67;
-			this->resetCellBurstFix->Text = L"button10";
-			this->resetCellBurstFix->UseVisualStyleBackColor = true;
-			this->resetCellBurstFix->Click += gcnew System::EventHandler(this, &Form1::resetCellBurstFix_Click);
-			// 
-			// resetCellTx
-			// 
-			this->resetCellTx->Location = System::Drawing::Point(423, 141);
-			this->resetCellTx->Name = L"resetCellTx";
-			this->resetCellTx->Size = System::Drawing::Size(14, 10);
-			this->resetCellTx->TabIndex = 66;
-			this->resetCellTx->Text = L"button9";
-			this->resetCellTx->UseVisualStyleBackColor = true;
-			this->resetCellTx->Click += gcnew System::EventHandler(this, &Form1::resetCellTx_Click);
-			// 
-			// resetSbdBurstTx
-			// 
-			this->resetSbdBurstTx->Location = System::Drawing::Point(423, 117);
-			this->resetSbdBurstTx->Name = L"resetSbdBurstTx";
-			this->resetSbdBurstTx->Size = System::Drawing::Size(14, 10);
-			this->resetSbdBurstTx->TabIndex = 65;
-			this->resetSbdBurstTx->Text = L"button8";
-			this->resetSbdBurstTx->UseVisualStyleBackColor = true;
-			this->resetSbdBurstTx->Click += gcnew System::EventHandler(this, &Form1::resetSbdBurstTx_Click);
-			// 
-			// resetSbdBurstFix
-			// 
-			this->resetSbdBurstFix->Location = System::Drawing::Point(423, 92);
-			this->resetSbdBurstFix->Name = L"resetSbdBurstFix";
-			this->resetSbdBurstFix->Size = System::Drawing::Size(14, 10);
-			this->resetSbdBurstFix->TabIndex = 64;
-			this->resetSbdBurstFix->Text = L"button7";
-			this->resetSbdBurstFix->UseVisualStyleBackColor = true;
-			this->resetSbdBurstFix->Click += gcnew System::EventHandler(this, &Form1::resetSbdBurstFix_Click);
-			// 
-			// resetSbdTx
-			// 
-			this->resetSbdTx->Location = System::Drawing::Point(423, 66);
-			this->resetSbdTx->Name = L"resetSbdTx";
-			this->resetSbdTx->Size = System::Drawing::Size(14, 10);
-			this->resetSbdTx->TabIndex = 63;
-			this->resetSbdTx->Text = L"button6";
-			this->resetSbdTx->UseVisualStyleBackColor = true;
-			this->resetSbdTx->Click += gcnew System::EventHandler(this, &Form1::resetSbdTx_Click);
-			// 
 			// resetSpeed
 			// 
-			this->resetSpeed->Location = System::Drawing::Point(196, 175);
+			this->resetSpeed->Location = System::Drawing::Point(196, 170);
 			this->resetSpeed->Name = L"resetSpeed";
 			this->resetSpeed->Size = System::Drawing::Size(14, 10);
 			this->resetSpeed->TabIndex = 62;
@@ -872,7 +820,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// resetStopDate
 			// 
-			this->resetStopDate->Location = System::Drawing::Point(196, 283);
+			this->resetStopDate->Location = System::Drawing::Point(196, 348);
 			this->resetStopDate->Name = L"resetStopDate";
 			this->resetStopDate->Size = System::Drawing::Size(14, 10);
 			this->resetStopDate->TabIndex = 61;
@@ -882,7 +830,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// resetStartDate
 			// 
-			this->resetStartDate->Location = System::Drawing::Point(196, 222);
+			this->resetStartDate->Location = System::Drawing::Point(196, 266);
 			this->resetStartDate->Name = L"resetStartDate";
 			this->resetStartDate->Size = System::Drawing::Size(14, 10);
 			this->resetStartDate->TabIndex = 60;
@@ -892,7 +840,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// resetCeiling
 			// 
-			this->resetCeiling->Location = System::Drawing::Point(196, 148);
+			this->resetCeiling->Location = System::Drawing::Point(196, 143);
 			this->resetCeiling->Name = L"resetCeiling";
 			this->resetCeiling->Size = System::Drawing::Size(14, 10);
 			this->resetCeiling->TabIndex = 59;
@@ -902,7 +850,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// resetFloor
 			// 
-			this->resetFloor->Location = System::Drawing::Point(196, 122);
+			this->resetFloor->Location = System::Drawing::Point(196, 117);
 			this->resetFloor->Name = L"resetFloor";
 			this->resetFloor->Size = System::Drawing::Size(14, 10);
 			this->resetFloor->TabIndex = 58;
@@ -912,7 +860,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			// viewBackAttributesButton
 			// 
-			this->viewBackAttributesButton->Location = System::Drawing::Point(152, 25);
+			this->viewBackAttributesButton->Location = System::Drawing::Point(325, 13);
 			this->viewBackAttributesButton->Name = L"viewBackAttributesButton";
 			this->viewBackAttributesButton->Size = System::Drawing::Size(38, 24);
 			this->viewBackAttributesButton->TabIndex = 57;
@@ -923,7 +871,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// fenceTotal
 			// 
 			this->fenceTotal->AutoSize = true;
-			this->fenceTotal->Location = System::Drawing::Point(115, 28);
+			this->fenceTotal->Location = System::Drawing::Point(288, 16);
 			this->fenceTotal->Name = L"fenceTotal";
 			this->fenceTotal->Size = System::Drawing::Size(31, 13);
 			this->fenceTotal->TabIndex = 56;
@@ -932,7 +880,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label22
 			// 
 			this->label22->AutoSize = true;
-			this->label22->Location = System::Drawing::Point(102, 28);
+			this->label22->Location = System::Drawing::Point(275, 16);
 			this->label22->Name = L"label22";
 			this->label22->Size = System::Drawing::Size(16, 13);
 			this->label22->TabIndex = 55;
@@ -941,7 +889,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// fenceNumber
 			// 
 			this->fenceNumber->AutoSize = true;
-			this->fenceNumber->Location = System::Drawing::Point(79, 28);
+			this->fenceNumber->Location = System::Drawing::Point(252, 16);
 			this->fenceNumber->Name = L"fenceNumber";
 			this->fenceNumber->Size = System::Drawing::Size(25, 13);
 			this->fenceNumber->TabIndex = 54;
@@ -950,7 +898,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// label20
 			// 
 			this->label20->AutoSize = true;
-			this->label20->Location = System::Drawing::Point(45, 28);
+			this->label20->Location = System::Drawing::Point(218, 16);
 			this->label20->Name = L"label20";
 			this->label20->Size = System::Drawing::Size(37, 13);
 			this->label20->TabIndex = 53;
@@ -960,7 +908,7 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(775, 531);
+			this->ClientSize = System::Drawing::Size(776, 576);
 			this->Controls->Add(this->fenceAttributeGroup);
 			this->Controls->Add(this->generateButton);
 			this->Controls->Add(this->status);
@@ -1568,6 +1516,8 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 
         _datePickLocked = true;
         startDataPicker->Value = centuryBegin->AddSeconds( startDateElapsedTime );
+        startDateElapsedTime -= (startDateElapsedTime % SECONDS_IN_DAY);
+        startTimePicker->Value = centuryBegin->AddSeconds( startDateElapsedTime );
         _datePickLocked = false;
     }
     private: System::Void resetStopDate_Click(System::Object^  sender, System::EventArgs^  e)
@@ -1578,59 +1528,13 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 
         _datePickLocked = true;
         stopDatePicker->Value = centuryBegin->AddSeconds( stopDateElapsedTime );
+        stopDateElapsedTime -= (stopDateElapsedTime % SECONDS_IN_DAY);
+        stopTimePicker->Value = centuryBegin->AddSeconds( stopDateElapsedTime );
         _datePickLocked = false;
     }
     private: System::Void resetSpeed_Click(System::Object^  sender, System::EventArgs^  e)
     {
         attributeSpeed->Text = String::Format( "{0}", 0xffffU );
-    }
-    private: System::Void resetSbdTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSbdTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSbdBurstFix_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSbdBurstFix->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSbdBurstTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSbdBurstTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetCellTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeCellTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetCellBurstFix_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeCellBurstFix->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetCellBurstTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeCellBurstTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSlowSbdTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSlowSbdTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSlowSbdBurstFix_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSlowSbdBurstFix->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSlowSbdBurstTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSlowSbdBurstTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSlowCellTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSlowCellTx->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSlowCellBurstFix_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSlowCellBurstFix->Text = String::Format( "{0}", 0xffU );
-    }
-    private: System::Void resetSlowCellBurstTx_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        attributeSlowCellBurstTx->Text = String::Format( "{0}", 0xffU );
     }
 
     //----------------------------Support Functions ---------------------------
@@ -1833,47 +1737,49 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
                         fileIn.seekp( offset, std::ios_base::beg );
 
                         attributeID->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_2 ) );
-                        attributeBehaviour->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeBehaviour, fileRead( &fileIn, BYTE_1 ) );
                         attributeFloor->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_2 ) );
                         attributeCeiling->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_2 ) );
 
                         DateTime^ centuryBegin = gcnew DateTime(2000, 1, 1);
                         _datePickLocked = true;
 
-                        unsigned int startDateElapsedTime = fileRead( &fileIn, BYTE_4 );
-                        attributeStartDate->Text = String::Format( "{0}", startDateElapsedTime );
-                        startDataPicker->Value = centuryBegin->AddSeconds( startDateElapsedTime );
 
-                        unsigned int stopDateElapsedTime = fileRead( &fileIn, BYTE_4 );
-                        attributeStopDate->Text = String::Format( "{0}", stopDateElapsedTime );
-                        stopDatePicker->Value = centuryBegin->AddSeconds( stopDateElapsedTime );
+                        unsigned int elapsedTime;
+
+                        elapsedTime = fileRead( &fileIn, BYTE_4 );
+                        attributeStartDate->Text = String::Format( "{0}", elapsedTime );
+                        startDataPicker->Value = centuryBegin->AddSeconds( elapsedTime );
+                        elapsedTime %= SECONDS_IN_DAY;
+                        startTimePicker->Value = centuryBegin->AddSeconds( elapsedTime );
+
+                        elapsedTime = fileRead( &fileIn, BYTE_4 );
+                        attributeStopDate->Text = String::Format( "{0}", elapsedTime );
+                        stopDatePicker->Value = centuryBegin->AddSeconds( elapsedTime );
+                        elapsedTime %= SECONDS_IN_DAY;
+                        stopTimePicker->Value = centuryBegin->AddSeconds( elapsedTime );
 
                         _datePickLocked = false;
 
 
                         attributeSpeed->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_2 ) );
 
-                        unsigned int setting = fileRead( &fileIn, BYTE_1 );
-                        if (setting == 0xff)
-                        {
-                            setting = (attributeSbdTx->Items->Count - 1);
-                        }
-                        attributeSbdTx->SelectedIndex = setting;
+                        setIntoDropDown( attributeSbdTx, fileRead( &fileIn, BYTE_1 ) );
 
-                        attributeSbdBurstFix->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeSbdBurstTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSbdBurstFix, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSbdBurstTx, fileRead( &fileIn, BYTE_1 ) );
 
-                        attributeCellTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeCellBurstFix->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeCellBurstTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeCellTx, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeCellBurstFix, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeCellBurstTx, fileRead( &fileIn, BYTE_1 ) );
 
-                        attributeSlowSbdTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeSlowSbdBurstFix->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeSlowSbdBurstTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSlowSbdTx, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSlowSbdBurstFix, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSlowSbdBurstTx, fileRead( &fileIn, BYTE_1 ) );
 
-                        attributeSlowCellTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeSlowCellBurstFix->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
-                        attributeSlowCellBurstTx->Text = String::Format( "{0}", fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSlowCellTx, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSlowCellBurstFix, fileRead( &fileIn, BYTE_1 ) );
+                        setIntoDropDown( attributeSlowCellBurstTx, fileRead( &fileIn, BYTE_1 ) );
 
                         fileIn.close();
 
@@ -1903,6 +1809,27 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
         }
 
         return (isBinFile);
+    }
+
+
+    void setIntoDropDown( ComboBox^  attribute, unsigned int setting )
+    {
+        if (setting == 0xff)
+        {
+            setting = (attribute->Items->Count - 1);
+        }
+        attribute->SelectedIndex = setting;
+    }
+
+
+    unsigned int getFromDropDown( ComboBox^  attribute )
+    {
+        unsigned int setting = attribute->SelectedIndex;
+        if (setting == (attribute->Items->Count - 1))
+        {
+            setting = 0xff;
+        }
+        return (setting);
     }
 
 
@@ -1945,35 +1872,29 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 
                         fileWrite( &fileOut, BYTE_2, (int)Int64::Parse( attributeID->Text ) );
 
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeBehaviour->Text ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeBehaviour ) );
                         fileWrite( &fileOut, BYTE_2, (int)Int64::Parse( attributeFloor->Text ) );
                         fileWrite( &fileOut, BYTE_2, (int)Int64::Parse( attributeCeiling->Text ) );
                         fileWrite( &fileOut, BYTE_4, (int)Int64::Parse( attributeStartDate->Text ) );
                         fileWrite( &fileOut, BYTE_4, (int)Int64::Parse( attributeStopDate->Text ) );
                         fileWrite( &fileOut, BYTE_2, (int)Int64::Parse( attributeSpeed->Text ) );
 
-                        unsigned int setting = attributeSbdTx->SelectedIndex;
-                        if (setting == (attributeSbdTx->Items->Count - 1))
-                        {
-                            setting = 0xff;
-                        }
-                        fileWrite( &fileOut, BYTE_1, setting );
-                        //fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSbdTx->Text ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSbdTx ) );
 
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSbdBurstFix->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSbdBurstTx->Text ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSbdBurstFix ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSbdBurstTx ) );
 
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeCellTx->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeCellBurstFix->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeCellBurstTx->Text ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeCellTx ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeCellBurstFix ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeCellBurstTx ) );
 
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSlowSbdTx->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSlowSbdBurstFix->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSlowSbdBurstTx->Text ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSlowSbdTx ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSlowSbdBurstFix ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSlowSbdBurstTx ) );
 
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSlowCellTx->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSlowCellBurstFix->Text ) );
-                        fileWrite( &fileOut, BYTE_1, (int)Int64::Parse( attributeSlowCellBurstTx->Text ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSlowCellTx ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSlowCellBurstFix ) );
+                        fileWrite( &fileOut, BYTE_1, getFromDropDown( attributeSlowCellBurstTx ) );
 
                         fileOut.close();
                     }
@@ -2292,7 +2213,6 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
 
     private: System::Void startDataPicker_ValueChanged(System::Object^  sender, System::EventArgs^  e)
     {
-        #define SECONDS_IN_DAY (24 * 60 * 60);
 
         if (!_datePickLocked)
         {
@@ -2304,13 +2224,13 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
             elapsedTime /= SECONDS_IN_DAY;
             elapsedTime *= SECONDS_IN_DAY;
 
+            elapsedTime += (startTimePicker->Value.TimeOfDay.Ticks / 10000000);
+
             attributeStartDate->Text = String::Format( "{0}", elapsedTime );
         }
     }
     private: System::Void stopDatePicker_ValueChanged(System::Object^  sender, System::EventArgs^  e)
     {
-        #define SECONDS_IN_DAY (24 * 60 * 60);
-
         if (!_datePickLocked)
         {
             DateTime^ centuryBegin = gcnew DateTime(2000, 1, 1);
@@ -2321,11 +2241,48 @@ private: System::Windows::Forms::ComboBox^  attributeSbdTx;
             elapsedTime /= SECONDS_IN_DAY;
             elapsedTime *= SECONDS_IN_DAY;
 
+            elapsedTime += (stopTimePicker->Value.TimeOfDay.Ticks / 10000000);
+
             attributeStopDate->Text = String::Format( "{0}", elapsedTime );
         }
     }
 
-	};
+	private: System::Void startTimePicker_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+    {
+        if (!_datePickLocked)
+        {
+            DateTime^ centuryBegin = gcnew DateTime(2000, 1, 1);
+
+            long long int elapsedTime = startDataPicker->Value.Ticks - centuryBegin->Ticks;//Ticks
+            elapsedTime /= 10000000;//Seconds
+
+            elapsedTime /= SECONDS_IN_DAY;
+            elapsedTime *= SECONDS_IN_DAY;
+
+            elapsedTime += (startTimePicker->Value.TimeOfDay.Ticks / 10000000);
+
+            attributeStartDate->Text = String::Format( "{0}", elapsedTime );
+        }
+	}
+
+    private: System::Void stopTimePicker_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+    {
+        if (!_datePickLocked)
+        {
+            DateTime^ centuryBegin = gcnew DateTime(2000, 1, 1);
+
+            long long int elapsedTime = stopDatePicker->Value.Ticks - centuryBegin->Ticks;//Ticks
+            elapsedTime /= 10000000;//Seconds
+
+            elapsedTime /= SECONDS_IN_DAY;
+            elapsedTime *= SECONDS_IN_DAY;
+
+            elapsedTime += (stopTimePicker->Value.TimeOfDay.Ticks / 10000000);
+
+            attributeStopDate->Text = String::Format( "{0}", elapsedTime );
+        }
+    }
+};
 
 }
 

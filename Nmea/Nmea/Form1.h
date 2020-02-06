@@ -838,13 +838,6 @@ private: System::Windows::Forms::Label^  label13;
                 altitudeStep = Convert::ToInt32( altitudeStepBox->Text );
 
 
-                if (trackPauseCheckBox->Checked == false)
-                {
-                    gpsTrack->nextPosition( speedStepBox->Text );
-                }
-                int latitude = gpsTrack->latitude();
-                int longitude = gpsTrack->longitude();
-
                 int speed;
 
                 if (gpsTrack->isTrackSpeed())
@@ -855,6 +848,13 @@ private: System::Windows::Forms::Label^  label13;
                 {
                     speed = Convert::ToInt32( speedStepBox->Text );
                 }
+
+                if (trackPauseCheckBox->Checked == false)
+                {
+                    gpsTrack->nextPosition( speed );
+                }
+                int latitude = gpsTrack->latitude();
+                int longitude = gpsTrack->longitude();
 
                 //Time
                 timeNow = DateTime::Now;

@@ -51,7 +51,7 @@ using namespace System::Collections;
              * Return:
              * Notes:
              */
-            void nextPosition( String ^speed )
+            void nextPosition( int speed )
             {
                 if (deltaTrackLength == trackLength)
                 {
@@ -62,7 +62,7 @@ using namespace System::Collections;
                     // Steps/sec (i.e. lat/long units)
                     // 1 knot = 185/360 metres/sec
                     // 1 metre = 10/11 steps
-                    int speedStep = ((Convert::ToInt32( speed ) * 185) + 198) / 396;
+                    int speedStep = ((speed * 185) + 198) / 396;
                     deltaTrackLength += speedStep;
                     if (deltaTrackLength > trackLength)
                     {
