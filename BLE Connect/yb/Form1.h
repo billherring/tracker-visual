@@ -1495,7 +1495,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// extSensitivityCombo
 			// 
 			this->extSensitivityCombo->FormattingEnabled = true;
-			this->extSensitivityCombo->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"FFFF", L"FFFS", L"FFSS", L"FSSS", L"SSSS" });
+			this->extSensitivityCombo->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"FFFFF", L"FFFFS", L"FFFSS", L"FFSSS",
+					L"FSSSS", L"SSSSS"
+			});
 			this->extSensitivityCombo->Location = System::Drawing::Point(3, 309);
 			this->extSensitivityCombo->Name = L"extSensitivityCombo";
 			this->extSensitivityCombo->Size = System::Drawing::Size(86, 21);
@@ -1885,7 +1888,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// 
 			this->label64->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->label64->AutoSize = true;
-			this->label64->Location = System::Drawing::Point(98, 149);
+			this->label64->Location = System::Drawing::Point(98, 151);
 			this->label64->Name = L"label64";
 			this->label64->Size = System::Drawing::Size(105, 13);
 			this->label64->TabIndex = 95;
@@ -2699,10 +2702,10 @@ private: System::Windows::Forms::Button^  testButton;
 			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				18)));
 			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				18)));
+				20)));
 			this->settingsTableExtended->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				18)));
-			this->settingsTableExtended->Size = System::Drawing::Size(216, 210);
+				16)));
+			this->settingsTableExtended->Size = System::Drawing::Size(216, 219);
 			this->settingsTableExtended->TabIndex = 82;
 			// 
 			// flightMode
@@ -2784,7 +2787,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// 
 			this->extButtons->FormattingEnabled = true;
 			this->extButtons->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Off", L"On" });
-			this->extButtons->Location = System::Drawing::Point(3, 165);
+			this->extButtons->Location = System::Drawing::Point(3, 167);
 			this->extButtons->Name = L"extButtons";
 			this->extButtons->Size = System::Drawing::Size(89, 21);
 			this->extButtons->TabIndex = 96;
@@ -2793,7 +2796,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// label69
 			// 
 			this->label69->AutoSize = true;
-			this->label69->Location = System::Drawing::Point(98, 162);
+			this->label69->Location = System::Drawing::Point(98, 164);
 			this->label69->Name = L"label69";
 			this->label69->Size = System::Drawing::Size(61, 13);
 			this->label69->TabIndex = 97;
