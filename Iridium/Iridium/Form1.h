@@ -54,6 +54,7 @@ namespace HAYES
         GPRS_CMD_VERBOSE            ,
         GPRS_CMD_DISABLE_WI         ,
         GPRS_CMD_HEX_MODE           ,
+        CMD_HELLO                   ,
 
         CMD_SESSION_FINISH          ,
         CMD_RING                    ,
@@ -115,6 +116,7 @@ namespace HAYES
         "AT+CMEE=1",    /* GPRS_CMD_VERBOSE,            */
         "AT+UMWI=0",    /* GPRS_CMD_DISABLE_WI,         */
         "AT+UDCONF=1,1",/* GPRS_CMD_HEX_MODE,           */
+        "AT",          /* CMD_HELLO          , */
 
         0,             /* CMD_SESSION_FINISH , */
         0              /* CMD_END            , */
@@ -168,6 +170,7 @@ namespace HAYES
         "OK""\x0d\x0a",                                 /* GPRS_CMD_VERBOSE,            */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_DISABLE_WI,         */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_HEX_MODE,           */
+        "OK""\x0d\x0a",                                 /* CMD_HELLO          , */
         
         "\x0d\x0a""OK""\x0d\x0a",                       /* CMD_SESSION_FINISH , */
         "SBDRING""\x0d\x0a",                            /* CMD_RING           , */
@@ -291,7 +294,7 @@ namespace Iridium {
 	private: System::Windows::Forms::Button^  ringButton;
 	private: System::Windows::Forms::TextBox^  imeiBox;
 	private: System::Windows::Forms::Label^  obfuscateLabel;
-	private: System::Windows::Forms::Label^  label2;
+
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Button^  moClearButton;
@@ -304,6 +307,8 @@ namespace Iridium {
 	private: System::Windows::Forms::CheckBox^  gprsErrorCheck;
 	private: System::Windows::Forms::ComboBox^  responseDelay;
 	private: System::Windows::Forms::CheckBox^  gprsPDPCheck;
+	private: System::Windows::Forms::TextBox^  trackerLog;
+	private: System::Windows::Forms::RadioButton^  logEnable;
 
 
 
@@ -333,7 +338,6 @@ namespace Iridium {
 			this->ringButton = (gcnew System::Windows::Forms::Button());
 			this->imeiBox = (gcnew System::Windows::Forms::TextBox());
 			this->obfuscateLabel = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->moClearButton = (gcnew System::Windows::Forms::Button());
@@ -341,18 +345,20 @@ namespace Iridium {
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->responseDelay = (gcnew System::Windows::Forms::ComboBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->gprsPDPCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->gprsErrorCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->gprsUmwiButton = (gcnew System::Windows::Forms::Button());
 			this->gprsDetachedCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->gprsNoNetworkCheck = (gcnew System::Windows::Forms::CheckBox());
-			this->gprsPDPCheck = (gcnew System::Windows::Forms::CheckBox());
+			this->trackerLog = (gcnew System::Windows::Forms::TextBox());
+			this->logEnable = (gcnew System::Windows::Forms::RadioButton());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// comPort
 			// 
-			this->comPort->Location = System::Drawing::Point(635, 26);
+			this->comPort->Location = System::Drawing::Point(1048, 12);
 			this->comPort->Name = L"comPort";
 			this->comPort->Size = System::Drawing::Size(51, 20);
 			this->comPort->TabIndex = 0;
@@ -360,7 +366,7 @@ namespace Iridium {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(576, 26);
+			this->label1->Location = System::Drawing::Point(989, 12);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(53, 13);
 			this->label1->TabIndex = 1;
@@ -368,7 +374,7 @@ namespace Iridium {
 			// 
 			// startButton
 			// 
-			this->startButton->Location = System::Drawing::Point(34, 504);
+			this->startButton->Location = System::Drawing::Point(47, 502);
 			this->startButton->Name = L"startButton";
 			this->startButton->Size = System::Drawing::Size(37, 24);
 			this->startButton->TabIndex = 2;
@@ -379,7 +385,7 @@ namespace Iridium {
 			// connectStatus
 			// 
 			this->connectStatus->AutoSize = true;
-			this->connectStatus->Location = System::Drawing::Point(31, 531);
+			this->connectStatus->Location = System::Drawing::Point(44, 530);
 			this->connectStatus->Name = L"connectStatus";
 			this->connectStatus->Size = System::Drawing::Size(24, 13);
 			this->connectStatus->TabIndex = 3;
@@ -391,16 +397,16 @@ namespace Iridium {
 			// 
 			// logText
 			// 
-			this->logText->Location = System::Drawing::Point(582, 325);
+			this->logText->Location = System::Drawing::Point(354, 288);
 			this->logText->Multiline = true;
 			this->logText->Name = L"logText";
 			this->logText->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->logText->Size = System::Drawing::Size(164, 173);
+			this->logText->Size = System::Drawing::Size(164, 161);
 			this->logText->TabIndex = 4;
 			// 
 			// showLogButton
 			// 
-			this->showLogButton->Location = System::Drawing::Point(582, 504);
+			this->showLogButton->Location = System::Drawing::Point(524, 288);
 			this->showLogButton->Name = L"showLogButton";
 			this->showLogButton->Size = System::Drawing::Size(43, 24);
 			this->showLogButton->TabIndex = 5;
@@ -410,7 +416,7 @@ namespace Iridium {
 			// 
 			// clearLogButton
 			// 
-			this->clearLogButton->Location = System::Drawing::Point(706, 504);
+			this->clearLogButton->Location = System::Drawing::Point(524, 425);
 			this->clearLogButton->Name = L"clearLogButton";
 			this->clearLogButton->Size = System::Drawing::Size(40, 24);
 			this->clearLogButton->TabIndex = 6;
@@ -430,7 +436,7 @@ namespace Iridium {
 			// 
 			// sendBox
 			// 
-			this->sendBox->Location = System::Drawing::Point(511, 80);
+			this->sendBox->Location = System::Drawing::Point(354, 80);
 			this->sendBox->Multiline = true;
 			this->sendBox->Name = L"sendBox";
 			this->sendBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
@@ -439,7 +445,7 @@ namespace Iridium {
 			// 
 			// testButton
 			// 
-			this->testButton->Location = System::Drawing::Point(318, 510);
+			this->testButton->Location = System::Drawing::Point(354, 504);
 			this->testButton->Name = L"testButton";
 			this->testButton->Size = System::Drawing::Size(69, 22);
 			this->testButton->TabIndex = 9;
@@ -469,7 +475,7 @@ namespace Iridium {
 			// 
 			// imeiBox
 			// 
-			this->imeiBox->Location = System::Drawing::Point(318, 484);
+			this->imeiBox->Location = System::Drawing::Point(354, 478);
 			this->imeiBox->Name = L"imeiBox";
 			this->imeiBox->Size = System::Drawing::Size(138, 20);
 			this->imeiBox->TabIndex = 12;
@@ -477,25 +483,16 @@ namespace Iridium {
 			// obfuscateLabel
 			// 
 			this->obfuscateLabel->AutoSize = true;
-			this->obfuscateLabel->Location = System::Drawing::Point(380, 463);
+			this->obfuscateLabel->Location = System::Drawing::Point(429, 513);
 			this->obfuscateLabel->Name = L"obfuscateLabel";
 			this->obfuscateLabel->Size = System::Drawing::Size(25, 13);
 			this->obfuscateLabel->TabIndex = 13;
 			this->obfuscateLabel->Text = L"___";
 			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(315, 463);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(59, 13);
-			this->label2->TabIndex = 14;
-			this->label2->Text = L"Obfuscate:";
-			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(47, 63);
+			this->label3->Location = System::Drawing::Point(47, 56);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(24, 13);
 			this->label3->TabIndex = 15;
@@ -504,7 +501,7 @@ namespace Iridium {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(508, 64);
+			this->label4->Location = System::Drawing::Point(351, 56);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(23, 13);
 			this->label4->TabIndex = 16;
@@ -512,7 +509,7 @@ namespace Iridium {
 			// 
 			// moClearButton
 			// 
-			this->moClearButton->Location = System::Drawing::Point(47, 270);
+			this->moClearButton->Location = System::Drawing::Point(77, 56);
 			this->moClearButton->Name = L"moClearButton";
 			this->moClearButton->Size = System::Drawing::Size(48, 21);
 			this->moClearButton->TabIndex = 17;
@@ -522,7 +519,7 @@ namespace Iridium {
 			// 
 			// mtClearButton
 			// 
-			this->mtClearButton->Location = System::Drawing::Point(511, 270);
+			this->mtClearButton->Location = System::Drawing::Point(380, 56);
 			this->mtClearButton->Name = L"mtClearButton";
 			this->mtClearButton->Size = System::Drawing::Size(42, 21);
 			this->mtClearButton->TabIndex = 18;
@@ -535,7 +532,7 @@ namespace Iridium {
 			this->groupBox1->Controls->Add(this->responseDelay);
 			this->groupBox1->Controls->Add(this->ringButton);
 			this->groupBox1->Controls->Add(this->noNetworkCheck);
-			this->groupBox1->Location = System::Drawing::Point(34, 325);
+			this->groupBox1->Location = System::Drawing::Point(47, 288);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(108, 161);
 			this->groupBox1->TabIndex = 19;
@@ -545,8 +542,10 @@ namespace Iridium {
 			// responseDelay
 			// 
 			this->responseDelay->FormattingEnabled = true;
-			this->responseDelay->Items->AddRange(gcnew cli::array< System::Object^  >(13) {L"0", L"5", L"10", L"15", L"20", L"25", L"30", 
-				L"35", L"40", L"45", L"50", L"55", L"60"});
+			this->responseDelay->Items->AddRange(gcnew cli::array< System::Object^  >(13) {
+				L"0", L"5", L"10", L"15", L"20", L"25", L"30",
+					L"35", L"40", L"45", L"50", L"55", L"60"
+			});
 			this->responseDelay->Location = System::Drawing::Point(11, 26);
 			this->responseDelay->Name = L"responseDelay";
 			this->responseDelay->Size = System::Drawing::Size(83, 21);
@@ -559,12 +558,23 @@ namespace Iridium {
 			this->groupBox2->Controls->Add(this->gprsUmwiButton);
 			this->groupBox2->Controls->Add(this->gprsDetachedCheck);
 			this->groupBox2->Controls->Add(this->gprsNoNetworkCheck);
-			this->groupBox2->Location = System::Drawing::Point(171, 325);
+			this->groupBox2->Location = System::Drawing::Point(184, 288);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(118, 161);
 			this->groupBox2->TabIndex = 20;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Gprs";
+			// 
+			// gprsPDPCheck
+			// 
+			this->gprsPDPCheck->AutoSize = true;
+			this->gprsPDPCheck->Location = System::Drawing::Point(6, 95);
+			this->gprsPDPCheck->Name = L"gprsPDPCheck";
+			this->gprsPDPCheck->Size = System::Drawing::Size(110, 17);
+			this->gprsPDPCheck->TabIndex = 4;
+			this->gprsPDPCheck->Text = L"Lost PDP Context";
+			this->gprsPDPCheck->UseVisualStyleBackColor = true;
+			this->gprsPDPCheck->CheckedChanged += gcnew System::EventHandler(this, &Form1::gprsPDPCheck_CheckedChanged);
 			// 
 			// gprsErrorCheck
 			// 
@@ -608,29 +618,40 @@ namespace Iridium {
 			this->gprsNoNetworkCheck->UseVisualStyleBackColor = true;
 			this->gprsNoNetworkCheck->CheckedChanged += gcnew System::EventHandler(this, &Form1::gprsNoNetworkCheck_CheckedChanged);
 			// 
-			// gprsPDPCheck
+			// trackerLog
 			// 
-			this->gprsPDPCheck->AutoSize = true;
-			this->gprsPDPCheck->Location = System::Drawing::Point(6, 95);
-			this->gprsPDPCheck->Name = L"gprsPDPCheck";
-			this->gprsPDPCheck->Size = System::Drawing::Size(110, 17);
-			this->gprsPDPCheck->TabIndex = 4;
-			this->gprsPDPCheck->Text = L"Lost PDP Context";
-			this->gprsPDPCheck->UseVisualStyleBackColor = true;
-			this->gprsPDPCheck->CheckedChanged += gcnew System::EventHandler(this, &Form1::gprsPDPCheck_CheckedChanged);
+			this->trackerLog->AcceptsReturn = true;
+			this->trackerLog->Location = System::Drawing::Point(639, 79);
+			this->trackerLog->Multiline = true;
+			this->trackerLog->Name = L"trackerLog";
+			this->trackerLog->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->trackerLog->Size = System::Drawing::Size(460, 419);
+			this->trackerLog->TabIndex = 21;
+			// 
+			// logEnable
+			// 
+			this->logEnable->AutoSize = true;
+			this->logEnable->Location = System::Drawing::Point(639, 515);
+			this->logEnable->Name = L"logEnable";
+			this->logEnable->Size = System::Drawing::Size(99, 17);
+			this->logEnable->TabIndex = 22;
+			this->logEnable->TabStop = true;
+			this->logEnable->Text = L"Enable Logging";
+			this->logEnable->UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(772, 552);
+			this->ClientSize = System::Drawing::Size(1155, 552);
+			this->Controls->Add(this->logEnable);
+			this->Controls->Add(this->trackerLog);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->mtClearButton);
 			this->Controls->Add(this->moClearButton);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
 			this->Controls->Add(this->obfuscateLabel);
 			this->Controls->Add(this->imeiBox);
 			this->Controls->Add(this->testButton);
@@ -744,12 +765,22 @@ namespace Iridium {
                     _lastLength = 0;
                     
                     /* Get received bytes */
-                    array<unsigned char>^ bufferIn = gcnew array<unsigned char>( length );
-                    _ComPort->Read( bufferIn, 0, length );
+                    array<unsigned char>^ commandIn = gcnew array<unsigned char>( 350 );
 
-                    if ((_Incoming->Count != 0) || (bufferIn[0] == 'A') || (_writeBinary == true) || (_writeGprs == true))
+                    if (logEnable->Checked)
                     {
-                        if (bufferIn[0] == 'A')
+                        array<unsigned char>^ receiveIn = gcnew array<unsigned char>( length );
+                        _ComPort->Read( receiveIn, 0, length );
+                        arrayToLogText( receiveIn, commandIn );
+                    }
+                    else
+                    {
+                        _ComPort->Read( commandIn, 0, length );
+                    }
+
+                    if ((_Incoming->Count != 0) || (commandIn[0] == 'A') || (_writeBinary == true) || (_writeGprs == true))
+                    {
+                        if (commandIn[0] == 'A')
                         {
                             /* Got a start character */
                             _Incoming->Clear();/* To start again */
@@ -764,7 +795,7 @@ namespace Iridium {
                         {
                             if ((_writeBinary == false) && (_writeGprs == false))
                             {
-                                unsigned char character = bufferIn[i];
+                                unsigned char character = commandIn[i];
                                 if ((character != '\x0a') && (character != '\x0d'))
                                 {
                                     _Incoming->Add( character );
@@ -979,7 +1010,7 @@ namespace Iridium {
                                 /* Binary expected */
                                 unsigned char packet[500];
                         
-                                _Incoming->Add( bufferIn[i] );
+                                _Incoming->Add( commandIn[i] );
                                 if (i == (_binaryLength - 1))
                                 {
                                     /* Finished = make the data packet */
@@ -1432,6 +1463,62 @@ namespace Iridium {
     }
 
 
+    //Log stream splitting
+    private:void arrayToLogText( array<unsigned char> ^receive, array<unsigned char> ^command )
+    {
+        int receiveLength = receive->Length;
+
+        char logBuffer[80 + 1];
+
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        while (i < receiveLength)
+        {
+            char character = (char)receive[i];
+            ++i;
+
+            if (character != '$')
+            {
+                logBuffer[j] = character;
+                ++j;
+            }
+            else
+            {
+                int commandSize = receive[i];
+
+                ++i;
+                while ((commandSize != 0) && (i < receiveLength))
+                {
+                    command[k] = receive[i];
+                    ++k;
+                    ++i;
+                    --commandSize;
+                }
+            }
+
+
+            if ((j == 80) || (i == receiveLength))
+            {
+                logBuffer[j] = '\0';
+                j = 0;
+
+                String^ s = gcnew String( logBuffer );
+
+                int sizeNow = trackerLog->Text->Length;
+                if (sizeNow > 0x4000)
+                {
+                    trackerLog->Text = trackerLog->Text->Substring( sizeNow);
+                }
+
+                trackerLog->AppendText( s );
+            }
+        }
+
+    }
+
+                                                                        
 };
 
 
