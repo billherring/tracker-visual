@@ -8,7 +8,6 @@
 namespace FileCrc
 {
 
-    using namespace std;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -146,7 +145,8 @@ namespace FileCrc
 	    private: System::Void goButton_Click(System::Object^  sender, System::EventArgs^  e)
         {
 	        char longName[MAX_NAME_SIZE];/* to buffer file names */
-            fstream _fileIn;/* file handle */
+            std::fstream _fileIn;/* file handle */
+            std::fstream _fileOut;/* file handle */
 
             if (_isFileSelected == true)
             {
@@ -157,7 +157,7 @@ namespace FileCrc
                 }
                 longName[nameSize] = '\0';
                 
-                _fileIn.open( longName, fstream::in | fstream::binary);
+                _fileIn.open( longName, std::fstream::in | std::fstream::binary);
                 if (_fileIn.fail() != true)
                 {
                     char *ptr = strchr( longName, '.' );
@@ -167,7 +167,7 @@ namespace FileCrc
                         if (strcmp( ptr, "BIN" ) == 0)
                         {
                             strcpy_s( ptr, 3, "BN" );
-                            _fileOut.open( longName, fstream::out | fstream::binary);
+                            _fileOut.open( longName, std::fstream::out | std::fstream::binary);
                             if (_fileOut.fail() != true)
                             {
                                 unsigned short crc = 0U;
@@ -175,9 +175,9 @@ namespace FileCrc
                                 int fileSize;
                                 int posn = 0;
                 
-                                _fileIn.seekg( 0, ios_base::end ); 
+                                _fileIn.seekg( 0, std::ios_base::end ); 
                                 fileSize = (int)_fileIn.tellg();
-                                _fileIn.seekg( 0, ios_base::beg );
+                                _fileIn.seekg( 0, std::ios_base::beg );
 
                                 do
                                 {
