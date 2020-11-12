@@ -222,6 +222,9 @@ private: System::Windows::Forms::RadioButton^  instrument;
 
 private: System::Windows::Forms::RadioButton^  gpsDead;
 private: System::Windows::Forms::RadioButton^  gpsOk;
+private: System::Windows::Forms::Button^  instrumentSend;
+private: System::Windows::Forms::ComboBox^  outputPeriod;
+
 
 
 
@@ -298,6 +301,8 @@ private: System::Windows::Forms::RadioButton^  gpsOk;
 			this->instrument = (gcnew System::Windows::Forms::RadioButton());
 			this->gpsDead = (gcnew System::Windows::Forms::RadioButton());
 			this->gpsOk = (gcnew System::Windows::Forms::RadioButton());
+			this->instrumentSend = (gcnew System::Windows::Forms::Button());
+			this->outputPeriod = (gcnew System::Windows::Forms::ComboBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->altitudeStepBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->hoursStepBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->minutesStepBox))->BeginInit();
@@ -776,12 +781,37 @@ private: System::Windows::Forms::RadioButton^  gpsOk;
 			this->gpsOk->Text = L"GPS Ok";
 			this->gpsOk->UseVisualStyleBackColor = true;
 			// 
+			// instrumentSend
+			// 
+			this->instrumentSend->Location = System::Drawing::Point(863, 127);
+			this->instrumentSend->Name = L"instrumentSend";
+			this->instrumentSend->Size = System::Drawing::Size(51, 20);
+			this->instrumentSend->TabIndex = 64;
+			this->instrumentSend->Text = L"Send";
+			this->instrumentSend->UseVisualStyleBackColor = true;
+			this->instrumentSend->Click += gcnew System::EventHandler(this, &Form1::instrumentSend_Click);
+			// 
+			// outputPeriod
+			// 
+			this->outputPeriod->FormattingEnabled = true;
+			this->outputPeriod->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
+				L"100", L"200", L"300", L"400", L"500", L"600",
+					L"700", L"800", L"900", L"1000"
+			});
+			this->outputPeriod->Location = System::Drawing::Point(310, 462);
+			this->outputPeriod->Name = L"outputPeriod";
+			this->outputPeriod->Size = System::Drawing::Size(65, 21);
+			this->outputPeriod->TabIndex = 65;
+			this->outputPeriod->Text = L"Period";
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->ClientSize = System::Drawing::Size(926, 585);
+			this->Controls->Add(this->outputPeriod);
+			this->Controls->Add(this->instrumentSend);
 			this->Controls->Add(this->groupBox4);
 			this->Controls->Add(this->label16);
 			this->Controls->Add(this->label15);
@@ -934,7 +964,7 @@ private: System::Windows::Forms::RadioButton^  gpsOk;
                 
 
             ++bigTicks;
-            if (bigTicks == 10)
+            if (bigTicks >= outputPeriod->SelectedIndex)
             {
                 bigTicks = 0;
                 if (instrument->Checked == true)
@@ -1258,18 +1288,28 @@ private: System::Windows::Forms::RadioButton^  gpsOk;
         {
             int length = a->Length;
 
-            char buffer[80 + 1];
+            char buffer[100];
 
             int i = 0;
             int b = 0;
 
             while (i < length)
             {
-                buffer[b] = (char)a[i];
+                char character = (char)a[i];
+                if (character == '\x0a')
+                {
+                    buffer[b] = '\x0d';
+                    ++b;
+                }
                 ++i;
-                ++b;
 
-                if ((b == 80) || (i == length))
+                if (character != '\x0d')
+                {
+                    buffer[b] = character;
+                    ++b;
+                }
+
+                if ((b >= 80) || (i == length))
                 {
                     buffer[b] = '\0';
                     b = 0;
@@ -1293,6 +1333,7 @@ private: System::Windows::Forms::RadioButton^  gpsOk;
 
         private: System::Void testButton_Click(System::Object^  sender, System::EventArgs^  e)
         {
+            log->Clear();
         }
 
 
@@ -1300,6 +1341,15 @@ private: System::Windows::Forms::RadioButton^  gpsOk;
 
 
 
+
+        private: System::Void instrumentSend_Click(System::Object^  sender, System::EventArgs^  e)
+        {
+            if (gpsDead->Checked == true)
+            {
+                array<unsigned char>^ buffer = stringToArray( instrumentBox->Text );
+                trackerPort->Write( buffer, 0, buffer->Length );
+            }
+        }
 };
 
 

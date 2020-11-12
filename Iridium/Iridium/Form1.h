@@ -981,6 +981,10 @@ namespace Iridium {
                                                         gprsErrorCheck->Checked = false;
                                                         s = "+CME""\x0d\x0a";
                                                     }
+                                                    if (responseDelay->SelectedIndex == 11) 
+                                                    {
+                                                        s = "";
+                                                    }
                                                     break;
                                                 
                                                 
