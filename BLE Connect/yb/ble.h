@@ -92,6 +92,8 @@ namespace BG
     const int GATT_HANDLE_TX_CONTEXT                         = 269;
     const int GATT_HANDLE_WATCH_STATUS                       = 270;
     const int GATT_HANDLE_TEST_STATUS                        = 271;
+    const int GATT_HANDLE_EXT_SWITCH_STATUS                  = 272;
+    const int GATT_HANDLE_SIGNAL_LOSS                        = 273;
 
 
 //Leopard
@@ -184,6 +186,8 @@ namespace BG
         HANDLE_TX_CONTEXT                         ,
         HANDLE_WATCH_STATUS                       ,
         HANDLE_TEST_STATUS                        ,
+        HANDLE_EXT_SWITCH_STATUS                  ,
+        HANDLE_SIGNAL_LOSS                        ,
         HANDLE_LAST                               ,
     };
 
@@ -359,6 +363,8 @@ namespace BG
         GATT_HANDLE_TX_CONTEXT                         , /* HANDLE_TX_CONTEXT                         */     
         GATT_HANDLE_WATCH_STATUS                       , /* HANDLE_WATCH_STATUS                       */     
         GATT_HANDLE_TEST_STATUS                        , /* HANDLE_TEST_STATUS                        */     
+        GATT_HANDLE_EXT_SWITCH_STATUS                  , /* HANDLE_EXT_SWITCH_STATUS                  */     
+        GATT_HANDLE_SIGNAL_LOSS                        , /* HANDLE_SIGNAL_LOSS                        */     
     };
     
 

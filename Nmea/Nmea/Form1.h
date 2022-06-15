@@ -744,7 +744,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->groupBox4->Controls->Add(this->gpsOk);
 			this->groupBox4->Location = System::Drawing::Point(21, 402);
 			this->groupBox4->Name = L"groupBox4";
-			this->groupBox4->Size = System::Drawing::Size(179, 77);
+			this->groupBox4->Size = System::Drawing::Size(179, 81);
 			this->groupBox4->TabIndex = 63;
 			this->groupBox4->TabStop = false;
 			this->groupBox4->Text = L"Mode";
@@ -972,7 +972,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
                     array<unsigned char>^ buffer = stringToArray( instrumentBox->Text );
                     trackerPort->Write( buffer, 0, buffer->Length );
                 }
-                else if (gpsDead->Checked == false)
+                else
                 {
                     const char * *pOut;
                     int s = 0;

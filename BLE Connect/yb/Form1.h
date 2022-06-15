@@ -1406,7 +1406,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// powerLimitCombo
 			// 
 			this->powerLimitCombo->FormattingEnabled = true;
-			this->powerLimitCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Unlimited", L"Limited", L"Unlimited - power control" });
+			this->powerLimitCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+				L"Unlimited", L"Limited", L"Unlimited - power control",
+					L"Auto Select"
+			});
 			this->powerLimitCombo->Location = System::Drawing::Point(3, 273);
 			this->powerLimitCombo->Name = L"powerLimitCombo";
 			this->powerLimitCombo->Size = System::Drawing::Size(86, 21);
@@ -2588,7 +2591,7 @@ private: System::Windows::Forms::Button^  testButton;
 			// configureName
 			// 
 			this->configureName->FormattingEnabled = true;
-			this->configureName->Items->AddRange(gcnew cli::array< System::Object^  >(81) {
+			this->configureName->Items->AddRange(gcnew cli::array< System::Object^  >(86) {
 				L"Name", L"Appearance", L"Serial number", L"Sw version",
 					L"Gps status", L"Iridium status", L"Tracking period", L"Gps early wakeup time", L"Burst tx period cell", L"Tracking onoff", L"Pin lock",
 					L"Burst fix", L"Serial cts", L"Burst transmit", L"Serial rts", L"Gps hot", L"Mail check period", L"Mail check status", L"Gps fix quality",
@@ -2600,7 +2603,8 @@ private: System::Windows::Forms::Button^  testButton;
 					L"D boards", L"Ble version", L"Gprs signal", L"Gprs status", L"Gprs msisdn", L"Gprs sim", L"Gprs location", L"Ext sense", L"Tracking period cell",
 					L"Tracking period distress", L"Position block format", L"Self test", L"Spare 1", L"Air alert status", L"Air alert ascent speed",
 					L"Air alert descent speed", L"Air alert ascent time", L"Air alert descent time", L"Gps platform", L"Logging", L"Auto Resume Status",
-					L"Auto Resume Distance", L"Flight Alert Status", L"Flight Vr", L"Flight Vs", L"Battery Model"
+					L"Auto Resume Distance", L"Flight Alert Status", L"Flight Vr", L"Flight Vs", L"Battery Model", L"Spare", L"Spare", L"Spare",
+					L"Spare", L"Signal Loss"
 			});
 			this->configureName->Location = System::Drawing::Point(10, 19);
 			this->configureName->Name = L"configureName";
