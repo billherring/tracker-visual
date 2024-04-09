@@ -25,8 +25,11 @@ namespace sha {
         0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,        
     };
 
-    const char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/!$%&()*?@[]=^;:";
-    const char specials[] = "+/!$%&()*?@[]=^;:";
+    const char numbersSet[] = "0123456789";
+    const char lowercaseSet[] = "abcdefghijklmnopqrstuvwxyz";
+    const char uppercaseSet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const char specialsSet[]= "+/!#()*?@;:";
+
     
     
 	/// <summary>
@@ -42,7 +45,6 @@ namespace sha {
 			//TODO: Add the constructor code here
             //
             sizeBox->SelectedIndex = 10 - 6;
-            _hashCount = 0;
 		}
 
 	protected:
@@ -61,7 +63,7 @@ namespace sha {
 
 	private: System::Windows::Forms::Button^  hashButton;
 	private: System::Windows::Forms::TextBox^  keyBox;
-	private: System::Windows::Forms::Label^  plainText;
+
 	private: System::Windows::Forms::Label^  hashText;
 
 
@@ -80,7 +82,7 @@ namespace sha {
 
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::Label^  label6;
-	private: System::Windows::Forms::Label^  label7;
+
 
 	private: System::Windows::Forms::Label^  numbersLabel;
 	private: System::Windows::Forms::Label^  specialsLabel;
@@ -96,6 +98,10 @@ namespace sha {
 
 	private: System::Windows::Forms::ComboBox^  upperCaseBox;
 	private: System::Windows::Forms::Label^  upperCaseLabel;
+	private: System::Windows::Forms::CheckBox^  legacyCheck;
+	private: System::Windows::Forms::CheckBox^  pinChexk;
+	private: System::Windows::Forms::Label^  label1;
+
 
 
 
@@ -124,7 +130,6 @@ namespace sha {
 			this->nameBox = (gcnew System::Windows::Forms::TextBox());
 			this->hashButton = (gcnew System::Windows::Forms::Button());
 			this->keyBox = (gcnew System::Windows::Forms::TextBox());
-			this->plainText = (gcnew System::Windows::Forms::Label());
 			this->hashText = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->sizeBox = (gcnew System::Windows::Forms::ComboBox());
@@ -132,34 +137,35 @@ namespace sha {
 			this->specialsBox = (gcnew System::Windows::Forms::ComboBox());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->numbersLabel = (gcnew System::Windows::Forms::Label());
 			this->specialsLabel = (gcnew System::Windows::Forms::Label());
 			this->lowerCaseBox = (gcnew System::Windows::Forms::ComboBox());
 			this->lowerCaseLabel = (gcnew System::Windows::Forms::Label());
 			this->upperCaseBox = (gcnew System::Windows::Forms::ComboBox());
 			this->upperCaseLabel = (gcnew System::Windows::Forms::Label());
+			this->legacyCheck = (gcnew System::Windows::Forms::CheckBox());
+			this->pinChexk = (gcnew System::Windows::Forms::CheckBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// nameBox
 			// 
 			this->nameBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->nameBox->Location = System::Drawing::Point(129, 99);
+			this->nameBox->Location = System::Drawing::Point(49, 100);
 			this->nameBox->Name = L"nameBox";
-			this->nameBox->Size = System::Drawing::Size(216, 20);
+			this->nameBox->Size = System::Drawing::Size(321, 20);
 			this->nameBox->TabIndex = 0;
-			this->nameBox->TextChanged += gcnew System::EventHandler(this, &Form1::nameBox_TextChanged);
 			// 
 			// hashButton
 			// 
 			this->hashButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->hashButton->Location = System::Drawing::Point(259, 217);
+			this->hashButton->Location = System::Drawing::Point(49, 224);
 			this->hashButton->Name = L"hashButton";
-			this->hashButton->Size = System::Drawing::Size(97, 116);
+			this->hashButton->Size = System::Drawing::Size(97, 54);
 			this->hashButton->TabIndex = 1;
-			this->hashButton->Text = L"Go";
+			this->hashButton->Text = L"Get";
 			this->hashButton->UseVisualStyleBackColor = true;
 			this->hashButton->Click += gcnew System::EventHandler(this, &Form1::hashButton_Click);
 			// 
@@ -167,31 +173,20 @@ namespace sha {
 			// 
 			this->keyBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->keyBox->Location = System::Drawing::Point(129, 129);
+			this->keyBox->Location = System::Drawing::Point(49, 167);
 			this->keyBox->Name = L"keyBox";
-			this->keyBox->Size = System::Drawing::Size(401, 20);
+			this->keyBox->Size = System::Drawing::Size(321, 20);
 			this->keyBox->TabIndex = 2;
-			this->keyBox->TextChanged += gcnew System::EventHandler(this, &Form1::keyBox_TextChanged);
-			// 
-			// plainText
-			// 
-			this->plainText->AutoSize = true;
-			this->plainText->Location = System::Drawing::Point(144, 32);
-			this->plainText->Name = L"plainText";
-			this->plainText->Size = System::Drawing::Size(25, 13);
-			this->plainText->TabIndex = 3;
-			this->plainText->Text = L"      ";
-			this->plainText->Visible = false;
 			// 
 			// hashText
 			// 
 			this->hashText->AutoSize = true;
-			this->hashText->Font = (gcnew System::Drawing::Font(L"Lucida Console", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->hashText->Font = (gcnew System::Drawing::Font(L"Lucida Console", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->hashText->ForeColor = System::Drawing::Color::Red;
-			this->hashText->Location = System::Drawing::Point(141, 53);
+			this->hashText->Location = System::Drawing::Point(46, 37);
 			this->hashText->Name = L"hashText";
-			this->hashText->Size = System::Drawing::Size(96, 16);
+			this->hashText->Size = System::Drawing::Size(105, 19);
 			this->hashText->TabIndex = 4;
 			this->hashText->Text = L"        ";
 			// 
@@ -201,11 +196,10 @@ namespace sha {
 			this->label2->Font = (gcnew System::Drawing::Font(L"Lucida Console", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label2->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->label2->Location = System::Drawing::Point(39, 55);
+			this->label2->Location = System::Drawing::Point(46, 37);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(96, 16);
+			this->label2->Size = System::Drawing::Size(0, 16);
 			this->label2->TabIndex = 7;
-			this->label2->Text = L"Password";
 			// 
 			// sizeBox
 			// 
@@ -216,154 +210,176 @@ namespace sha {
 				L"6", L"7", L"8", L"9", L"10", L"11", L"12", L"13",
 					L"14", L"15", L"16", L"17", L"18", L"19", L"20"
 			});
-			this->sizeBox->Location = System::Drawing::Point(129, 158);
+			this->sizeBox->Location = System::Drawing::Point(320, 224);
 			this->sizeBox->Name = L"sizeBox";
 			this->sizeBox->Size = System::Drawing::Size(50, 21);
 			this->sizeBox->TabIndex = 11;
 			this->sizeBox->Text = L"6";
-			this->sizeBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::sizeBox_SelectedIndexChanged);
 			// 
 			// numbersBox
 			// 
 			this->numbersBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->numbersBox->FormattingEnabled = true;
-			this->numbersBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Don\'t Care", L"Yes", L"No" });
-			this->numbersBox->Location = System::Drawing::Point(129, 283);
+			this->numbersBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Allow", L"Ensure", L"Exclude" });
+			this->numbersBox->Location = System::Drawing::Point(49, 394);
 			this->numbersBox->Name = L"numbersBox";
 			this->numbersBox->Size = System::Drawing::Size(72, 21);
 			this->numbersBox->TabIndex = 12;
-			this->numbersBox->Text = L"Don\'t Care";
-			this->numbersBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::numbersBox_SelectedIndexChanged);
+			this->numbersBox->Text = L"Allow";
 			// 
 			// specialsBox
 			// 
 			this->specialsBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->specialsBox->FormattingEnabled = true;
-			this->specialsBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Don\'t Care", L"Yes", L"No" });
-			this->specialsBox->Location = System::Drawing::Point(129, 312);
+			this->specialsBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Allow", L"Ensure", L"Exclude" });
+			this->specialsBox->Location = System::Drawing::Point(49, 423);
 			this->specialsBox->Name = L"specialsBox";
 			this->specialsBox->Size = System::Drawing::Size(72, 21);
 			this->specialsBox->TabIndex = 13;
-			this->specialsBox->Text = L"Don\'t Care";
-			this->specialsBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::specialsBox_SelectedIndexChanged);
+			this->specialsBox->Text = L"Allow";
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(39, 102);
+			this->label5->Location = System::Drawing::Point(46, 84);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(84, 13);
+			this->label5->Size = System::Drawing::Size(118, 13);
 			this->label5->TabIndex = 17;
-			this->label5->Text = L"Target Name:";
+			this->label5->Text = L"Make password for:";
 			// 
 			// label6
 			// 
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(32, 132);
+			this->label6->Location = System::Drawing::Point(46, 151);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(91, 13);
+			this->label6->Size = System::Drawing::Size(118, 13);
 			this->label6->TabIndex = 18;
-			this->label6->Text = L"Secret Phrase:";
-			// 
-			// label7
-			// 
-			this->label7->AutoSize = true;
-			this->label7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label7->Location = System::Drawing::Point(33, 161);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(90, 13);
-			this->label7->TabIndex = 19;
-			this->label7->Text = L"Required Size:";
+			this->label6->Text = L"Provide secret text:";
 			// 
 			// numbersLabel
 			// 
 			this->numbersLabel->AutoSize = true;
 			this->numbersLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->numbersLabel->Location = System::Drawing::Point(63, 283);
+			this->numbersLabel->Location = System::Drawing::Point(141, 394);
 			this->numbersLabel->Name = L"numbersLabel";
-			this->numbersLabel->Size = System::Drawing::Size(60, 13);
+			this->numbersLabel->Size = System::Drawing::Size(78, 13);
 			this->numbersLabel->TabIndex = 21;
-			this->numbersLabel->Text = L"Numbers:";
+			this->numbersLabel->Text = L"Numbers 0-9";
 			// 
 			// specialsLabel
 			// 
 			this->specialsLabel->AutoSize = true;
 			this->specialsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->specialsLabel->Location = System::Drawing::Point(64, 312);
+			this->specialsLabel->Location = System::Drawing::Point(142, 423);
 			this->specialsLabel->Name = L"specialsLabel";
-			this->specialsLabel->Size = System::Drawing::Size(59, 13);
+			this->specialsLabel->Size = System::Drawing::Size(55, 13);
 			this->specialsLabel->TabIndex = 22;
-			this->specialsLabel->Text = L"Specials:";
+			this->specialsLabel->Text = L"Specials";
 			// 
 			// lowerCaseBox
 			// 
 			this->lowerCaseBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->lowerCaseBox->FormattingEnabled = true;
-			this->lowerCaseBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Don\'t care", L"Yes", L"No" });
-			this->lowerCaseBox->Location = System::Drawing::Point(129, 217);
+			this->lowerCaseBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Allow", L"Ensure", L"Exclude" });
+			this->lowerCaseBox->Location = System::Drawing::Point(49, 328);
 			this->lowerCaseBox->Name = L"lowerCaseBox";
 			this->lowerCaseBox->Size = System::Drawing::Size(72, 21);
 			this->lowerCaseBox->TabIndex = 26;
-			this->lowerCaseBox->Text = L"Don\'t care";
-			this->lowerCaseBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::lowerCaseBox_SelectedIndexChanged);
+			this->lowerCaseBox->Text = L"Allow";
 			// 
 			// lowerCaseLabel
 			// 
 			this->lowerCaseLabel->AutoSize = true;
 			this->lowerCaseLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lowerCaseLabel->Location = System::Drawing::Point(46, 217);
+			this->lowerCaseLabel->Location = System::Drawing::Point(141, 328);
 			this->lowerCaseLabel->Name = L"lowerCaseLabel";
-			this->lowerCaseLabel->Size = System::Drawing::Size(77, 13);
+			this->lowerCaseLabel->Size = System::Drawing::Size(62, 13);
 			this->lowerCaseLabel->TabIndex = 27;
-			this->lowerCaseLabel->Text = L"Lower Case:";
+			this->lowerCaseLabel->Text = L"Lower a-z";
 			// 
 			// upperCaseBox
 			// 
 			this->upperCaseBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->upperCaseBox->FormattingEnabled = true;
-			this->upperCaseBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Don\'t Care", L"Yes", L"No" });
-			this->upperCaseBox->Location = System::Drawing::Point(129, 250);
+			this->upperCaseBox->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Allow", L"Ensure", L"Exclude" });
+			this->upperCaseBox->Location = System::Drawing::Point(49, 361);
 			this->upperCaseBox->Name = L"upperCaseBox";
 			this->upperCaseBox->Size = System::Drawing::Size(72, 21);
 			this->upperCaseBox->TabIndex = 28;
-			this->upperCaseBox->Text = L"Don\'t Care";
-			this->upperCaseBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::upperCaseBox_SelectedIndexChanged);
+			this->upperCaseBox->Text = L"Allow";
 			// 
 			// upperCaseLabel
 			// 
 			this->upperCaseLabel->AutoSize = true;
 			this->upperCaseLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->upperCaseLabel->Location = System::Drawing::Point(46, 250);
+			this->upperCaseLabel->Location = System::Drawing::Point(141, 361);
 			this->upperCaseLabel->Name = L"upperCaseLabel";
-			this->upperCaseLabel->Size = System::Drawing::Size(77, 13);
+			this->upperCaseLabel->Size = System::Drawing::Size(65, 13);
 			this->upperCaseLabel->TabIndex = 29;
-			this->upperCaseLabel->Text = L"Upper Case:";
+			this->upperCaseLabel->Text = L"Upper A-Z";
+			// 
+			// legacyCheck
+			// 
+			this->legacyCheck->AutoSize = true;
+			this->legacyCheck->Checked = true;
+			this->legacyCheck->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->legacyCheck->Location = System::Drawing::Point(49, 501);
+			this->legacyCheck->Name = L"legacyCheck";
+			this->legacyCheck->Size = System::Drawing::Size(61, 17);
+			this->legacyCheck->TabIndex = 30;
+			this->legacyCheck->Text = L"Legacy";
+			this->legacyCheck->UseVisualStyleBackColor = true;
+			this->legacyCheck->Visible = false;
+			// 
+			// pinChexk
+			// 
+			this->pinChexk->AutoSize = true;
+			this->pinChexk->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->pinChexk->Location = System::Drawing::Point(106, 469);
+			this->pinChexk->Name = L"pinChexk";
+			this->pinChexk->Size = System::Drawing::Size(15, 14);
+			this->pinChexk->TabIndex = 31;
+			this->pinChexk->UseVisualStyleBackColor = true;
+			this->pinChexk->CheckedChanged += gcnew System::EventHandler(this, &Form1::pinChexk_CheckedChanged);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(142, 469);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(77, 13);
+			this->label1->TabIndex = 32;
+			this->label1->Text = L"Fast PIN set";
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(558, 361);
+			this->ClientSize = System::Drawing::Size(558, 548);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->pinChexk);
+			this->Controls->Add(this->legacyCheck);
 			this->Controls->Add(this->upperCaseLabel);
 			this->Controls->Add(this->upperCaseBox);
 			this->Controls->Add(this->lowerCaseLabel);
 			this->Controls->Add(this->lowerCaseBox);
 			this->Controls->Add(this->specialsLabel);
 			this->Controls->Add(this->numbersLabel);
-			this->Controls->Add(this->label7);
 			this->Controls->Add(this->label6);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->specialsBox);
@@ -371,12 +387,11 @@ namespace sha {
 			this->Controls->Add(this->sizeBox);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->hashText);
-			this->Controls->Add(this->plainText);
 			this->Controls->Add(this->keyBox);
 			this->Controls->Add(this->hashButton);
 			this->Controls->Add(this->nameBox);
 			this->Name = L"Form1";
-			this->Text = L"PASSWORD CENTER";
+			this->Text = L"Kryptic";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -385,9 +400,8 @@ namespace sha {
 
 ////////////////////////// Support Functions //////////////////////////////////
         private:
-            int _hashCount;
         
-        private: void hash256( array<unsigned int>^ hash )
+        private: void hash256( array<unsigned int>^ hash, String ^plainText )
         {
             array<unsigned int>^ w = gcnew array<unsigned int>( 64 );
             
@@ -410,7 +424,7 @@ namespace sha {
             unsigned int hh;
             
             int i = 0;
-            while (isBlock( i ))
+            while (isBlock( i, plainText ))
             {
                 aa = hash[0];
                 bb = hash[1];
@@ -429,7 +443,7 @@ namespace sha {
                     
                     if (j < 16)
                     {
-                        W = plainWord32( i, j );
+                        W = plainWord32( i, j, plainText );
                     }
                     else
                     {
@@ -494,10 +508,10 @@ namespace sha {
         }
 
         /* Get plain word32 corrsponding to block and word index */
-        private: unsigned int plainWord32( int block, int wordIndex )
+        private: unsigned int plainWord32( int block, int wordIndex, String ^plainText )
         {
             /* Padding = 1 x 0x80 + n x 0x00 (to 56 bytes) + 7 x 0x00 (binary length) + 1 x 0xLL (binary length) */
-            int plainLength = plainText->Text->Length;
+            int plainLength = plainText->Length;
             int minLength = plainLength + 1 + 8;
             int padding = (64 - (minLength % 64)) % 64;
             int totalLength = minLength + padding;
@@ -513,7 +527,7 @@ namespace sha {
 
                     if (posn < plainLength)
                     {
-                        word |= (unsigned char)plainText->Text[posn];
+                        word |= (unsigned char)plainText[posn];
                     }
                     else if (posn == plainLength)
                     {
@@ -543,10 +557,10 @@ namespace sha {
 
 
         /* Check if message is shorter than a specified block */
-        private: bool isBlock( int block )
+        private: bool isBlock( int block, String ^plainText )
         {
             /* Padding = 1 x 0x80 + n x 0x00 (to 56 bytes) + 7 x 0x00 (binary length) + 1 x 0xLL (binary length) */
-            int minLength = plainText->Text->Length + 1 + 8;
+            int minLength = plainText->Length + 1 + 8;
             int padding = (64 - (minLength % 64)) % 64;
             int totalLength = minLength + padding;
         
@@ -571,17 +585,11 @@ namespace sha {
         }
 
         /* Convert hash array to base64 string */
-        private: String^ hashToString( array<unsigned int>^ hash, int size )
+        private: String^ hashToString( array<unsigned int>^ hash, int size, String^ characterSet )
         {
             String^ hashString = gcnew String("");
-            int wordSize = 6;
-            int baseSize = 64;
+            int wordSize = legacyCheck->Checked == true ? 6 : 7;
             
-            if (specialsBox->SelectedIndex == 1)
-            {
-                wordSize = 7;
-                baseSize = sizeof(base64);
-            }
 
             int h = 0;
             int temp = hash[h];
@@ -603,9 +611,9 @@ namespace sha {
                         tempBits = 0;
                     }
                 }
-                
+
                 String ^ t;
-                t = gcnew String( base64[(int)aWord % baseSize], 1 );
+                t = gcnew String( characterSet[(int)aWord % characterSet->Length], 1 );
                 hashString = String::Concat( hashString, t );
             }
 
@@ -613,124 +621,12 @@ namespace sha {
         }
 
 
-        private: void reviewMasterText( void )
+        private: bool isNotCriteriaMet( String ^str )
         {
-            String^ separatorString = gcnew String( "\\" );
-            plainText->Text = nameBox->Text;
-            plainText->Text = String::Concat( plainText->Text, separatorString );
-            plainText->Text = String::Concat( plainText->Text, keyBox->Text );
-            
-            
-            if (_hashCount != 0)
-            {
-                plainText->Text = String::Concat( plainText->Text, separatorString );
-                plainText->Text = String::Concat( plainText->Text, String::Format( "{0}", _hashCount ) );
-            }
-       
-            numbersBox->Visible = true;
-            numbersLabel->Visible = true;
-
-            specialsBox->Visible = true;
-            specialsLabel->Visible = true;
-
-            lowerCaseBox->Visible = true;
-            upperCaseBox->Visible = true;
-            lowerCaseLabel->Visible = true;
-            upperCaseLabel->Visible = true;
-
-            
-        }
-
-
-        private: void resetView( void )
-        {
-            _hashCount = 0;
-            plainText->Text = "";
-            hashText->Text = "";
-            reviewMasterText();
-        }
-        
-
-        private: bool isCriteriaMet( String ^str )
-        {
-            bool success = true;
-
-            switch (numbersBox->SelectedIndex)
-            {
-                case 1:
-                    if (!isNumberInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                case 2:
-                    if (isNumberInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        
-            switch (specialsBox->SelectedIndex)
-            {
-                case 1:
-                    if (!isSpecialInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                case 2:
-                    if (isSpecialInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        
-        
-            switch (lowerCaseBox->SelectedIndex)
-            {
-                case 1:
-                    if (!isLowerCaseInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                case 2:
-                    if (isLowerCaseInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        
-        
-            switch (upperCaseBox->SelectedIndex)
-            {
-                case 1:
-                    if (!isUpperCaseInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                case 2:
-                    if (isUpperCaseInString( str ))
-                    {
-                        success = false;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        
-        
-            return(success);
+            return (    ((numbersBox->SelectedIndex == 1) && !isNumberInString( str )) ||
+                        ((lowerCaseBox->SelectedIndex == 1) && !isLowerCaseInString( str )) ||
+                        ((upperCaseBox->SelectedIndex == 1) && !isUpperCaseInString( str )) ||
+                        ((specialsBox->SelectedIndex == 1) && !isSpecialInString( str ))   );
         }
         
             
@@ -783,7 +679,7 @@ namespace sha {
             int i;
             for (i = 0; i < str->Length; ++i)
             {
-                if (strchr( specials, str[i] ) != 0 )
+                if (strchr( specialsSet, str[i] ) != 0 )
                 //if ((str[i] == '/') || (str[i] == '+'))
                 {
                     break;
@@ -797,95 +693,90 @@ namespace sha {
 
 	    private: System::Void hashButton_Click(System::Object^  sender, System::EventArgs^  e)
         {
+            String^ characterSet = gcnew String("");
+            String^ numbers = gcnew String(numbersSet);
+            String^ uppers = gcnew String(uppercaseSet);
+            String^ lowers = gcnew String(lowercaseSet);
+            String^ specials = gcnew String(specialsSet);
             hashText->Text = "";
          
-            if (plainText->Text->Length < 0x2000)
+            if (upperCaseBox->SelectedIndex != 2)
             {
-                bool done = true;
-                array<unsigned int>^ hash = gcnew array<unsigned int>( 8 );
-            
-                _hashCount = 0;
-                done = false;
-                reviewMasterText();
-                
-                int count = 0;
-                do
-                {
-                    hash256( hash );
-
-                    hashText->Text = hashToString( hash, sizeBox->SelectedIndex + 6 );
-                    if (!isCriteriaMet( hashText->Text ))
-                    {
-                        ++_hashCount;
-                        ++count;
-                        reviewMasterText();
-                    }
-                    else
-                    {
-                        done = true;
-                    }
-                }
-                while((!done) && (count < 100000));
-                
-                
-                reviewMasterText();
+                characterSet = String::Concat( characterSet, uppers );
             }
-            else
+            if (lowerCaseBox->SelectedIndex != 2)
             {
-                hashText->Text = "Too Long";
+                characterSet = String::Concat( characterSet, lowers );
+            }
+            if (numbersBox->SelectedIndex != 2)
+            {
+                characterSet = String::Concat( characterSet, numbers );
+            }
+            if (specialsBox->SelectedIndex != 2)
+            {
+                characterSet = String::Concat( characterSet, specials );
+            }
+
+            if (legacyCheck->Checked == false)
+            {
+                /* Increase likelihood of numbers and specials */
+                if (numbersBox->SelectedIndex != 2)
+                {
+                    characterSet = String::Concat( characterSet, numbers );
+                }
+                if (specialsBox->SelectedIndex != 2)
+                {
+                    characterSet = String::Concat( characterSet, specials );
+                }
+            }
+
+            String^ plainText = gcnew String("");
+            String^ separatorString = gcnew String( "\\" );
+            plainText = nameBox->Text;
+            plainText = String::Concat( plainText, separatorString );
+            plainText = String::Concat( plainText, keyBox->Text );
+
+            array<unsigned int>^ hash = gcnew array<unsigned int>( 8 );
+        
+            
+            int maxAttempts = 200;
+
+            do
+            {
+                hash256( hash, plainText );
+
+                hashText->Text = hashToString( hash, sizeBox->SelectedIndex + 6, characterSet );
+                plainText = String::Concat( plainText, separatorString );
+                --maxAttempts;
+            }
+            while((maxAttempts != 0) && isNotCriteriaMet( hashText->Text ));
+
+            if (maxAttempts == 0)
+            {
+                hashText->Text = gcnew String("Error");
             }
 	    }
 
 
-        private: System::Void nameBox_TextChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-        }
 
+        private: System::Void pinChexk_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
+        {
+            if (pinChexk->Checked == true)
+            {
+                upperCaseBox->SelectedIndex = 2;
+                lowerCaseBox->SelectedIndex = 2;
+                numbersBox->SelectedIndex = 1;
+                specialsBox->SelectedIndex = 2;
+            }
+            else
+            {
+                upperCaseBox->SelectedIndex = 0;
+                lowerCaseBox->SelectedIndex = 0;
+                numbersBox->SelectedIndex = 0;
+                specialsBox->SelectedIndex = 0;
+            }
 
-        private: System::Void keyBox_TextChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
         }
-        
-        
-        private: System::Void generateRadio_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-        }
-        
-        
-        private: System::Void recoverRadio_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-        }
-        
-        private: System::Void hashCount_TextChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            reviewMasterText();
-		}
-        private: System::Void sizeBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-		}
-        private: System::Void numbersBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-		}
-        private: System::Void specialsBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-		}
-        private: System::Void lowerCaseBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-		}
-        private: System::Void upperCaseBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
-        {
-            resetView();
-		}
-
-
 };
 
 

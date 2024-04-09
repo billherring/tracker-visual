@@ -51,9 +51,9 @@ using namespace System::Collections;
              * Return:
              * Notes:
              */
-            void nextPosition( int speed )
+            void nextPosition( int speed, bool playback )
             {
-                if (deltaTrackLength == trackLength)
+                if ((deltaTrackLength == trackLength) || (playback == true))
                 {
                     setNextTrack();
                 }
@@ -70,10 +70,18 @@ using namespace System::Collections;
                     }
                 }
 
-                if (trackLength != 0)
+                if (playback == true)
+                {
+                    deltaLatitude = targetLatitude - originLatitude;
+                    deltaLongitude =targetLongitude - originLongitude;
+                }
+                else if (trackLength != 0)
                 {
                     deltaLatitude = ((deltaTrackLength * (targetLatitude - originLatitude)) + (trackLength / 2)) / trackLength;
                     deltaLongitude = ((deltaTrackLength * (targetLongitude - originLongitude)) + (trackLength / 2)) / trackLength;
+                }
+                else
+                {
                 }
 
             }
@@ -245,6 +253,7 @@ using namespace System::Collections;
                 long long result = square / 4;
 
                 long long estimate;
+                long long difference;
 
                 if (result != 0)
                 {
@@ -252,8 +261,13 @@ using namespace System::Collections;
                     {
                         estimate = result;
                         result = ((square / estimate) + estimate) / 2;
+                        difference = result - estimate;
+                        if (difference < 0)
+                        {
+                            difference = - difference;
+                        }
                         
-                    } while ((result != estimate) && (result != 0));
+                    } while (difference > 1);
                 }
 
                 return ((int)result);

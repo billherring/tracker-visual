@@ -983,7 +983,7 @@ private: void receiveResponse( void )
 
 private: System::Void browseButton_Click(System::Object^  sender, System::EventArgs^  e)
 {
-    openFile->Filter = "Apps(*.bin)|*.bin|Install(*.bn)|*.bn|Presets(*.txt)|*.txt|Language(*.lan)|*.lan|Font(*.fnt)|*.fnt|Other(*.csv)|*.csv";
+    openFile->Filter = "Apps(*.bin)|*.bin|Install(*.bn)|*.bn|Presets(*.txt)|*.txt|Language(*.lan)|*.lan|Font(*.fnt)|*.fnt|Other(*.*)|*.*";
     openFile->ShowDialog();
     if (_isFileSelected == true)
     {

@@ -8,6 +8,8 @@ using namespace std;
 
 static const char *gpsGpInstrument[] =
 {
+    //"ABCDEFGHIJKLMNOPQRSTUVWXYZ""ABCDEFGHIJKLMNOPQRSTUVWXYZ""ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    //0,
     "$GPRMC,",
     //095629.00
     ".00,A,0012.87155,N,00012.87155,W,",
@@ -85,6 +87,10 @@ namespace Nmea
             bigTicks = 0;
             gpsTrack = gcnew GpsTrack();
             resetCourse();
+            String ^newline = gcnew String( "\x0d\x0a" );
+            courseBox->Text = "5161354,28545";
+            courseBox->AppendText( newline );
+            _currentDsr = false;
         }
 
     	protected:
@@ -125,6 +131,7 @@ namespace Nmea
             int altitudeStep;
             int _lastLength;
             int bigTicks;
+            bool _currentDsr;
 
 
 
@@ -194,7 +201,7 @@ namespace Nmea
         private: System::Windows::Forms::NumericUpDown^  speedStepBox;
 
 
-        private: System::Windows::Forms::Button^  testButton;
+        private: System::Windows::Forms::Button^  clearButton;
 
         private: System::Windows::Forms::TextBox^  courseBox;
 
@@ -223,7 +230,10 @@ private: System::Windows::Forms::RadioButton^  instrument;
 private: System::Windows::Forms::RadioButton^  gpsDead;
 private: System::Windows::Forms::RadioButton^  gpsOk;
 private: System::Windows::Forms::Button^  instrumentSend;
-private: System::Windows::Forms::ComboBox^  outputPeriod;
+
+private: System::Windows::Forms::CheckBox^  playbackCheckBox;
+private: System::Windows::Forms::Button^  testButton;
+
 
 
 
@@ -281,11 +291,12 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->speedStepBox = (gcnew System::Windows::Forms::NumericUpDown());
-			this->testButton = (gcnew System::Windows::Forms::Button());
+			this->clearButton = (gcnew System::Windows::Forms::Button());
 			this->courseBox = (gcnew System::Windows::Forms::TextBox());
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->playbackCheckBox = (gcnew System::Windows::Forms::CheckBox());
 			this->label14 = (gcnew System::Windows::Forms::Label());
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->showSpeed = (gcnew System::Windows::Forms::Label());
@@ -302,7 +313,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->gpsDead = (gcnew System::Windows::Forms::RadioButton());
 			this->gpsOk = (gcnew System::Windows::Forms::RadioButton());
 			this->instrumentSend = (gcnew System::Windows::Forms::Button());
-			this->outputPeriod = (gcnew System::Windows::Forms::ComboBox());
+			this->testButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->altitudeStepBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->hoursStepBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->minutesStepBox))->BeginInit();
@@ -575,15 +586,15 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->speedStepBox->Size = System::Drawing::Size(59, 20);
 			this->speedStepBox->TabIndex = 45;
 			// 
-			// testButton
+			// clearButton
 			// 
-			this->testButton->Location = System::Drawing::Point(200, 499);
-			this->testButton->Name = L"testButton";
-			this->testButton->Size = System::Drawing::Size(38, 23);
-			this->testButton->TabIndex = 48;
-			this->testButton->Text = L"Test";
-			this->testButton->UseVisualStyleBackColor = true;
-			this->testButton->Click += gcnew System::EventHandler(this, &Form1::testButton_Click);
+			this->clearButton->Location = System::Drawing::Point(863, 510);
+			this->clearButton->Name = L"clearButton";
+			this->clearButton->Size = System::Drawing::Size(51, 23);
+			this->clearButton->TabIndex = 48;
+			this->clearButton->Text = L"Clear";
+			this->clearButton->UseVisualStyleBackColor = true;
+			this->clearButton->Click += gcnew System::EventHandler(this, &Form1::clearButton_Click);
 			// 
 			// courseBox
 			// 
@@ -613,6 +624,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			// 
 			// groupBox3
 			// 
+			this->groupBox3->Controls->Add(this->playbackCheckBox);
 			this->groupBox3->Controls->Add(this->label14);
 			this->groupBox3->Controls->Add(this->label13);
 			this->groupBox3->Controls->Add(this->showSpeed);
@@ -634,6 +646,16 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->groupBox3->TabIndex = 55;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Ground Track";
+			// 
+			// playbackCheckBox
+			// 
+			this->playbackCheckBox->AutoSize = true;
+			this->playbackCheckBox->Location = System::Drawing::Point(11, 283);
+			this->playbackCheckBox->Name = L"playbackCheckBox";
+			this->playbackCheckBox->Size = System::Drawing::Size(70, 17);
+			this->playbackCheckBox->TabIndex = 61;
+			this->playbackCheckBox->Text = L"Playback";
+			this->playbackCheckBox->UseVisualStyleBackColor = true;
 			// 
 			// label14
 			// 
@@ -692,7 +714,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			// trackPauseCheckBox
 			// 
 			this->trackPauseCheckBox->AutoSize = true;
-			this->trackPauseCheckBox->Location = System::Drawing::Point(11, 274);
+			this->trackPauseCheckBox->Location = System::Drawing::Point(11, 263);
 			this->trackPauseCheckBox->Name = L"trackPauseCheckBox";
 			this->trackPauseCheckBox->Size = System::Drawing::Size(56, 17);
 			this->trackPauseCheckBox->TabIndex = 54;
@@ -707,7 +729,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->log->Multiline = true;
 			this->log->Name = L"log";
 			this->log->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->log->Size = System::Drawing::Size(462, 372);
+			this->log->Size = System::Drawing::Size(462, 332);
 			this->log->TabIndex = 60;
 			// 
 			// instrumentBox
@@ -791,18 +813,15 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->instrumentSend->UseVisualStyleBackColor = true;
 			this->instrumentSend->Click += gcnew System::EventHandler(this, &Form1::instrumentSend_Click);
 			// 
-			// outputPeriod
+			// testButton
 			// 
-			this->outputPeriod->FormattingEnabled = true;
-			this->outputPeriod->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
-				L"100", L"200", L"300", L"400", L"500", L"600",
-					L"700", L"800", L"900", L"1000"
-			});
-			this->outputPeriod->Location = System::Drawing::Point(310, 462);
-			this->outputPeriod->Name = L"outputPeriod";
-			this->outputPeriod->Size = System::Drawing::Size(65, 21);
-			this->outputPeriod->TabIndex = 65;
-			this->outputPeriod->Text = L"Period";
+			this->testButton->Location = System::Drawing::Point(304, 499);
+			this->testButton->Name = L"testButton";
+			this->testButton->Size = System::Drawing::Size(55, 34);
+			this->testButton->TabIndex = 65;
+			this->testButton->Text = L"Test";
+			this->testButton->UseVisualStyleBackColor = true;
+			this->testButton->Click += gcnew System::EventHandler(this, &Form1::testButton_Click);
 			// 
 			// Form1
 			// 
@@ -810,7 +829,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->ClientSize = System::Drawing::Size(926, 585);
-			this->Controls->Add(this->outputPeriod);
+			this->Controls->Add(this->testButton);
 			this->Controls->Add(this->instrumentSend);
 			this->Controls->Add(this->groupBox4);
 			this->Controls->Add(this->label16);
@@ -818,7 +837,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 			this->Controls->Add(this->instrumentBox);
 			this->Controls->Add(this->log);
 			this->Controls->Add(this->groupBox3);
-			this->Controls->Add(this->testButton);
+			this->Controls->Add(this->clearButton);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->timeBox);
 			this->Controls->Add(this->groupBox2);
@@ -872,6 +891,8 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
                     trackerPort->StopBits = StopBits::One;
                     trackerPort->DataBits = 8;
                     trackerPort->Handshake = Handshake::None;
+                    //trackerPort->DtrEnable = true;
+                    //trackerPort->Handshake = Handshake::XOnXOff;
             
                     try
                     {
@@ -963,8 +984,22 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
             }
                 
 
+            bool dsr = trackerPort->DsrHolding;
+            if (dsr != _currentDsr)
+            {
+                _currentDsr = dsr;
+                if (dsr)
+                {
+                    log->AppendText( "DSR""\x0d\0xa" );
+                }
+                else
+                {
+                    log->AppendText( "NDSR""\x0d\0xa" );
+                }
+            }
+
             ++bigTicks;
-            if (bigTicks >= outputPeriod->SelectedIndex)
+            if (bigTicks >= 10)//@100ms per small tick = 1s
             {
                 bigTicks = 0;
                 if (instrument->Checked == true)
@@ -975,6 +1010,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
                 else
                 {
                     const char * *pOut;
+//                    int s = 100;
                     int s = 0;
                     char cStr[20];
                     unsigned int degrees;
@@ -1000,7 +1036,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
 
                     if (trackPauseCheckBox->Checked == false)
                     {
-                        gpsTrack->nextPosition( speed );
+                        gpsTrack->nextPosition( speed, playbackCheckBox->Checked );
                     }
                     int latitude = gpsTrack->latitude();
                     int longitude = gpsTrack->longitude();
@@ -1288,7 +1324,7 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
         {
             int length = a->Length;
 
-            char buffer[100];
+            char buffer[1000];
 
             int i = 0;
             int b = 0;
@@ -1317,12 +1353,12 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
                     String^ s = gcnew String( buffer );
 
                     int sizeNow = log->Text->Length;
-                    if (sizeNow > 0x4000)
+                    if (sizeNow < 0x30000)
                     {
-                        log->Text = log->Text->Substring( sizeNow);
+                        //log->Text = log->Text->Substring( sizeNow);
+                        log->AppendText( s );
                     }
 
-                    log->AppendText( s );
 
 
                 }
@@ -1331,9 +1367,11 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
         }
 
 
-        private: System::Void testButton_Click(System::Object^  sender, System::EventArgs^  e)
+        private: System::Void clearButton_Click(System::Object^  sender, System::EventArgs^  e)
         {
             log->Clear();
+            trackerPort->DtrEnable = false;
+            //trackerPort->Handshake = Handshake::None;
         }
 
 
@@ -1350,10 +1388,13 @@ private: System::Windows::Forms::ComboBox^  outputPeriod;
                 trackerPort->Write( buffer, 0, buffer->Length );
             }
         }
-};
 
 
-
-
+        private: System::Void testButton_Click(System::Object^  sender, System::EventArgs^  e)
+        {
+            trackerPort->DtrEnable = true;
+            //trackerPort->Handshake = Handshake::XOnXOff;
+        }
+    };
 }
 

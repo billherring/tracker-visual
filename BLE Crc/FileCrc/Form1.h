@@ -135,7 +135,7 @@ namespace FileCrc
 	    }
 	    private: System::Void browseButton_Click(System::Object^  sender, System::EventArgs^  e)
         {
-            openFile->Filter = "Apps(*.bin)|*.bin";
+            openFile->Filter = "Apps(*.*)|*.*";
             openFile->ShowDialog();
             if (_isFileSelected == true)
             {
@@ -164,7 +164,8 @@ namespace FileCrc
                     if (ptr != 0)
                     {
                         ++ptr;
-                        if (strcmp( ptr, "BIN" ) == 0)
+                        if (1)
+                        //if (strcmp( ptr, "BIN" ) == 0)
                         {
                             strcpy_s( ptr, 3, "BN" );
                             _fileOut.open( longName, std::fstream::out | std::fstream::binary);

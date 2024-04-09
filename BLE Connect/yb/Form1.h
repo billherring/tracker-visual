@@ -1286,7 +1286,10 @@ private: System::Windows::Forms::Button^  testButton;
 			// trkCarrierCombo
 			// 
 			this->trkCarrierCombo->FormattingEnabled = true;
-			this->trkCarrierCombo->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Iridium Only", L"Gprs Only", L"Prefer Gprs" });
+			this->trkCarrierCombo->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+				L"Iridium Only", L"Gprs Only", L"Prefer Gprs (Speed)",
+					L"Prefer (Gprs Cost)"
+			});
 			this->trkCarrierCombo->Location = System::Drawing::Point(3, 183);
 			this->trkCarrierCombo->Name = L"trkCarrierCombo";
 			this->trkCarrierCombo->Size = System::Drawing::Size(86, 21);
@@ -1475,9 +1478,9 @@ private: System::Windows::Forms::Button^  testButton;
 			// externalTypeCombo
 			// 
 			this->externalTypeCombo->FormattingEnabled = true;
-			this->externalTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(9) {
+			this->externalTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
 				L"Off", L"Nmea", L"Hydrosphere", L"API",
-					L"Maximet", L"Fugro", L"Wave", L"Fastout", L"Dalia"
+					L"Maximet", L"Fugro", L"Wave", L"Fastout", L"Dalia", L"Sensors"
 			});
 			this->externalTypeCombo->Location = System::Drawing::Point(3, 39);
 			this->externalTypeCombo->Name = L"externalTypeCombo";
@@ -2011,9 +2014,9 @@ private: System::Windows::Forms::Button^  testButton;
 			// logoComboBox
 			// 
 			this->logoComboBox->FormattingEnabled = true;
-			this->logoComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+			this->logoComboBox->Items->AddRange(gcnew cli::array< System::Object^  >(9) {
 				L"Factory Yellowbrick", L"Yellowbrick", L"Xmarx",
-					L"Rockstar", L"Rental", L"Iridium360", L"Don\'t Set"
+					L"Rockstar", L"Rental", L"Iridium360", L"JCSys", L"Solar", L"Don\'t Set"
 			});
 			this->logoComboBox->Location = System::Drawing::Point(6, 79);
 			this->logoComboBox->Name = L"logoComboBox";

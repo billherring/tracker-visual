@@ -20,6 +20,7 @@ namespace HAYES
         CMD_CLEAR                   ,
         CMD_RADIO_OFF               ,
         CMD_SERIAL_NO               ,
+        CMD_REVISION                ,
         CMD_POWER_OFF               ,
         CMD_RINGS_ON                ,
         CMD_RINGS_OFF               ,
@@ -30,6 +31,9 @@ namespace HAYES
         GPRS_CMD_DNS_SECONDARY      ,
         GPRS_CMD_USERNAME           ,
         GPRS_CMD_PASSWORD           ,
+        GPRS_CMD_CHAP               ,           
+        GPRS_CMD_SET_PSD_PROFILE    , 
+        GPRS_CMD_MAP_PSD_PROFILE    ,
         GPRS_CMD_ACTIVATE_PROFILE   ,
         GPRS_CMD_CREATE_SOCKET      ,
         GPRS_CMD_CONNECT_SOCKET     ,
@@ -41,19 +45,26 @@ namespace HAYES
         GPRS_CMD_SIGNAL             ,
         GPRS_CMD_MSISDN             ,
         GPRS_CMD_STATUS             ,
+        GPRS_CMD_GPRS_STATUS        ,
         GPRS_CMD_SIM_NO             ,
         GPRS_CMD_IMEI               ,
+        GPRS_CMD_OPERATOR_2         ,
         GPRS_CMD_OPERATOR           ,
         GPRS_CMD_COUNTRY            ,
         GPRS_CMD_DEREGISTER         ,
         GPRS_CMD_POWEROFF           ,
         GPRS_CMD_SIGN_OFF           ,
+        GPRS_CMD_CELLULAR_ON        ,
         GPRS_CMD_DNS_TEST           ,
         GPRS_CMD_EVENT_URC          ,
         GPRS_CMD_STATUS_URC         ,
+        GPRS_CMD_GPRS_STATUS_URC    ,
         GPRS_CMD_VERBOSE            ,
         GPRS_CMD_DISABLE_WI         ,
+        GPRS_CMD_OPERATOR_ALPHA     ,  
+        GPRS_CMD_OPERATOR_NUMERIC   ,
         GPRS_CMD_HEX_MODE           ,
+        GPRS_CMD_DISABLE_HEX_MODE   ,
         CMD_HELLO                   ,
 
         CMD_SESSION_FINISH          ,
@@ -82,6 +93,7 @@ namespace HAYES
         "AT+SBDD2",    /* CMD_CLEAR          , */
         "AT*R0",       /* CMD_RADIO_OFF      , */
         "AT+CGSN",     /* CMD_SERIAL_NO      , */
+        "ATI3",     /* CMD_REVISION      , */
         "AT*F",        /* CMD_POWER_OFF      , */
         "AT+SBDMTA=1", /* CMD_RINGS_ON       , */
         "AT+SBDMTA=0", /* CMD_RINGS_OFF      , */
@@ -92,6 +104,9 @@ namespace HAYES
         "AT+UPSD=0,5",  /* GPRS_CMD_DNS_SECONDARY,      */
         "AT+UPSD=0,2",  /* GPRS_CMD_USERNAME,           */
         "AT+UPSD=0,3",  /* GPRS_CMD_PASSWORD,           */
+        "AT+UPSD=0,6",    /* GPRS_CMD_CHAP,             */
+        "AT+UPSD=0,0,0",  /* GPRS_CMD_SET_PSD_PROFILE   */
+        "AT+UPSD=0,100,1",/* GPRS_CMD_MAP_PSD_PROFILE,  */
         "AT+UPSDA=0,3", /* GPRS_CMD_ACTIVATE_PROFILE,   */
         "AT+USOCR=6",   /* GPRS_CMD_CREATE_SOCKET,      */
         "AT+USOCO=0",   /* GPRS_CMD_CONNECT_SOCKET,     */
@@ -103,42 +118,50 @@ namespace HAYES
         "AT+CSQ",       /* GPRS_CMD_SIGNAL,             */
         "AT+CNUM",      /* GPRS_CMD_MSISDN,             */
         "AT+CREG?",     /* GPRS_CMD_STATUS,             */
+        "AT+CGREG?",    /* GPRS_CMD_GPRS_STATUS,        */
         "AT+CCID",      /* GPRS_CMD_SIM_NO,             */
         "AT+CGSN",      /* GPRS_CMD_IMEI,               */
+        "AT+COPS?",     /* GPRS_CMD_OPERATOR_2,         */
         "AT+UDOPN=4",   /* GPRS_CMD_OPERATOR,           */
         "AT+UDOPN=0",   /* GPRS_CMD_COUNTRY,            */
         "AT+CGATT=0",   /* GPRS_CMD_DEREGISTER,         */
         "AT+CPWROFF",   /* GPRS_CMD_POWEROFF,           */
         "AT+CFUN=0",    /* GPRS_CMD_SIGN_OFF,           */
+        "AT+CFUN=1",    /* GPRS_CMD_CELLULAR_ON,        */
         "AT+UDNSRN=0",  /* GPRS_CMD_DNS_TEST,           */
         "AT+CGEREP=0",  /* GPRS_CMD_EVENT_URC,          */
         "AT+CREG=1",    /* GPRS_CMD_STATUS_URC,         */
+        "AT+CGREG=1",   /* GPRS_CMD_GPRS_STATUS_URC,    */
         "AT+CMEE=1",    /* GPRS_CMD_VERBOSE,            */
         "AT+UMWI=0",    /* GPRS_CMD_DISABLE_WI,         */
+        "AT+COPS=3,0",  /* GPRS_CMD_OPERATOR_ALPHA,     */
+        "AT+COPS+3,2",  /* GPRS_CMD_OPERATOR_NUMERIC,   */
         "AT+UDCONF=1,1",/* GPRS_CMD_HEX_MODE,           */
-        "AT",          /* CMD_HELLO          , */
-
-        0,             /* CMD_SESSION_FINISH , */
-        0              /* CMD_END            , */
+        "AT+UDCONF=1,0",/* GPRS_CMD_DISABLE_HEX_MODE,   */
+        "AT",           /* CMD_HELLO          ,         */
+                                                        
+        0,              /* CMD_SESSION_FINISH ,         */
+        0               /* CMD_END            ,         */
     };
 
 
     const char *hayesOut[] =
     {
-        "OK""\x0d\x0a",                                 /* CMD_ATTENTION      = 0, */
-        "READY""\x0d\x0a",                              /* CMD_WRITE_BINARY   , */
-        "OK""\x0d\x0a",                                 /* CMD_RADIO_ON       , */
-        "-MSSTM:xxxxxxxx""\x0d\x0a""OK""\x0d\x0a",      /* CMD_TIME           , */
-        "+CSQ:5""\x0d\x0a""OK""\x0d\x0a",               /* CMD_SIGNAL         , */
-        "+SBDIX:",                                      /* CMD_SESSION        , */
-        "+SBDI:",                                       /* CMD_SESSION_MK2    , */
-        "\x06\x3e\x09\x09\x09\x09\x09\x63",             /* CMD_READ_BINARY    , */
-        "0""\x0d\x0a""OK""\x0d\x0a",                    /* CMD_CLEAR          , */
-        "OK""\x0d\x0a",                                 /* CMD_RADIO_OFF      , */
-        "787878787878""\x0d\x0a""OK""\x0d\x0a",         /* CMD_SERIAL_NO      , */
-        "OK""\x0d\x0a",                                 /* CMD_POWER_OFF      , */
-        "OK""\x0d\x0a",                                 /* CMD_RINGS_ON       , */
-        "OK""\x0d\x0a",                                 /* CMD_RINGS_OFF      , */
+        "\x0d\x0a""OK""\x0d\x0a",                                 /* CMD_ATTENTION      = 0, */
+        "\x0d\x0a""READY""\x0d\x0a",                              /* CMD_WRITE_BINARY   , */
+        "\x0d\x0a""OK""\x0d\x0a",                                 /* CMD_RADIO_ON       , */
+        "\x0d\x0a""-MSSTM:xxxxxxxx""\x0d\x0a""OK""\x0d\x0a",      /* CMD_TIME           , */
+        "\x0d\x0a""+CSQ:5""\x0d\x0a""OK""\x0d\x0a",               /* CMD_SIGNAL         , */
+        "\x0d\x0a""+SBDIX:",                                      /* CMD_SESSION        , */
+        "\x0d\x0a""+SBDI:",                                       /* CMD_SESSION_MK2    , */
+        "\x0d\x0a""\x06\x3e\x09\x09\x09\x09\x09\x63",             /* CMD_READ_BINARY    , */
+        "\x0d\x0a""0""\x0d\x0a""OK""\x0d\x0a",                    /* CMD_CLEAR          , */
+        "\x0d\x0a""OK""\x0d\x0a",                                 /* CMD_RADIO_OFF      , */
+        "\x0d\x0a""787878787878""\x0d\x0a""OK""\x0d\x0a",         /* CMD_SERIAL_NO      , */
+        "\x0d\x0a""REV1234""\x0d\x0a""OK""\x0d\x0a",         /* CMD_REVISION      , */
+        "\x0d\x0a""OK""\x0d\x0a",                                 /* CMD_POWER_OFF      , */
+        "\x0d\x0a""OK""\x0d\x0a",                                 /* CMD_RINGS_ON       , */
+        "\x0d\x0a""OK""\x0d\x0a",                                 /* CMD_RINGS_OFF      , */
 
         "OK""\x0d\x0a",                                 /* GPRS_CMD_APN,                */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_DYNAMIC_ADDRESS,    */
@@ -146,6 +169,9 @@ namespace HAYES
         "OK""\x0d\x0a",                                 /* GPRS_CMD_DNS_SECONDARY,      */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_USERNAME,           */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_PASSWORD,           */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_CHAP,               */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_SET_PSD_PROFILE     */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_MAP_PSD_PROFILE,    */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_ACTIVATE_PROFILE,   */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_CREATE_SOCKET,      */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_CONNECT_SOCKET,     */
@@ -157,31 +183,38 @@ namespace HAYES
         "CSQ: 15,15""\x0d\x0a",                         /* GPRS_CMD_SIGNAL,             */
         "+CNUM: \"Bill\",\"+0123\"""\x0d\x0a",          /* GPRS_CMD_MSISDN,             */
         "+CREG: 0,",                                    /* GPRS_CMD_STATUS,             *//* Completed dynamically depending upon 'gprsNoNetwork' checkbox */
+        "+CGREG: 0,",                                   /* GPRS_CMD_GPRS_STATUS,        *//* Completed dynamically depending upon 'gprsNoNetwork' checkbox */
         "+CCID: \"7777777777777777777\"""\x0d\x0a",     /* GPRS_CMD_SIM_NO,             */
         "99998888777766""\x0d\x0a",                     /* GPRS_CMD_IMEI,               */
+        "+COPS: 0,0,\"SPI_NET\"""\x0d\x0a",             /* GPRS_CMD_OPERATOR_2,         */
         "+UDOPN: 4,\"SPI_NET\"""\x0d\x0a",              /* GPRS_CMD_OPERATOR,           */
         "+UDOPN: 4,\"123\"""\x0d\x0a",                  /* GPRS_CMD_COUNTRY,            */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_DEREGISTER,         */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_POWEROFF,           */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_SIGN_OFF,           */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_CELLULAR_ON,        */
         "+UDNSRN:\"1.1.1.1\"""\x0d\x0a""OK""\x0d\x0a",  /* GPRS_CMD_DNS_TEST,           */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_EVENT_URC,          */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_STATUS_URC,         */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_GPRS_STATUS_URC,    */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_VERBOSE,            */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_DISABLE_WI,         */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_OPERATOR_ALPHA,     */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_OPERATOR_NUMERIC,   */
         "OK""\x0d\x0a",                                 /* GPRS_CMD_HEX_MODE,           */
-        "OK""\x0d\x0a",                                 /* CMD_HELLO          , */
+        "OK""\x0d\x0a",                                 /* GPRS_CMD_DISABLE_HEX_MODE,   */
+        "OK""\x0d\x0a",                                 /* CMD_HELLO          ,         */
         
-        "\x0d\x0a""OK""\x0d\x0a",                       /* CMD_SESSION_FINISH , */
-        "SBDRING""\x0d\x0a",                            /* CMD_RING           , */
+        "\x0d\x0a""OK""\x0d\x0a",                       /* CMD_SESSION_FINISH ,         */
+        "\x0d\x0a""SBDRING""\x0d\x0a",                            /* CMD_RING           ,         */
 
-        "+CREG: 0""\x0d\x0a",                           /* GPRS_RSP_NOT_REG_URC,        */
-        "+CREG: 5""\x0d\x0a",                           /* GPRS_RSP_REGISTERED_URC,     */
+        "+CGREG: 0""\x0d\x0a",                          /* GPRS_RSP_NOT_REG_URC,        */
+        "+CGREG: 5""\x0d\x0a",                          /* GPRS_RSP_REGISTERED_URC,     */
         "+CGEV: NW DEACT""\x0d\x0a",                    /* GPRS_RSP_EVENT_URC,          */
         "+UMWI: 1,1,3""\x0d\x0a",                       /* GPRS_RSP_UMWI_URC,           */
         "+UUPSDD: 0""\x0d\x0a",                         /* GPRS_RSP_PSD_CONTEXT_URC,    */
 
-        0                                               /* CMD_END            , */
+        0                                               /* CMD_END            ,         */
     };
 }
 
@@ -247,8 +280,11 @@ namespace Iridium {
             _writeGprs = false;
             _binaryLength = 0;
             _lastLength = 0;
+            _commandSize = 0;
             _mimsn = 1;/* Non zero */
             _momsn = 1;/* Non zero */
+
+            _networkUrcEnable = false;
 		}
 
 	protected:
@@ -279,14 +315,16 @@ namespace Iridium {
 	bool _portReady;
     bool _writeBinary;
     bool _writeGprs;
+    bool _networkUrcEnable;
 	int _binaryLength;
     int _lastLength;
+    unsigned int _commandSize;
     int _mimsn;
     int _momsn;
     
 	private: System::Windows::Forms::TextBox^  logText;
 
-	private: System::Windows::Forms::Button^  showLogButton;
+
 	private: System::Windows::Forms::Button^  clearLogButton;
 	private: System::Windows::Forms::TextBox^  receiveBox;
 	private: System::Windows::Forms::Button^  testButton;
@@ -301,14 +339,19 @@ namespace Iridium {
 	private: System::Windows::Forms::Button^  mtClearButton;
 	private: System::Windows::Forms::GroupBox^  groupBox1;
 	private: System::Windows::Forms::GroupBox^  groupBox2;
-	private: System::Windows::Forms::Button^  gprsUmwiButton;
+	private: System::Windows::Forms::Button^  gprsTrackerLogClear;
+
 	private: System::Windows::Forms::CheckBox^  gprsDetachedCheck;
 	private: System::Windows::Forms::CheckBox^  gprsNoNetworkCheck;
 	private: System::Windows::Forms::CheckBox^  gprsErrorCheck;
-	private: System::Windows::Forms::ComboBox^  responseDelay;
+
 	private: System::Windows::Forms::CheckBox^  gprsPDPCheck;
 	private: System::Windows::Forms::TextBox^  trackerLog;
-	private: System::Windows::Forms::RadioButton^  logEnable;
+
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::CheckBox^  logEnable;
+
+
 
 
 
@@ -329,7 +372,6 @@ namespace Iridium {
 			this->connectStatus = (gcnew System::Windows::Forms::Label());
 			this->ticker = (gcnew System::Windows::Forms::Timer(this->components));
 			this->logText = (gcnew System::Windows::Forms::TextBox());
-			this->showLogButton = (gcnew System::Windows::Forms::Button());
 			this->clearLogButton = (gcnew System::Windows::Forms::Button());
 			this->receiveBox = (gcnew System::Windows::Forms::TextBox());
 			this->sendBox = (gcnew System::Windows::Forms::TextBox());
@@ -343,15 +385,15 @@ namespace Iridium {
 			this->moClearButton = (gcnew System::Windows::Forms::Button());
 			this->mtClearButton = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->responseDelay = (gcnew System::Windows::Forms::ComboBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->gprsPDPCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->gprsErrorCheck = (gcnew System::Windows::Forms::CheckBox());
-			this->gprsUmwiButton = (gcnew System::Windows::Forms::Button());
 			this->gprsDetachedCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->gprsNoNetworkCheck = (gcnew System::Windows::Forms::CheckBox());
+			this->gprsTrackerLogClear = (gcnew System::Windows::Forms::Button());
 			this->trackerLog = (gcnew System::Windows::Forms::TextBox());
-			this->logEnable = (gcnew System::Windows::Forms::RadioButton());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->logEnable = (gcnew System::Windows::Forms::CheckBox());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
@@ -374,9 +416,9 @@ namespace Iridium {
 			// 
 			// startButton
 			// 
-			this->startButton->Location = System::Drawing::Point(47, 502);
+			this->startButton->Location = System::Drawing::Point(763, 12);
 			this->startButton->Name = L"startButton";
-			this->startButton->Size = System::Drawing::Size(37, 24);
+			this->startButton->Size = System::Drawing::Size(160, 24);
 			this->startButton->TabIndex = 2;
 			this->startButton->Text = L"Start";
 			this->startButton->UseVisualStyleBackColor = true;
@@ -385,7 +427,7 @@ namespace Iridium {
 			// connectStatus
 			// 
 			this->connectStatus->AutoSize = true;
-			this->connectStatus->Location = System::Drawing::Point(44, 530);
+			this->connectStatus->Location = System::Drawing::Point(760, 39);
 			this->connectStatus->Name = L"connectStatus";
 			this->connectStatus->Size = System::Drawing::Size(24, 13);
 			this->connectStatus->TabIndex = 3;
@@ -401,22 +443,12 @@ namespace Iridium {
 			this->logText->Multiline = true;
 			this->logText->Name = L"logText";
 			this->logText->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->logText->Size = System::Drawing::Size(164, 161);
+			this->logText->Size = System::Drawing::Size(235, 210);
 			this->logText->TabIndex = 4;
-			// 
-			// showLogButton
-			// 
-			this->showLogButton->Location = System::Drawing::Point(524, 288);
-			this->showLogButton->Name = L"showLogButton";
-			this->showLogButton->Size = System::Drawing::Size(43, 24);
-			this->showLogButton->TabIndex = 5;
-			this->showLogButton->Text = L"Show";
-			this->showLogButton->UseVisualStyleBackColor = true;
-			this->showLogButton->Click += gcnew System::EventHandler(this, &Form1::showLogButton_Click);
 			// 
 			// clearLogButton
 			// 
-			this->clearLogButton->Location = System::Drawing::Point(524, 425);
+			this->clearLogButton->Location = System::Drawing::Point(549, 508);
 			this->clearLogButton->Name = L"clearLogButton";
 			this->clearLogButton->Size = System::Drawing::Size(40, 24);
 			this->clearLogButton->TabIndex = 6;
@@ -445,7 +477,7 @@ namespace Iridium {
 			// 
 			// testButton
 			// 
-			this->testButton->Location = System::Drawing::Point(354, 504);
+			this->testButton->Location = System::Drawing::Point(47, 509);
 			this->testButton->Name = L"testButton";
 			this->testButton->Size = System::Drawing::Size(69, 22);
 			this->testButton->TabIndex = 9;
@@ -456,7 +488,7 @@ namespace Iridium {
 			// noNetworkCheck
 			// 
 			this->noNetworkCheck->AutoSize = true;
-			this->noNetworkCheck->Location = System::Drawing::Point(11, 85);
+			this->noNetworkCheck->Location = System::Drawing::Point(6, 26);
 			this->noNetworkCheck->Name = L"noNetworkCheck";
 			this->noNetworkCheck->Size = System::Drawing::Size(83, 17);
 			this->noNetworkCheck->TabIndex = 10;
@@ -465,7 +497,7 @@ namespace Iridium {
 			// 
 			// ringButton
 			// 
-			this->ringButton->Location = System::Drawing::Point(9, 108);
+			this->ringButton->Location = System::Drawing::Point(6, 49);
 			this->ringButton->Name = L"ringButton";
 			this->ringButton->Size = System::Drawing::Size(39, 22);
 			this->ringButton->TabIndex = 11;
@@ -475,7 +507,7 @@ namespace Iridium {
 			// 
 			// imeiBox
 			// 
-			this->imeiBox->Location = System::Drawing::Point(354, 478);
+			this->imeiBox->Location = System::Drawing::Point(47, 483);
 			this->imeiBox->Name = L"imeiBox";
 			this->imeiBox->Size = System::Drawing::Size(138, 20);
 			this->imeiBox->TabIndex = 12;
@@ -483,11 +515,11 @@ namespace Iridium {
 			// obfuscateLabel
 			// 
 			this->obfuscateLabel->AutoSize = true;
-			this->obfuscateLabel->Location = System::Drawing::Point(429, 513);
+			this->obfuscateLabel->Location = System::Drawing::Point(122, 518);
 			this->obfuscateLabel->Name = L"obfuscateLabel";
-			this->obfuscateLabel->Size = System::Drawing::Size(25, 13);
+			this->obfuscateLabel->Size = System::Drawing::Size(10, 13);
 			this->obfuscateLabel->TabIndex = 13;
-			this->obfuscateLabel->Text = L"___";
+			this->obfuscateLabel->Text = L" ";
 			// 
 			// label3
 			// 
@@ -509,7 +541,7 @@ namespace Iridium {
 			// 
 			// moClearButton
 			// 
-			this->moClearButton->Location = System::Drawing::Point(77, 56);
+			this->moClearButton->Location = System::Drawing::Point(241, 56);
 			this->moClearButton->Name = L"moClearButton";
 			this->moClearButton->Size = System::Drawing::Size(48, 21);
 			this->moClearButton->TabIndex = 17;
@@ -519,7 +551,7 @@ namespace Iridium {
 			// 
 			// mtClearButton
 			// 
-			this->mtClearButton->Location = System::Drawing::Point(380, 56);
+			this->mtClearButton->Location = System::Drawing::Point(547, 56);
 			this->mtClearButton->Name = L"mtClearButton";
 			this->mtClearButton->Size = System::Drawing::Size(42, 21);
 			this->mtClearButton->TabIndex = 18;
@@ -529,38 +561,24 @@ namespace Iridium {
 			// 
 			// groupBox1
 			// 
-			this->groupBox1->Controls->Add(this->responseDelay);
 			this->groupBox1->Controls->Add(this->ringButton);
 			this->groupBox1->Controls->Add(this->noNetworkCheck);
 			this->groupBox1->Location = System::Drawing::Point(47, 288);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(108, 161);
+			this->groupBox1->Size = System::Drawing::Size(108, 125);
 			this->groupBox1->TabIndex = 19;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Iridium";
-			// 
-			// responseDelay
-			// 
-			this->responseDelay->FormattingEnabled = true;
-			this->responseDelay->Items->AddRange(gcnew cli::array< System::Object^  >(13) {
-				L"0", L"5", L"10", L"15", L"20", L"25", L"30",
-					L"35", L"40", L"45", L"50", L"55", L"60"
-			});
-			this->responseDelay->Location = System::Drawing::Point(11, 26);
-			this->responseDelay->Name = L"responseDelay";
-			this->responseDelay->Size = System::Drawing::Size(83, 21);
-			this->responseDelay->TabIndex = 12;
 			// 
 			// groupBox2
 			// 
 			this->groupBox2->Controls->Add(this->gprsPDPCheck);
 			this->groupBox2->Controls->Add(this->gprsErrorCheck);
-			this->groupBox2->Controls->Add(this->gprsUmwiButton);
 			this->groupBox2->Controls->Add(this->gprsDetachedCheck);
 			this->groupBox2->Controls->Add(this->gprsNoNetworkCheck);
 			this->groupBox2->Location = System::Drawing::Point(184, 288);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(118, 161);
+			this->groupBox2->Size = System::Drawing::Size(118, 125);
 			this->groupBox2->TabIndex = 20;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Gprs";
@@ -586,16 +604,6 @@ namespace Iridium {
 			this->gprsErrorCheck->Text = L"Network Error";
 			this->gprsErrorCheck->UseVisualStyleBackColor = true;
 			// 
-			// gprsUmwiButton
-			// 
-			this->gprsUmwiButton->Location = System::Drawing::Point(6, 118);
-			this->gprsUmwiButton->Name = L"gprsUmwiButton";
-			this->gprsUmwiButton->Size = System::Drawing::Size(42, 22);
-			this->gprsUmwiButton->TabIndex = 2;
-			this->gprsUmwiButton->Text = L"Umwi";
-			this->gprsUmwiButton->UseVisualStyleBackColor = true;
-			this->gprsUmwiButton->Click += gcnew System::EventHandler(this, &Form1::gprsUmwiButton_Click);
-			// 
 			// gprsDetachedCheck
 			// 
 			this->gprsDetachedCheck->AutoSize = true;
@@ -618,6 +626,16 @@ namespace Iridium {
 			this->gprsNoNetworkCheck->UseVisualStyleBackColor = true;
 			this->gprsNoNetworkCheck->CheckedChanged += gcnew System::EventHandler(this, &Form1::gprsNoNetworkCheck_CheckedChanged);
 			// 
+			// gprsTrackerLogClear
+			// 
+			this->gprsTrackerLogClear->Location = System::Drawing::Point(1057, 510);
+			this->gprsTrackerLogClear->Name = L"gprsTrackerLogClear";
+			this->gprsTrackerLogClear->Size = System::Drawing::Size(42, 22);
+			this->gprsTrackerLogClear->TabIndex = 2;
+			this->gprsTrackerLogClear->Text = L"Clear";
+			this->gprsTrackerLogClear->UseVisualStyleBackColor = true;
+			this->gprsTrackerLogClear->Click += gcnew System::EventHandler(this, &Form1::gprsTrackerLogClear_Click);
+			// 
 			// trackerLog
 			// 
 			this->trackerLog->AcceptsReturn = true;
@@ -627,16 +645,25 @@ namespace Iridium {
 			this->trackerLog->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->trackerLog->Size = System::Drawing::Size(460, 419);
 			this->trackerLog->TabIndex = 21;
+			this->trackerLog->WordWrap = false;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(351, 510);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(85, 13);
+			this->label2->TabIndex = 23;
+			this->label2->Text = L"Iridium/Gprs Log";
 			// 
 			// logEnable
 			// 
 			this->logEnable->AutoSize = true;
-			this->logEnable->Location = System::Drawing::Point(639, 515);
+			this->logEnable->Location = System::Drawing::Point(639, 517);
 			this->logEnable->Name = L"logEnable";
-			this->logEnable->Size = System::Drawing::Size(99, 17);
-			this->logEnable->TabIndex = 22;
-			this->logEnable->TabStop = true;
-			this->logEnable->Text = L"Enable Logging";
+			this->logEnable->Size = System::Drawing::Size(104, 17);
+			this->logEnable->TabIndex = 24;
+			this->logEnable->Text = L"Tracker Logging";
 			this->logEnable->UseVisualStyleBackColor = true;
 			// 
 			// Form1
@@ -645,7 +672,9 @@ namespace Iridium {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1155, 552);
 			this->Controls->Add(this->logEnable);
+			this->Controls->Add(this->label2);
 			this->Controls->Add(this->trackerLog);
+			this->Controls->Add(this->gprsTrackerLogClear);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->mtClearButton);
@@ -658,7 +687,6 @@ namespace Iridium {
 			this->Controls->Add(this->sendBox);
 			this->Controls->Add(this->receiveBox);
 			this->Controls->Add(this->clearLogButton);
-			this->Controls->Add(this->showLogButton);
 			this->Controls->Add(this->logText);
 			this->Controls->Add(this->connectStatus);
 			this->Controls->Add(this->startButton);
@@ -771,7 +799,7 @@ namespace Iridium {
                     {
                         array<unsigned char>^ receiveIn = gcnew array<unsigned char>( length );
                         _ComPort->Read( receiveIn, 0, length );
-                        arrayToLogText( receiveIn, commandIn );
+                        length = arrayToLogText( receiveIn, commandIn );
                     }
                     else
                     {
@@ -800,7 +828,7 @@ namespace Iridium {
                                 {
                                     _Incoming->Add( character );
                                 }
-                                else
+                                else if (_Incoming->Count != 0)
                                 {
                                     /* We have a command */
                         
@@ -815,11 +843,6 @@ namespace Iridium {
                                     in[j] = '\0';
                         
                                     _Incoming->Clear();/* To start again */
-                            
-                                    if ((length - i) > 1)
-                                    {
-                                        //log( String::Format( "Length error={0}", length - i ) );
-                                    }
                             
                                     /* Identify the command using hayes table */
                                     int cmd = 0;
@@ -936,6 +959,8 @@ namespace Iridium {
                                         {
                                             /* Prepare an ascii response */
                                             s = gcnew String( HAYES::hayesOut[cmd] );
+
+                                            /* Now do any command specific management . . */
                                             switch (cmd)
                                             {
                                                 case HAYES::CMD_SESSION:
@@ -958,36 +983,45 @@ namespace Iridium {
                                                         String^ temp = gcnew String( HAYES::hayesOut[HAYES::CMD_SESSION_FINISH] );
                                                         s = String::Concat( s, temp );
                                                     
-                                                        //Timing
-                                                        int time = timeReference();
-                                                        while (timeElapsedSince( time ) < (responseDelay->SelectedIndex * 5));
                                                     }
                                                     break;
                                                 
                                                 case HAYES::GPRS_CMD_STATUS:
+                                                case HAYES::GPRS_CMD_GPRS_STATUS:
                                                     s = String::Concat( s, String::Format( "{0}""\x0d\x0a", gprsNoNetworkCheck->Checked == false ? 5 : 0 ) );
                                                     break;
                                                 
                                                 case HAYES::GPRS_CMD_ACTIVATE_PROFILE:
                                                     if (gprsDetachedCheck->Checked == true)
                                                     {
-                                                        s = "+CME""\x0d\x0a";
+                                                        s = "+CME ERROR""\x0d\x0a";
                                                     }
                                                     break;
                                                     
                                                 case HAYES::GPRS_CMD_CREATE_SOCKET:
-                                                    if (gprsErrorCheck->Checked == true)
+                                                case HAYES::GPRS_CMD_CONNECT_SOCKET:
+                                                case HAYES::GPRS_CMD_SOCKET_WRITE:
+                                                case HAYES::GPRS_CMD_SOCKET_DATA:
+                                                case HAYES::GPRS_CMD_SOCKET_READ:
+                                                case HAYES::GPRS_CMD_SOCKET_CLOSE:
+                                                    if ((gprsErrorCheck->Checked == true) || (gprsNoNetworkCheck->Checked == true))
                                                     {
-                                                        gprsErrorCheck->Checked = false;
-                                                        s = "+CME""\x0d\x0a";
-                                                    }
-                                                    if (responseDelay->SelectedIndex == 11) 
-                                                    {
-                                                        s = "";
+                                                        //gprsErrorCheck->Checked = false;
+                                                        s = "+CME ERROR""\x0d\x0a";
                                                     }
                                                     break;
                                                 
                                                 
+                                                case HAYES::GPRS_CMD_STATUS_URC:
+                                                case HAYES::GPRS_CMD_GPRS_STATUS_URC:
+                                                    _networkUrcEnable = true;
+                                                    break;
+
+
+                                                case HAYES::GPRS_CMD_POWEROFF:
+                                                    _networkUrcEnable = false;
+                                                    break;
+
                                                 default:
                                                     break;
                                             }
@@ -997,10 +1031,7 @@ namespace Iridium {
                                             log( String::Concat( "-> ", s ) );
                                         }
                                     
-                                        if (responseDelay->SelectedIndex < 12) 
-                                        {
                                         sendResponse( buffer );
-                                        }
                                     }
                                     else
                                     {
@@ -1311,13 +1342,6 @@ namespace Iridium {
 	}
     
     
-    private: System::Void showLogButton_Click(System::Object^  sender, System::EventArgs^  e)
-    {
-        clearLogButton->Visible = !clearLogButton->Visible;
-        logText->Visible = !logText->Visible;
-        showLogButton->Text = clearLogButton->Visible == false ? "Show" : "Hide";
-	}
-
     private: System::Void clearLogButton_Click(System::Object^  sender, System::EventArgs^  e)
     {
         logText->Clear();
@@ -1398,29 +1422,26 @@ namespace Iridium {
 	}
     
 
-    private: System::Void gprsUmwiButton_Click(System::Object^  sender, System::EventArgs^  e)
+    private: System::Void gprsTrackerLogClear_Click(System::Object^  sender, System::EventArgs^  e)
     {
-        array<unsigned char>^ buffer;
-        String ^s;
-        
-        s = gcnew String( HAYES::hayesOut[HAYES::GPRS_RSP_UMWI_URC] );
-        buffer = stringToArray( s );
-        log( String::Concat( "-> ", s ) );
-        sendResponse( buffer );
-	}
+        trackerLog->Clear();
+    }
     
     
     private: System::Void gprsNoNetworkCheck_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
     {
-        array<unsigned char>^ buffer;
-        String ^s;
-        
-        int messageNo = (gprsNoNetworkCheck->Checked == false) ? HAYES::GPRS_RSP_REGISTERED_URC : HAYES::GPRS_RSP_NOT_REG_URC;
-        
-        s = gcnew String( HAYES::hayesOut[messageNo] );
-        buffer = stringToArray( s );
-        log( String::Concat( "-> ", s ) );
-        sendResponse( buffer );
+        if (_networkUrcEnable)
+        {
+            array<unsigned char>^ buffer;
+            String ^s;
+            
+            int messageNo = (gprsNoNetworkCheck->Checked == false) ? HAYES::GPRS_RSP_REGISTERED_URC : HAYES::GPRS_RSP_NOT_REG_URC;
+            
+            s = gcnew String( HAYES::hayesOut[messageNo] );
+            buffer = stringToArray( s );
+            log( String::Concat( "-> ", s ) );
+            sendResponse( buffer );
+        }
 	}
     
     
@@ -1468,11 +1489,11 @@ namespace Iridium {
 
 
     //Log stream splitting
-    private:void arrayToLogText( array<unsigned char> ^receive, array<unsigned char> ^command )
+    private:int arrayToLogText( array<unsigned char> ^receive, array<unsigned char> ^command )
     {
         int receiveLength = receive->Length;
 
-        char logBuffer[80 + 1];
+        char logBuffer[1000];
 
         int i = 0;
         int j = 0;
@@ -1483,42 +1504,60 @@ namespace Iridium {
             char character = (char)receive[i];
             ++i;
 
-            if (character != '$')
+            if ((character == '$') && (_commandSize == 0))
             {
-                logBuffer[j] = character;
-                ++j;
+                _commandSize = (char)receive[i];
+                ++i;
+                _commandSize += ((char)receive[i] << 8);
+                ++i;
             }
             else
             {
-                int commandSize = receive[i];
-
-                ++i;
-                while ((commandSize != 0) && (i < receiveLength))
+                if (_commandSize != 0)
                 {
-                    command[k] = receive[i];
+                    //Command
+                    command[k] = character;
                     ++k;
-                    ++i;
-                    --commandSize;
+                    --_commandSize;
                 }
-            }
-
-
-            if ((j == 80) || (i == receiveLength))
-            {
-                logBuffer[j] = '\0';
-                j = 0;
-
-                String^ s = gcnew String( logBuffer );
-
-                int sizeNow = trackerLog->Text->Length;
-                if (sizeNow > 0x4000)
+                else
                 {
-                    trackerLog->Text = trackerLog->Text->Substring( sizeNow);
+                    //Logging
+
+                    if (character == '\x0a')
+                    {
+                        logBuffer[j] = '\r';
+                        ++j;
+                        logBuffer[j] = '\n';
+                        ++j;
+                    }
+                    else
+                    {
+                        logBuffer[j] = character;
+                        ++j;
+                    }
                 }
 
-                trackerLog->AppendText( s );
+
+                if ( ((j != 0) && (i == receiveLength)) )
+                {
+                    logBuffer[j] = '\0';
+                    j = 0;
+
+                    String^ s = gcnew String( logBuffer );
+
+                    int sizeNow = trackerLog->Text->Length;
+                    if (sizeNow > 0x4000)
+                    {
+                        trackerLog->Text = trackerLog->Text->Substring( sizeNow);
+                    }
+
+                    trackerLog->AppendText( s );
+                }
             }
         }
+
+        return (k);
 
     }
 
